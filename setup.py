@@ -21,8 +21,6 @@ from setuptools import setup, find_packages
 #
 # ----------------------------------------------------------------------------
 
-
-
 # project version
 version='0.0.2'
 
