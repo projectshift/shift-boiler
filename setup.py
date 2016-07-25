@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.0.2'
+version='0.0.3'
 
 # development status
 dev_status = '1 - Planning'
@@ -35,7 +35,6 @@ dev_status = '1 - Planning'
 
 # github repository url
 repo = 'https://github.com/projectshift/shift-boiler'
-
 license_type = 'MIT License'
 
 # monkey patch os for vagrant hardlinks
@@ -52,7 +51,7 @@ setup(**dict(
     name='shiftboiler',
     version=version,
     url=repo,
-    download_url=repo + '/releases/v' + version,
+    download_url=repo + '/archive/v' + version + '.tar.gz',
     description='Best practices setup for webapps, apis and cli applications',
     keywords=[
         'python3',
