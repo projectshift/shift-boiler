@@ -22,5 +22,5 @@ Here are some main features all of which are pluggable and optional:
   * RBAC and access control with Principal
   * Routng with lazy-views and on-demand view import
   * Set of useful Jinja additions and filters
-  * All of the above features are pluggable and optional. Use whatever you need.
+  * All of the features are pluggable and optional. Use whatever you need.
 
