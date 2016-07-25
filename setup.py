@@ -5,21 +5,19 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 # Building
 #
-# Build (create source distribution):
-#
+# Create source distribution:
 # ./setup.py sdist
 #
 #
-# Register on PyPI:
+# Create binary distribution (non-univeral, python 3 only):
+# ./setup.py bdist_wheel --python-tag=py3
 #
-# ./setup.py register -r pypi
-# ./setup.py register -r pypi
+# Register on PyPI:
+# twine register dist/mypkg.whl
 #
 #
 # Upload to PyPI:
-#
-# ./setup.py upload -r pypi
-# ./setup.py upload -r pypi
+# twine upload dist/*
 #
 # ----------------------------------------------------------------------------
 

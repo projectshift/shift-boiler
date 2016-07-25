@@ -21,6 +21,7 @@ www.esproj
 /man
 
 # build ignores
+/build
 /dist
 /data
 /*.egg-info
