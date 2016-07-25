@@ -1,11 +1,11 @@
 # shift-boiler
 
+![boiler](https://s3-eu-west-1.amazonaws.com/public-stuff-cdn/boiler.png)
+
 Boiler is a best-practices setup of flask framework integrated with a number
 of libraries to quickly bootstrap app development. You can do console
 applications, web apps or apis with buckle. It is also a good example of how to
 set up flask framework for large applications.
-
-![boiler](https://s3-eu-west-1.amazonaws.com/public-stuff-cdn/boiler.png)
 
 Here are some main features all of which are pluggable and optional:
 
