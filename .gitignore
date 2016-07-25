@@ -20,6 +20,15 @@ www.esproj
 /include
 /man
 
+# build ignores
+/dist
+/data
+/*.egg-info
+.coverage
+/config.yml
+
+
+
 # Project ignores
 .sass-cache
 .tmp
