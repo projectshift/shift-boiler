@@ -2,6 +2,29 @@
 import os
 from setuptools import setup, find_packages
 
+# ----------------------------------------------------------------------------
+# Building
+#
+# Build (create source distribution):
+#
+# ./setup.py sdist
+#
+#
+# Register on PyPI:
+#
+# ./setup.py register -r pypi
+# ./setup.py register -r pypi
+#
+#
+# Upload to PyPI:
+#
+# ./setup.py upload -r pypi
+# ./setup.py upload -r pypi
+#
+# ----------------------------------------------------------------------------
+
+
+
 # project version
 version='0.0.1'
 
