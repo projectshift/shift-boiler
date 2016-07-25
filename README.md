@@ -18,7 +18,7 @@ Here are some main features all of which are pluggable and optional:
   * Entity/model validation framework with shift-schema
   * Localization and translations with Babel
   * Web forms with WTForms and support for recaptcha v1 and v2
-  * User registration and authentication
+  * User registration and authentication including OAuth support for facebook, google, twitter and vk
   * RBAC and access control with Principal
   * Routng with lazy-views and on-demand view import
   * Set of useful Jinja additions and filters
