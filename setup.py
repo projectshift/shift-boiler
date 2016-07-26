@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.0.3'
+version='0.0.4'
 
 # development status
 dev_status = '1 - Planning'
@@ -67,7 +67,7 @@ setup(**dict(
 
     # classifiers
     # see: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers = [
+    classifiers=[
 
         # maturity
         'Development Status :: ' + dev_status,
