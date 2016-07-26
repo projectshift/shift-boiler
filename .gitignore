@@ -30,20 +30,17 @@ www.esproj
 
 
 
-# Project ignores
-.sass-cache
-.tmp
-/.coverage
-/config/*
-!/config/config.dist.py
-!/config/apps.dist.py
-/var/data/*
-!/var/data/.gitkeep
-/var/logs/*
-!/var/logs/.gitkeep
-/var/uploads/*
-!/var/uploads/.gitkeep
-
+# install ignores
+/config
+/LICENSE
+/migrations
+/nose.ini
+/project
+/requirements
+/var
+/uwsgi.ini
+/uwsgi.py
+/cli
 
 
 

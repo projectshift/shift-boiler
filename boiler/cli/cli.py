@@ -17,6 +17,18 @@ def cli():
 # -----------------------------------------------------------------------------
 
 
+@cli.command(name='init')
+@click.option('--dir', default=None, help='Where to initialise project')
+def init(dir=None):
+    """ Initialise new project """
+    # get directory or use current one
+    # ensure this is a fresh install (how?)
+    # copy/unzip boilerplate structure
+    pass
+
+
+
+
 @cli.command(name='run')
 @click.option('--host', '-h', default='0.0.0.0', help='Bind to')
 @click.option('--port', '-p', default=5000, help='Listen on port')
@@ -40,7 +52,7 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
 
 @cli.command(name='shell')
 def shell():
-    """ Run application shell """
+    """ Start application-aware shell """
     context = dict()
 
     # mount apps

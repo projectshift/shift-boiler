@@ -95,6 +95,9 @@ setup(**dict(
     # project packages
     packages=find_packages(exclude=['tests*']),
 
+    # data files
+    data_files=[('my_data', ['data/data_file'])],
+
     # project dependencies
     install_requires=[
         'click==6.6'
