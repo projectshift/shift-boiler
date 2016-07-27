@@ -18,7 +18,6 @@ www.esproj
 
 # build ignores
 /build
-/bin
 /dist
 /data
 /*.egg-info
