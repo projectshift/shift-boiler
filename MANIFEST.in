@@ -1,3 +1,1 @@
-project_template/uwsgi.ini
-project_template/uwsgi.py
-project_template/example.txt
+recursive-include boiler_template *

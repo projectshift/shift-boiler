@@ -96,12 +96,12 @@ setup(**dict(
     packages=find_packages(exclude=['tests*']),
 
     # data files
-    package_data = {
-        'project_template': [
-            'uwsgi.ini',
-            'uwsgi.py',
-        ],
-    },
+    # package_data = {
+    #     'project_template': [
+    #         'uwsgi.ini',
+    #         'uwsgi.py',
+    #     ],
+    # },
 
     # project dependencies
     install_requires=[

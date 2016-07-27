@@ -12,16 +12,13 @@ __pycache__
 nbproject
 www.esproj
 
-# Virtualenv ignores
+
 /env
-/bin
-/lib
-/share
-/include
-/man
+
 
 # build ignores
 /build
+/bin
 /dist
 /data
 /*.egg-info

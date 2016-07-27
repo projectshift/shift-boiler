@@ -1,0 +1,38 @@
+# OS specific files
+.DS_Store
+ehthumbs.db
+Thumbs.db
+__pycache__
+
+# IDE files
+.buildpath
+.project
+.settings
+.idea
+nbproject
+www.esproj
+
+# Virtualenv ignores
+/env
+/bin
+/lib
+/share
+/include
+/man
+
+# Project ignores
+.sass-cache
+.tmp
+/.coverage
+/config/*
+!/config/config.dist.py
+!/config/apps.dist.py
+/var/data/*
+!/var/data/.gitkeep
+/var/logs/*
+!/var/logs/.gitkeep
+
+
+
+
+
