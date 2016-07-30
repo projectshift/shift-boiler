@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.0.8'
+version='0.0.11'
 
 # development status
 dev_status = '1 - Planning'
@@ -95,13 +95,8 @@ setup(**dict(
     # project packages
     packages=find_packages(exclude=['tests*']),
 
-    # data files
-    # package_data = {
-    #     'project_template': [
-    #         'uwsgi.ini',
-    #         'uwsgi.py',
-    #     ],
-    # },
+    # include none-code data files from manifest.in (http://goo.gl/Uf0Yxc)
+    include_package_data=True,
 
     # project dependencies
     install_requires=[
