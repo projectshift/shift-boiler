@@ -1,1 +1,1 @@
-recursive-include boiler_template *
+recursive-include boiler/boiler_template *
