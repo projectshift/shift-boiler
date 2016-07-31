@@ -1,4 +1,4 @@
-import click, os, sys
+import click, os, sys, shutil
 from boiler.cli.colors import *
 from click import echo
 
@@ -17,11 +17,18 @@ def cli():
 # Commands
 # -----------------------------------------------------------------------------
 
-
 @cli.command(name='init')
 @click.argument('destination', type=click.Path(exists=True))
-@click.option('--force', '-f', default=False, help='Overwrite existing')
-@click.option('--skip', '-s', default=False, help='Skip existing')
+@click.option('--force', '-f',
+    default=False,
+    is_flag=True,
+    help='Skip existing objects in destination'
+)
+@click.option('--skip', '-s',
+    default=False,
+    is_flag=True,
+    help='Skip existing objects in dstination'
+)
 def init(destination, force=False, skip=True):
     """ Initialise new project """
     import os
@@ -32,6 +39,9 @@ def init(destination, force=False, skip=True):
 
     destination = os.path.realpath(destination)
     source = os.path.realpath(os.path.dirname(__file__) + '/../boiler_template')
+
+
+
 
     # dry run first
     exist_in_dst = []
@@ -58,43 +68,47 @@ def init(destination, force=False, skip=True):
         echo(red(msg))
         echo(red('Use either --force or --skip option \n'))
 
-        for index,path  in enumerate(exist_in_dst):
+        for index,path in enumerate(exist_in_dst):
             print(yellow('{}. {}'.format(index, path)))
 
         echo()
         return
 
-    # now do actual copy
     for path, dirs, files in os.walk(source):
         for dir in dirs:
             if dir in ignores:
                 continue
-
             src = os.path.join(path, dir)
             dst = src.replace(source, destination)
             if dst in exist_in_dst and force:
                 print(red('OVERWRITING: ' + dst))
+                if os.path.exists(dst):
+                    shutil.rmtree(dst, ignore_errors=True)
+                os.makedirs(dst)
             elif dst in exist_in_dst and skip:
                 print(yellow('SKIPPING: ' + dst))
             else:
                 print('CREATING: ' + dst)
+                os.makedirs(dst)
 
         for file in files:
             if file in ignores:
                 continue
-
             src = os.path.join(path, file)
             dst = src.replace(source, destination)
             if dst in exist_in_dst and force:
                 print(red('OVERWRITING: ' + dst))
+                if os.path.exists(dst):
+                    os.remove(dst)
+                shutil.copy(src, dst)
             elif dst in exist_in_dst and skip:
                 print(yellow('SKIPPING: ' + dst))
             else:
                 print('CREATING: ' + dst)
+                shutil.copy(src, dst)
 
-        echo()
-        return
-
+    echo()
+    return
 
 
 
