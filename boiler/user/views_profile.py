@@ -57,12 +57,13 @@ def only_owner(func):
 class Me(View):
     """ Me redirects to current user profile """
     profile_endpoint = 'user.profile.home'
+    login_endpoint = 'user.social_login'
 
     def dispatch_request(self):
         if current_user.is_authenticated:
             return redirect(url_for(self.profile_endpoint, id=current_user.id))
         else:
-            return redirect('/')
+            return redirect(url_for(self.login_endpoint))
 
 
 class Profile(View):

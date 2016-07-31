@@ -22,7 +22,7 @@ class LoginForm(Form):
 
 
 class RegisterForm(Form):
-    recaptcha = Recaptcha2Field()
+    recaptcha = Recaptcha1Field()
     username = StringField('username')
     email = StringField('email')
 

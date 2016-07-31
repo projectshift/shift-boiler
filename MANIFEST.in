@@ -1,4 +1,3 @@
 recursive-include boiler/boiler_template *
-recursive-include boiler/_static *
 recursive-include boiler/migrations *
 recursive-include boiler/templates *
