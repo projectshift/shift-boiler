@@ -1,6 +1,6 @@
 import os
 from jinja2 import ChoiceLoader, FileSystemLoader
-from kernel.jinja.filters import MomentJsFilters, DateFilters, HumanizeFilters
+from boiler.jinja.filters import MomentJsFilters, DateFilters, HumanizeFilters
 
 
 def jinja_extensions_feature(app):

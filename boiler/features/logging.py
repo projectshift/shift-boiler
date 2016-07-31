@@ -1,6 +1,6 @@
 import logging
-from kernel.log.file import file_logger
-from kernel.log.mail import mail_logger
+from boiler.log.file import file_logger
+from boiler.log.mail import mail_logger
 # from kernel.log.datadog import datadog_logger
 
 
