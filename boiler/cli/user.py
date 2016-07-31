@@ -1,10 +1,10 @@
 import click
 from flask import current_app
-from kernel.cli.colors import *
-from kernel.bootstrap import create_middleware
+from boiler.cli.colors import *
+from boiler.bootstrap import create_middleware
 
-from kernel.user.models import User, Role
-from kernel.user.services import user_service, role_service
+from boiler.user.models import User, Role
+from boiler.user.services import user_service, role_service
 
 
 def get_app():

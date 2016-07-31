@@ -1,0 +1,21 @@
+# install tools
+twine==1.7.4
+wheel==0.29.0
+
+# cli
+click==6.6
+
+# orm
+PyMySQL==0.7.6
+SQLAlchemy==1.0.14
+Flask-SQLAlchemy==2.1
+Flask-Alembic==1.2.1
+
+
+# flask
+blinker==1.4
+Flask==0.11.1
+Flask-DebugToolbar==0.10.0
+
+
+
