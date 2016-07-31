@@ -1,7 +1,7 @@
-from kernel.services import db
-from kernel.abstract.abstract_service import AbstractService
-from kernel.user.models import RoleSchema, Role
-from kernel.user import events
+from boiler.features.orm import db
+from boiler.abstract.abstract_service import AbstractService
+from boiler.user.models import RoleSchema, Role
+from boiler.user import events
 
 
 class RoleService(AbstractService):

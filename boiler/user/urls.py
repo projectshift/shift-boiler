@@ -1,4 +1,4 @@
-from kernel.routes.route import route
+from boiler.routes.route import route
 
 """
 User URLs

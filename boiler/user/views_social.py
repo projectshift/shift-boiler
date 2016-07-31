@@ -4,12 +4,12 @@ from flask import render_template, request, url_for, flash, redirect, session
 from flask import abort
 from flask_login import current_user
 
-from kernel.user.services import oauth
-from kernel.user.services import user_service
-from kernel.user import exceptions as x
-from kernel.user.models import RegisterSchema, User
-from kernel.user.forms import RegisterForm
-from kernel.user.forms import FinalizeSocial as FinalizeSocialForm
+from boiler.user.services import oauth
+from boiler.user.services import user_service
+from boiler.user import exceptions as x
+from boiler.user.models import RegisterSchema, User
+from boiler.user.forms import RegisterForm
+from boiler.user.forms import FinalizeSocial as FinalizeSocialForm
 
 from pprint import pprint
 

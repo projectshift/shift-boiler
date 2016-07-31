@@ -21,11 +21,23 @@ SQLAlchemy==1.0.14
 Flask-SQLAlchemy==2.1
 Flask-Alembic==1.2.1
 
+# forms
+Flask-WTF==0.12
+
 # api
 Flask-RESTful==0.3.5
 
-# localise and translate
+# localize and translate
 Flask-Babel==0.11.1
+
+# user
+bcrypt==3.1.0
+passlib==1.6.5
+Flask-Login==0.3.2
+Flask-OAuthlib==0.9.3
+Flask-Principal==0.4.0
+shiftschema==0.0.10
+Flask-WTF==0.12
 
 
 

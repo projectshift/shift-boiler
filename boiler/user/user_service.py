@@ -1,10 +1,11 @@
 from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
-from kernel.abstract.abstract_service import AbstractService
-from kernel.services import db, mail
-from kernel.user.models import User, RegisterSchema, UpdateSchema
-from kernel.user import events, exceptions as x
+from boiler.abstract.abstract_service import AbstractService
+from boiler.features.orm import db
+from boiler.features.mail import mail
+from boiler.user.models import User, RegisterSchema, UpdateSchema
+from boiler.user import events, exceptions as x
 
 
 class UserService(AbstractService):

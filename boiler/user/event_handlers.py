@@ -1,6 +1,6 @@
 from flask import current_app, url_for
-from kernel.user import events
-from kernel.user.services import user_service
+from boiler.user import events
+from boiler.user.services import user_service
 from flask import has_request_context
 
 """

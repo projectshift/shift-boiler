@@ -5,10 +5,10 @@ from flask import flash, redirect, render_template, url_for, abort, request
 from flask import session
 from flask_login import current_user, login_required
 
-from kernel.user import forms
-from kernel.user.models import RegisterSchema, UpdateSchema
-from kernel.user import exceptions as x
-from kernel.user.services import user_service
+from boiler.user import forms
+from boiler.user.models import RegisterSchema, UpdateSchema
+from boiler.user import exceptions as x
+from boiler.user.services import user_service
 
 """
 User views

@@ -8,7 +8,7 @@ class UniqueUserProperty(AbstractValidator):
 
     def validate(self, value, context=None):
         """ Perform validation """
-        from kernel.user.services import user_service
+        from boiler.user.services import user_service
         self_id = None
         if context:
             if isinstance(context, dict): self_id = context.get('id')
@@ -41,7 +41,7 @@ class UniqueRoleHandle(AbstractValidator):
 
     def validate(self, value, context=None):
         """ Perform validation """
-        from kernel.user.services import role_service
+        from boiler.user.services import role_service
         self_id = None
         if context:
             if isinstance(context, dict): self_id = context.get('id')

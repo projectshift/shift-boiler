@@ -2,9 +2,9 @@ from flask import session
 from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
-from kernel.user.services import login_manager, principal, user_service, oauth
-from kernel.user.util.oauth_providers import OauthProviders
-from kernel.user import event_handlers
+from boiler.user.services import login_manager, principal, user_service, oauth
+from boiler.user.util.oauth_providers import OauthProviders
+from boiler.user import event_handlers
 
 
 def users_feature(app):

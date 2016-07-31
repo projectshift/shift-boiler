@@ -1,7 +1,7 @@
 from shiftschema.ext.flask_wtf import Form
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, EqualTo
-from kernel.forms.recaptcha import RecaptchaField as Recaptcha1Field
+from boiler.forms.recaptcha import RecaptchaField as Recaptcha1Field
 from flask_wtf import RecaptchaField as Recaptcha2Field
 
 """

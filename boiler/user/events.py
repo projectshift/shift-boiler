@@ -1,4 +1,4 @@
-from kernel.events import Namespace
+from boiler.events import Namespace
 
 events = Namespace()
 

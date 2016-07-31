@@ -3,11 +3,11 @@ from flask import request, session
 from flask.views import View
 from flask_login import current_user, login_required
 
-from kernel.user.services import oauth
-from kernel.user.services import user_service
-from kernel.user.forms import DetailsForm, ChangeEmailForm, ChangePasswordForm
-from kernel.user.models import UpdateSchema
-from kernel.user import views_social as social
+from boiler.user.services import oauth
+from boiler.user.services import user_service
+from boiler.user.forms import DetailsForm, ChangeEmailForm, ChangePasswordForm
+from boiler.user.models import UpdateSchema
+from boiler.user import views_social as social
 
 """
 User profile

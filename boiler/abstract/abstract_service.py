@@ -1,6 +1,6 @@
 import logging
 from flask import current_app
-from kernel.services import db
+from boiler.features.orm import db
 
 
 class AbstractService:
