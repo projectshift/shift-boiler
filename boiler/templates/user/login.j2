@@ -1,0 +1,61 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+
+                <h2>Login with password <span class="login-alternative">/ <a href="{{ url_for('user.social_login') }}">Social login</a></span></h2>
+
+                    <form action="" method="post" name="login">
+                        {{ form.hidden_tag() }}
+
+                        {# display flash messages #}
+                        {% include 'partials/flash-messages.j2' %}
+
+                        <form action="" method="post" name="login">
+                            {{ form.hidden_tag() }}
+
+                            {# email #}
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                {{ form.email(class='form-control') }}
+                                <div class="errors">{% for error in form.errors.email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                            </div>
+
+                            {# password #}
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                {{ form.password(class='form-control') }}
+                                {% for error in form.errors.password %}<span>{{ error }}</span><br>{% endfor %}
+                            </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                {{ form.remember(checked=True) }}
+                                <label for="remember">Remember me</label>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                            <div class="invitation-text">
+                                Forgot password? <a href="{{ url_for('user.recover.password.request') }}">Recover it here</a><br/>
+                                Don't have a login? <a href="{{ url_for('user.register') }}">Register now</a> to get one!
+                            </div>
+                        </div>
+
+                    </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+CONFIRM EMAIL, {{username | upper}}!
+------------------------------------------------------------------------------
+
+You recently requested to change your email address. Before
+we can do that you must confirm your new address by clicking this link:
+
+{{link}}
+
+
+Disclaimer:
+This is not spam. It is a one-time message that was sent to you as a result
+of your actions on our website www.flask.eu If you don't know what this is then
+simply delete the message and we won't bother you again.
+

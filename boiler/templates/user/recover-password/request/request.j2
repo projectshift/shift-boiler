@@ -1,0 +1,50 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                    <h2>Request password reset</h2>
+
+                    <p> Please enter your account email so we can send you a message with password recovery link.</p>
+
+                    {# display flash messages #}
+                    {% include 'partials/flash-messages.j2' %}
+
+                    {# form #}
+                    <form action="" method="post" name="login">
+                        {{ form.hidden_tag() }}
+
+
+                        {# email #}
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            {{ form.email(class='form-control', placeholder='Email') }}
+                            <div class="errors">{% for error in form.errors.email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+
+                        {# recaptcha #}
+                        <div class="form-group">
+                            {% include 'recaptcha/v1.j2' %}
+                        </div>
+
+
+                        {# submit #}
+                        <div class="controls">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Requetst reset">
+                        </div>
+
+                    </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

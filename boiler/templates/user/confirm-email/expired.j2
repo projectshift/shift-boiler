@@ -1,0 +1,29 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                <h2>Link expired</h2>
+                <p class="user-result-message">Your confirmation link has expired.</p>
+                <div class="controls">
+                    <a href="{{ resend }}" class="btn btn-lg btn-primary btn-block">
+                        {% if current_user.is_authenticated %}
+                            Resend message
+                        {% else %}
+                            Login to resend
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

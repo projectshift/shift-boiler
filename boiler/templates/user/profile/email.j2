@@ -1,0 +1,94 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container cover-container-profile">
+
+
+
+
+            <div class="form-box profile-data">
+
+                {# profile nav #}
+                {% if myself %}
+                <div class="navigation">
+                    <ul class="nav nav-tabs">
+                        {% for item in nav.profile %}
+                        <li class="{{ 'active' if item.is_active else '' }}">
+                            <a href="{{ item.url }}">{{ item.label }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+
+
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <img src="{{ user.gravatar('200x200') }}" class="avatar"/>
+                    </div>
+                    <div class="col-sm-9 col-md-9 col-lg-9">
+
+                        <h2>Change email</h2>
+
+                        {# display flash messages #}
+                        {% include 'partials/flash-messages.j2' %}
+
+                        <form action="" method="post" name="profile-editor">
+                            {{ form.hidden_tag() }}
+
+                            {# remind that email change requires confirmation #}
+                            {% if user.email_new and not user.email_confirmed %}
+                                <div class="change-warning">
+                                    <i class="fa fa-warning"></i>
+                                    <div class="message">You already requested your email change to <b>{{ user.email_new }}</b> but haven't confirmed address. You can
+                                        <a href="{{ url_for('user.confirm.email.request') }}">Resend confirmation email</a> or <a href="?cancel_change">Cancel email change</a></div>
+                                </div>
+
+                            {% else %}
+                                <div class="change-warning">
+                                    <i class="fa fa-warning"></i>
+                                    <div class="message">Changing email will require confirmation. Your email won't be changed until you confirm the new address.</div>
+                                </div>
+                            {% endif %}
+
+
+
+                            {# email #}
+                            <div class="form-group">
+                                <label for="email">New email</label>
+                                {{ form.email(class='form-control') }}
+                                <div class="errors">{% for error in form.errors.email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                            </div>
+
+                            {# confirm email #}
+                            <div class="form-group">
+                                <label for="email">Confirm email</label>
+                                {{ form.confirm_email(class='form-control') }}
+                                <div class="errors">{% for error in form.errors.confirm_email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                            </div>
+
+                            {# submit #}
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" value="Change">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                    <h2>Register account</h2>
+
+                    {# display flash messages #}
+                    {% include 'partials/flash-messages.j2' %}
+
+                    {# register form #}
+                    <form action="" method="post" name="login">
+                        {{ form.hidden_tag() }}
+
+                        {# username #}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            {{ form.username(class='form-control', placeholder='Username', autofocus='autofocus') }}
+                            <div class="errors">{% for error in form.errors.username %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# email #}
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            {{ form.email(class='form-control', placeholder='Email') }}
+                            <div class="errors">{% for error in form.errors.email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+
+                        {# password #}
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            {{ form.password(class='form-control', placeholder='Password') }}
+                            <div class="errors">{% for error in form.errors.password %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# confirm #}
+                        <div class="form-group">
+                            <label for="password">Confirm password</label>
+                            {{ form.confirm(class='form-control', placeholder='Re-enter password') }}
+                            <div class="errors">{% for error in form.errors.confirm %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# recaptcha #}
+                        <div class="form-group">
+                            {% include 'recaptcha/v2.j2' %}
+                        </div>
+
+
+                        {# submit #}
+                        <div class="controls">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register">
+                            <div class="invitation-text">
+                                Already registered? <a href="{{ url_for('user.login') }}">Login here</a>.
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                    </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,11 +1,10 @@
 import click
 from alembic import command as alembic_command
 from alembic.util import CommandError
-from kernel.cli.colors import *
+from boiler.cli.colors import *
 
-from kernel.migrations.config import MigrationsConfig
 from config.config import DefaultConfig
-from kernel.services import db
+from boiler.features.orm import db
 
 
 def get_config():
@@ -17,6 +16,7 @@ def get_config():
 
     @todo: think about it
     """
+    from boiler.migrations.config import MigrationsConfig
     config = DefaultConfig()
 
     params = dict()
@@ -48,6 +48,7 @@ def init():
     """ Initialize new migrations directory """
     try:
         config = get_config()
+        print(config.dir)
         alembic_command.init(config, config.dir, 'project')
     except CommandError as e:
         click.echo(red(str(e)))

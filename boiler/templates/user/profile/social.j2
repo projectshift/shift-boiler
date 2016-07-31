@@ -1,0 +1,107 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container cover-container-profile">
+
+
+
+
+            <div class="form-box profile-data">
+
+                {# profile nav #}
+                {% if myself %}
+                <div class="navigation">
+                    <ul class="nav nav-tabs">
+                        {% for item in nav.profile %}
+                        <li class="{{ 'active' if item.is_active else '' }}">
+                            <a href="{{ item.url }}">{{ item.label }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+
+
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <img src="{{ user.gravatar('200x200') }}" class="avatar"/>
+                    </div>
+                    <div class="col-sm-9 col-md-9 col-lg-9">
+
+                        <h2>Social profiles</h2>
+                        {# display flash messages #}
+                        {% include 'partials/flash-messages.j2' %}
+
+                        {# social profiles table #}
+                        <table class="profile-social">
+                            <tbody>
+                                <tr>
+                                    <td class="network network-facebook"><i class="fa fa-facebook-square"></i>Facebook</td>
+                                    <td class="tumbler">
+                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='facebook') }}">
+                                            {% if user.has_social('facebook') %}
+                                                <div class="switch switch-on" title="Turn off"><span></span></div>
+                                            {% else %}
+                                                <div class="switch switch-off" title="Turn on"><span></span></div>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="network network-google"><i class="fa fa-google"></i>Google</td>
+                                    <td class="tumbler">
+                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='google') }}">
+                                            {% if user.has_social('google') %}
+                                                <div class="switch switch-on" title="Turn off"><span></span></div>
+                                            {% else %}
+                                                <div class="switch switch-off" title="Turn on"><span></span></div>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="network network-twitter"><i class="fa fa-twitter"></i>Twitter</td>
+                                    <td class="tumbler">
+                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='twitter') }}">
+                                            {% if user.has_social('twitter') %}
+                                                <div class="switch switch-on" title="Turn off"><span></span></div>
+                                            {% else %}
+                                                <div class="switch switch-off" title="Turn on"><span></span></div>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="network network-vkontakte "><i class="fa fa-vk"></i>VKontakte</td>
+                                    <td class="tumbler">
+                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='vkontakte') }}">
+                                            {% if user.has_social('vkontakte') %}
+                                                <div class="switch switch-on" title="Turn off"><span></span></div>
+                                            {% else %}
+                                                <div class="switch switch-off" title="Turn on"><span></span></div>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

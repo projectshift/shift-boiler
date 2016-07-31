@@ -1,0 +1,37 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+
+                <h2>Social login <span class="login-alternative">/ <a href="{{ url_for('user.login') }}">Login with password</a></span></h2>
+
+                <div class="controls">
+
+
+                    <div class="social-login-buttons">
+                        <a href="{{ url_for('social.facebook.auth') }}" class="btn btn-lg btn-primary btn-block"><i class="fa fa-facebook-official"></i>Facebook</a>
+                        <a href="{{ url_for('social.google.auth') }}" class="btn btn-lg btn-primary btn-block"><i class="fa fa-google"></i>Google</a>
+                        <a href="{{ url_for('social.twitter.auth') }}" class="btn btn-lg btn-primary btn-block"><i class="fa fa-twitter"></i>Twitter</a>
+                        <a href="{{ url_for('social.vkontakte.auth') }}" class="btn btn-lg btn-primary btn-block"><i class="fa fa-vk"></i>VKontakte</a>
+                    </div>
+
+                    <div class="invitation-text">
+                        You know you can <a href="{{ url_for('user.login') }}">login with password</a> instead?
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

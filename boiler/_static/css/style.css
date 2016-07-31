@@ -1,0 +1,415 @@
+/*
+ * Globals
+ */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: 2em;
+}
+html {height: 100%;}
+body {
+  height: 100%;
+  background-color: #fff;
+  /*background: url("https://www.gstatic.com/prettyearth/assets/full/5039.jpg");*/
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #000;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  body {
+    background-size: auto;
+  }
+}
+
+.alert {
+  border-radius: 0;
+}
+
+
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  vertical-align: middle;
+
+  box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+  -webkit-box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+}
+.site-wrapper-inner {
+  display: table-cell;
+  /*vertical-align: top;*/
+  vertical-align: middle;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 80vh;
+}
+
+.cover-container-profile {
+  width: 120vh;
+}
+@media (max-width: 780px) {
+  .cover-container-profile {
+    width: 90%;
+  }
+}
+
+.form-box {
+  margin: 30px 0;
+  padding: 10px 50px 30px 50px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 2rem rgba(0,0,0,0.7);
+  text-align: left;
+}
+
+.form-box h2 {
+  display: block;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  font-size: 19px;
+  border: solid #c8c8c8;
+  border-width: 0 0 1px 0;
+  letter-spacing: -0.7px;
+}
+
+.form-box h2 .login-alternative {
+  font-size: 17px;
+  color: #828282;
+}
+
+.form-box h2 .login-alternative a {
+    color: #828282;
+}
+
+.form-box .alert {
+  padding: 12px;
+}
+
+.form-box p.user-result-message {
+  display: block;
+  margin: 20px 0 40px 0;
+}
+.form-box p.user-result-message-form {
+  display: block;
+  margin: 20px 0 20px 0;
+}
+
+.form-box label {
+  color: #828282;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.checkbox input[type="checkbox"] {
+  margin-left: 0;
+}
+
+
+.checkbox label {
+  color: #000;
+  font-size: 14px;
+}
+
+.form-box .invitation-text {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #9c9c9c;
+}
+
+.form-box .invitation-text a {
+  text-decoration: underline;
+}
+
+.form-box div.errors {
+  display: block;
+  padding-top: 3px;
+  color: #ff0066;
+  font-size: 12px;
+}
+
+.form-box .social-login-buttons .btn {
+  margin-bottom: 15px;
+}
+
+.form-box .social-login-buttons .fa {
+  display: inline-block;
+  margin-right: 20px;
+  /*vertical-align: middle;*/
+  font-size: 22px;
+}
+
+.form-box .social-finalize-already-registered {
+  position: relative;
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 4px solid #ff0066;
+  text-align: left;
+}
+
+.form-box .social-finalize-already-registered .icon {
+  display: block;
+  width: 40px; height: 40px;
+  position: absolute;
+  top: 15px; left: 20px; z-index: 2;
+}
+
+.form-box .social-finalize-already-registered .icon .fa {
+  font-size: 30px;
+  color: #ff0066;
+}
+
+
+.form-box .social-finalize-already-registered .message {
+  position: relative;
+  margin-left: 30px;
+}
+
+.form-box .social-finalize-already-registered .message a {
+  text-decoration: underline;
+  color: #ff0066;
+}
+
+.form-box .social-finalize-already-registered ul {
+  margin: 10px 0 0 0;
+  padding: 0 15px;
+}
+
+
+
+
+
+
+
+/*
+ * Profile data
+ * Various user profile styles
+ */
+
+.profile-data .nav {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 12px;
+}
+
+.profile-data .nav li a {
+  padding: 12px;
+}
+
+.profile-data h2 {
+  margin-top: 0;
+}
+
+.profile-data .avatar {
+  margin-bottom: 40px;
+  max-width: 100%;
+}
+
+.profile-data table.user-summary {
+  margin: 20px 0;
+  width: 100%;
+}
+.profile-data table.user-summary .field {
+  width: 30%;
+  font-size: 13px;
+  text-align: right;
+  color: grey;
+}
+
+.profile-data .change-warning {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 12px;
+  color: grey;
+}
+
+.profile-data .change-warning .message {
+  margin-left: 30px;
+}
+
+.profile-data .change-warning .fa {
+  position: absolute;
+  display: inline-block;
+  font-size: 16px;
+  padding-right: 10px;
+  vertical-align: middle;
+  color: #ff0066;
+}
+
+
+
+/*
+ * Social providers
+ * Social providers in user's profile
+ */
+table.profile-social {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.profile-social tbody tr {
+  border: solid #ececec;
+  border-width: 1px 0;
+}
+table.profile-social tbody tr:first-of-type {
+   border-top-width: 0;
+}
+table.profile-social tbody td {
+  padding: 20px;
+}
+
+table.profile-social .tumbler {
+  width: 70%;
+  text-align: center
+}
+table.profile-social .network {
+  width: 30%;
+  vertical-align: middle;
+  font-size: 13px;
+  color: #8c8c8c
+}
+table.profile-social i.fa {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 25px;
+}
+table.profile-social .network.network-facebook .fa {
+  color: #3a47a5;
+}
+table.profile-social .network.network-google .fa {
+  color: #da0035;
+}
+table.profile-social .network.network-twitter .fa {
+  color: #59c6ff;
+}
+table.profile-social .network.network-vkontakte .fa {
+  color: #5471a3;
+  vertical-align: bottom
+}
+
+
+
+/*
+ * Switch
+ * UI switch element
+ */
+/*$switchHeight: 25px;*/
+.profile-social .switch {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 1px;
+  height: 29px;
+  width: 64px;
+  background: black;
+  border: 1px solid black;
+  border-radius: 100px;
+  text-align: right;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.profile-social .switch span {
+    display: inline-block;
+    margin: 0 0;  padding: 0;
+    height: 25px; width: 25px;
+    background: #fff;
+    border-radius: 100px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.4);
+}
+
+.profile-social .switch-on {
+    background: #52d66a;
+    border-color: #4ec562;
+    text-align: right;
+}
+
+.profile-social .switch-off {
+    background: #ececec;
+    border-color: #d6d6d6;
+    text-align: left;
+}
+
+
+
+
+
+
+/*
+ * Recaptcha
+ * This holds stying for the custom recaptcha widget
+ */
+
+
+.form-control.recaptcha-input {
+  height: 60px;
+  border: 1px solid #dfdfdf;
+  text-align: center;
+  font-size: 18px;
+}
+
+.recaptcha {
+  margin-bottom: 10px;
+}
+
+.recaptcha .recaptcha-image {
+  width: 100% !important;
+  height: 60px !important;
+  border: 4px solid #dfdfdf;
+  text-align: center;
+  vertical-align: top;
+  line-height: 12px;
+}
+
+.recaptcha .recaptcha-image span {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 11px;
+}
+
+.recaptcha .recaptcha-image span a {color: darkgreen; text-decoration: none}
+.recaptcha .recaptcha-image span a:hover {color: green; text-decoration: underline}
+
+
+.recaptcha .recaptcha-image img {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.recaptcha .recaptcha-controls {
+  display: block;
+  margin-top: 3px;
+}
+
+.recaptcha .recaptcha-controls a {color: #b2b2b2}
+.recaptcha .recaptcha-controls a:hover {color: darkgreen}
+
+.recaptcha .recaptcha-controls .google {
+  float: right;
+  font-size: 11px;
+}
+
+.google a, .google a:hover {text-decoration: none; color: #b2b2b2}
+.google p {display: inline-block; padding: 0; margin: 0;}
+.google p.blue {color: #3a53e8}
+.google p.red {color: #cd3a2c}
+.google p.yellow {color: #f8ba08}
+.google p.green {color: #1f9a54}
+
+
+
+
+
+
+
+

@@ -1,4 +1,8 @@
-from kernel.services import navigation
+from flask_navigation import Navigation
+
+
+# init navigation
+navigation = Navigation()
 
 
 def navigation_feature(app):

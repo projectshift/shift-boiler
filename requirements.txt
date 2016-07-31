@@ -5,6 +5,15 @@ wheel==0.29.0
 # cli
 click==6.6
 
+# flask
+ipython==5.0.0
+blinker==1.4
+humanize==0.5.1
+Flask==0.11.1
+Flask-DebugToolbar==0.10.0
+Flask-Mail==0.9.1
+Flask-Navigation==0.2.0
+
 # orm
 PyMySQL==0.7.6
 SQLAlchemy==1.0.14
@@ -14,12 +23,8 @@ Flask-Alembic==1.2.1
 # api
 Flask-RESTful==0.3.5
 
-# flask
-ipython==5.0.0
-blinker==1.4
-humanize==0.5.1
-Flask==0.11.1
-Flask-DebugToolbar==0.10.0
+# localise and translate
+Flask-Babel==0.11.1
 
 
 

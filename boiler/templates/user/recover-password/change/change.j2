@@ -1,0 +1,54 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                    <h2>Set your new password</h2>
+
+                    {# display flash messages #}
+                    {% include 'partials/flash-messages.j2' %}
+
+                    {# register form #}
+                    <form action="" method="post" name="login">
+                        {{ form.hidden_tag() }}
+
+                        {# password #}
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            {{ form.password(class='form-control', placeholder='Password') }}
+                            <div class="errors">{% for error in form.errors.password %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# confirm #}
+                        <div class="form-group">
+                            <label for="password">Confirm password</label>
+                            {{ form.confirm_password(class='form-control', placeholder='Re-enter password') }}
+                            <div class="errors">{% for error in form.errors.confirm_password %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+
+                        {# submit #}
+                        <div class="controls">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Set new password">
+                        </div>
+
+
+
+
+
+
+
+                    </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

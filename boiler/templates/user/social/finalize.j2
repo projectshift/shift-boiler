@@ -1,0 +1,125 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                    <h2>Confirm your details</h2>
+
+                    {# display flash messages #}
+                    {% include 'partials/flash-messages.j2' %}
+
+                    {# Already registered with email? #}
+                    {% if already_registered %}
+                    <div class="social-finalize-already-registered">
+                        <div class="icon"><i class="fa fa-lightbulb-o"></i></div>
+                        <div class="message">
+                            <b>It seems you have previously registered with email address. What would you like to do?</b>
+                            <ul>
+                                <li>Fill in the form below to create a new account</li>
+                                <li><a href="{{ url_for('user.login') }}">Login</a> into your current account and add this social provider from there in order to authenticate with it.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# register form #}
+                    <form action="" method="post" name="login">
+                        {{ form.hidden_tag() }}
+
+                        {# usename #}
+                        <div class="form-group">
+                            <label for="email">Username</label>
+                            {{ form.username(class='form-control') }}
+                            <div class="errors">{% for error in form.errors.username %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# email #}
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            {{ form.email(class='form-control') }}
+                            <div class="errors">{% for error in form.errors.email %}<span>{{ error }}</span><br>{% endfor %}</div>
+                        </div>
+
+                        {# submit #}
+                        <div class="controls">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Confirm details">
+                        </div>
+
+
+                    </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{#{% extends 'layout.html' %}#}
+{#{% import 'partials/macros.html' as macros %}#}
+{##}
+{#{% block content %}#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#    <div class="container">#}
+{##}
+        {# Register #}
+{#        <div class="page-header">#}
+{#            <h2>Confirm your details</h2>#}
+{#        </div>#}
+{##}
+        {# display flash messages #}
+{#        {% include 'partials/flash-messages.html' %}#}
+{##}
+{##}
+        {# Already registered with email? #}
+{#        {% if already_registered %}#}
+{#        <div class="social-finalize-already-registered">#}
+{#            <div class="icon"><i class="fa fa-lightbulb-o"></i></div>#}
+{#            <div class="message">#}
+{#                <b>It seems you have previously registered. You can now:</b>#}
+{#                <ul>#}
+{#                    <li><a href="{{ url_for('user.login') }}">Login</a> to you existing account and add this social network to profile.</li>#}
+{#                    <li>If you forgot your password - simply <a href="{{ url_for('user.recover.password.request') }}">recover it</a>.</li>#}
+{#                    <li>Use another email to create new account</li>#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% endif %}#}
+{##}
+{##}
+{##}
+
+{##}
+            {# submit #}
+{#            <div class="form-group">#}
+{#                <input type="submit" class="btn btn-primary" value="Confirm">#}
+{#            </div>#}
+{##}
+{#        </form>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#    </div>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#{% endblock content %}#}
+{##}

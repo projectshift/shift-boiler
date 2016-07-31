@@ -1,0 +1,23 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                <h2>Please confirm your email</h2>
+                <p class="user-result-message">You have not confirmed your email address. This is required for all new users in order to login. If you have not received a confirmation message or the link expired, we can send you a new one.</p>
+                <div class="controls">
+                    <a href="{{ url_for('user.confirm.email.request') }}" class="btn btn-lg btn-primary btn-block">Resend message</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

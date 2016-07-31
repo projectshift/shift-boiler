@@ -1,0 +1,36 @@
+
+
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <input  class="form-control recaptcha-input" type='text' name="recaptcha_response_field" id="recaptcha_response_field" placeholder="Enter code">
+        <div class="errors">{% for error in form.errors.recaptcha %}<span>{{ error }}</span><br>{% endfor %}</div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-6">
+
+        {{ form.recaptcha }}
+
+        <div class="recaptcha">
+            <div id="recaptcha_widget" style="display:none">
+
+                {# image #}
+                <div class="recaptcha-image" id="recaptcha_image" title="Enter captcha"></div>
+
+                <div class="recaptcha-controls">
+                    <a href="javascript:Recaptcha.reload()" id="recaptcha_reload"><i class="fa fa-refresh"></i></a>
+                    <a href="javascript:Recaptcha.switch_type('audio')" class="recaptcha_only_if_image"><i class="fa fa-headphones"></i></a>
+                    <a href="javascript:Recaptcha.switch_type('image')" class="recaptcha_only_if_audio"><i class="fa fa-image"></i></a>
+                    <span class="google"><a href="javascript:Recaptcha.showhelp()"><p>by</p> <p class="blue">G</p><p class="red">o</p><p class="yellow">o</p><p class="blue">g</p><p class="green">l</p><p class="red">e</p></a></span>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+

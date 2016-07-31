@@ -1,4 +1,7 @@
-from kernel.services import mail
+from flask_mail import Mail
+
+# init mail
+mail = Mail()
 
 
 def mail_feature(app):

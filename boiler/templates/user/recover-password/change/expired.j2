@@ -1,0 +1,23 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                <h2>Link expired</h2>
+                <p class="user-result-message">Password recovery link has expired. However you can generate a new link.</p>
+                <div class="controls">
+                    <a href="{{ url_for('user.recover.password.request') }}" class="btn btn-lg btn-primary btn-block">Resend link</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

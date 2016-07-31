@@ -1,0 +1,23 @@
+{% extends 'kernel_layout.j2' %}
+
+
+{% block content %}
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+
+
+            <div class="form-box">
+                <h2>Already confirmed</h2>
+                <p class="user-result-message">Your current email address is already confirmed.</p>
+                <div class="controls">
+                    <a href="{{ url_for('user.login') }}" class="btn btn-lg btn-primary btn-block">Back to login</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
