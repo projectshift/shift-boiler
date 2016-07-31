@@ -34,19 +34,3 @@ class UserViewsTest(ClientTestCase):
 
         return user
 
-
-# ------------------------------------------------------------------------
-# Login and logout
-# ------------------------------------------------------------------------
-
-    @attr('xxx')
-    def test_login_possible(self):
-        """ Can login with valid credentials """
-        user = self.create_user()
-        data = dict(email=user.email, password='123456')
-        with events.events.disconnect_receivers():
-            with self.app.test_request_context():
-                res = self.post(url_for('user.login'), data=data)
-                self.assertOkHtml(res)
-                self.assertInResponse(res, views.Login.valid_message)
-                # WE NEED TO MOUNT KERNEL USER VIEWS INTO TESTING APP
