@@ -151,6 +151,9 @@ def init(destination, force=False, skip=True):
                 continue
             src = os.path.join(path, dir)
             dst = src.replace(source, destination)
+            if('__pycache__' in src):
+                continue
+
             if dst in exist_in_dst and force:
                 print(red('OVERWRITING: ' + dst))
                 if os.path.exists(dst):
@@ -167,6 +170,9 @@ def init(destination, force=False, skip=True):
                 continue
             src = os.path.join(path, file)
             dst = src.replace(source, destination)
+            if('__pycache__' in src):
+                continue
+
             if dst in exist_in_dst and force:
                 print(red('OVERWRITING: ' + dst))
                 if os.path.exists(dst):
