@@ -1,10 +1,10 @@
-# OS specific files
+# os specific files
 .DS_Store
 ehthumbs.db
 Thumbs.db
 __pycache__
 
-# IDE files
+# ide ignores
 .buildpath
 .project
 .settings
@@ -12,7 +12,7 @@ __pycache__
 nbproject
 www.esproj
 
-
+# virtual environment
 /env
 
 
