@@ -9,7 +9,9 @@ from logging.config import fileConfig
 # from project.app1 import models
 # from project.app2 import models
 # etc...
-from boiler.user import models
+
+# using boiler users?
+# from boiler.user import models
 
 # ------------------------------------------------------------------------
 
