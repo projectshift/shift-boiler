@@ -25,8 +25,8 @@ from setuptools import setup, find_packages
 version='0.0.15'
 
 # development status
-dev_status = '1 - Planning'
-# dev_status = '2 - Pre-Alpha'
+# dev_status = '1 - Planning'
+dev_status = '2 - Pre-Alpha'
 # dev_status = '3 - Alpha'
 # dev_status = '4 - Beta'
 # dev_status = '5 - Production/Stable'
