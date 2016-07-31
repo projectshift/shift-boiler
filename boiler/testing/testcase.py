@@ -2,8 +2,8 @@ import os, unittest, json
 from contextlib import contextmanager
 from flask import current_app
 from werkzeug.utils import parse_cookie
-from kernel.testing.test_app import create_app
-from kernel.config.default_config import TestingConfig
+from boiler.testing.test_app import create_app
+from boiler.config.default_config import TestingConfig
 
 
 class BaseTestCase(unittest.TestCase):
@@ -17,7 +17,7 @@ class BaseTestCase(unittest.TestCase):
         """
         Setup before each test
         Set up will need an app for testing. You can pass one in, or it will
-        create a default kernel testing app for you.
+        create a default boiler testing app for you.
         """
         super().setUp()
         if not hasattr(self, 'app'):
@@ -38,7 +38,7 @@ class BaseTestCase(unittest.TestCase):
     def create_db(self):
         """ Initialize database (integration tests) """
 
-        from kernel.services import db
+        from boiler.features.orm import db
         self.db = db
 
         # skip if exists

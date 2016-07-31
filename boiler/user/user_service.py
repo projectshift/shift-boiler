@@ -190,7 +190,7 @@ class UserService(AbstractService):
 
     def change_email(self, user, new_email):
         """ Set new email and send email confirmation message """
-        from kernel.user.models import UpdateSchema
+        from boiler.user.models import UpdateSchema
         schema = UpdateSchema()
         user.email = new_email
         valid = schema.validate(user)
@@ -236,7 +236,7 @@ class UserService(AbstractService):
 
     def change_password(self, user, new_password):
         """ Change user password and logout """
-        from kernel.user.models import UpdateSchema
+        from boiler.user.models import UpdateSchema
         from flask_login import logout_user
 
         schema = UpdateSchema()

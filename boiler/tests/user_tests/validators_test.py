@@ -1,9 +1,9 @@
 from nose.plugins.attrib import attr
-from kernel.testing.testcase import BaseTestCase
+from boiler.testing.testcase import BaseTestCase
 
-from kernel.user import validators, events
-from kernel.user.services import user_service, role_service
-from kernel.user.models import User, Role
+from boiler.user import validators, events
+from boiler.user.services import user_service, role_service
+from boiler.user.models import User, Role
 
 
 @attr('role', 'validator', 'uniquehandle')

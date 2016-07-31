@@ -6,7 +6,7 @@ from boiler.jinja.filters import MomentJsFilters, DateFilters, HumanizeFilters
 def jinja_extensions_feature(app):
     """ Enables custom templating extensions """
 
-    # setup jinja loader to fall back to kernel templates
+    # setup jinja loader to fall back to boiler templates
     # if not found in app
     if app.config['TEMPLATES_FALLBACK_TO_KERNEL']:
         path = os.path.dirname(os.path.realpath(__file__))

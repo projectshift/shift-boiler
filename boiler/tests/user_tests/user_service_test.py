@@ -1,17 +1,17 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from kernel.testing.testcase import BaseTestCase
+from boiler.testing.testcase import BaseTestCase
 
 from datetime import datetime, timedelta
 from flask import session
 from shiftschema.result import Result
 
-from kernel.services import mail
-from kernel.user.services import user_service, role_service
-from kernel.user import events, exceptions as x
-from kernel.user.events import events as user_events
-from kernel.user.models import User, Role
-from kernel.user.user_service import UserService
+from boiler.features.mail import mail
+from boiler.user.services import user_service, role_service
+from boiler.user import events, exceptions as x
+from boiler.user.events import events as user_events
+from boiler.user.models import User, Role
+from boiler.user.user_service import UserService
 
 
 @attr('user', 'service')

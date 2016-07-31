@@ -79,7 +79,7 @@ class Profile(View):
 
     @staticmethod
     def init_navigation(*_, **kwargs):
-        from kernel.services import navigation as nav
+        from boiler.features.navigation import navigation as nav
         nav.Bar('profile', [
             nav.Item('Profile home', 'user.profile.home', args=kwargs),
             nav.Item('Account details', 'user.profile.settings', args=kwargs),

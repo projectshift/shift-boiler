@@ -1,12 +1,12 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from kernel.testing.testcase import BaseTestCase
+from boiler.testing.testcase import BaseTestCase
 from shiftschema.result import Result
 
-from kernel.user.role_service import RoleService
-from kernel.user.models import Role
-from kernel.user.services import role_service
-from kernel.user import events, exceptions as x
+from boiler.user.role_service import RoleService
+from boiler.user.models import Role
+from boiler.user.services import role_service
+from boiler.user import events, exceptions as x
 
 
 @attr('role', 'service')

@@ -1,5 +1,5 @@
 from json import dumps
-from kernel.collections import PaginatedCollection
+from boiler.collections import PaginatedCollection
 
 
 class ApiCollection(PaginatedCollection):

@@ -1,4 +1,4 @@
-from kernel import bootstrap
+from boiler import bootstrap
 
 
 def create_app(*args, **kwargs):
@@ -9,17 +9,17 @@ def create_app(*args, **kwargs):
     Templates resolution
     Default template location for flask apps is wherever the application module is located.
     This is alright for regular applications because we bootstrap them from their root, but for
-    testing application our template root becomes kernel/tests/templates. There is however a way to
+    testing application our template root becomes boiler/tests/templates. There is however a way to
     set up application root path on the flask app.
 
-    In order for it to be able to find default kernel templates, we will need to set templates
+    In order for it to be able to find default boiler templates, we will need to set templates
     directory, otherwise it will automagically resolve to this file's parent dir.
 
     On how flask resolves template path see 'template_folder' here:
     @see http://flask.pocoo.org/docs/0.11/api/
     """
 
-    # set pat hto kernel templates (test app only)
+    # set pat hto boiler templates (test app only)
     flask_params = dict(template_folder='../templates')
     kwargs['flask_params'] = flask_params
 

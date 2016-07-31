@@ -1,7 +1,6 @@
 import logging
 from boiler.log.file import file_logger
 from boiler.log.mail import mail_logger
-# from kernel.log.datadog import datadog_logger
 
 
 def logging_feature(app):

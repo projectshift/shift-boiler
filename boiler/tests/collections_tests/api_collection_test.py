@@ -1,12 +1,12 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from kernel.testing.testcase import BaseTestCase
+from boiler.testing.testcase import BaseTestCase
 
 from faker import Factory
-from kernel.collections import ApiCollection
-from kernel.user.models import User
-from kernel.user.services import user_service
-from kernel.user.events import events as user_events
+from boiler.collections import ApiCollection
+from boiler.user.models import User
+from boiler.user.services import user_service
+from boiler.user.events import events as user_events
 
 
 @attr('kernel', 'collections', 'api_collection')

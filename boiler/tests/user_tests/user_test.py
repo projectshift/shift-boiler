@@ -1,11 +1,11 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from kernel.testing.testcase import BaseTestCase
+from boiler.testing.testcase import BaseTestCase
 
 from datetime import datetime, timedelta
-from kernel.user.models import User, Role
-from kernel.user import events, exceptions as x
-from kernel.user.services import role_service
+from boiler.user.models import User, Role
+from boiler.user import events, exceptions as x
+from boiler.user.services import role_service
 
 
 @attr('user', 'model')
