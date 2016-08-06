@@ -128,6 +128,8 @@ def sign_python():
     cmd = "codesign -s {cert} -f {python}".format(cert=cert, python=python)
     system(cmd)
 
+    echo(green('\nDONE\n'))
+
 
 # -----------------------------------------------------------------------------
 # Init project
