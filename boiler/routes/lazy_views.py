@@ -1,7 +1,4 @@
 from werkzeug.utils import import_string, cached_property
-from flask_restful import Resource
-from boiler.features.api import api
-
 
 class LazyView:
     """
@@ -24,12 +21,23 @@ class LazyView:
     def view(self):
         result = import_string(self.import_name)
 
-        # is classy or restful?
+        # do we have restfulness?
+        try:
+            from flask_restful import Resource
+            from boiler.features.api import api
+            restful = True
+        except ImportError:
+            restful = False
+
+        # is classy?
         if isinstance(result, type):
-            restful = Resource in result.__bases__
             result = result.as_view(self.import_name)
+
+            # and also restful?
             if restful:
-                result = api.output(result)
+                is_restful = Resource in result.__bases__
+                if is_restful:
+                    result = api.output(result)
 
         return result
 
