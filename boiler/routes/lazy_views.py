@@ -1,5 +1,6 @@
 from werkzeug.utils import import_string, cached_property
 
+
 class LazyView:
     """
     Lazy view
@@ -15,7 +16,19 @@ class LazyView:
         self.__module__,self.__name__ = import_name.rsplit('.', 1)
 
     def __call__(self, *args, **kwargs):
-        return self.view(*args, **kwargs)
+        """ Import and create instance of view """
+
+        # important issue ahead
+        # see: https://github.com/projectshift/shift-boiler/issues/11
+        try:
+            result = self.view(*args, **kwargs)
+            return result
+        except ImportError:
+            err = 'Failed to import {}. If it exists, check that it does not '
+            err += 'import something non-existent itself! '
+            err += 'Try to manually import it to debug.'
+            raise ImportError(err.format(self.import_name))
+
 
     @cached_property
     def view(self):
