@@ -87,7 +87,7 @@ def test():
 # -----------------------------------------------------------------------------
 
 
-@cli.command(name='sign-python', help('Sign python executable'))
+@cli.command(name='sign-python', help='Sign python executable')
 def sign_python():
     """
     Sign python (MacOS)
