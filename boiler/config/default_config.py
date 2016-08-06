@@ -84,12 +84,29 @@ class DefaultConfig(BaseConfig):
     )
 
     # oauth keys
-    OAUTH = dict(
-        facebook=dict(
-            id=None,
-            secret=None
-        )
-    )
+    OAUTH = {
+        'facebook': {
+            'id': 'app-id',
+            'secret': 'app-seceret',
+            'scope': 'email',
+        },
+        'vkontakte': {
+            'id': 'app-id',
+            'secret': 'app-secret',
+            'scope': 'email',
+            'offline': True
+        },
+        'twitter': {
+            'id': 'app-id',
+            'secret': 'app-secret',
+        },
+        'google': {
+            'id': 'app-id',
+            'secret': 'app-secret',
+            'scope': 'email',
+            'offline': True
+        },
+    }
 
     # csrf protection
     WTF_CSRF_ENABLED = True
