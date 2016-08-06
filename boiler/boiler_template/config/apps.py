@@ -9,9 +9,3 @@ apps['apps']['frontend'] = dict(
     module='project.frontend',
     base_url='/'
 )
-
-# api app
-apps['apps']['api'] = dict(
-    module='project.api',
-    base_url='/api'
-)
