@@ -122,7 +122,7 @@ This is your application configuration directory and it has two files:
 
 
 ### project
-You can run severall cli or web applications side by side. All your apps should go into `project` directory, but that is merely a suggestion. For example if only will have one app, you can get rid of project directory entirely and put your app in root.
+You can run severall cli or web applications side by side. All your apps should go into `project` directory, but that is merely a suggestion. For example, if you will have only one app, you can get rid of project directory entirely and put your app in root.
 
 
 On initial install our project will contain one demo app for frontend.
