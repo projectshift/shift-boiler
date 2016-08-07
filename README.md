@@ -129,7 +129,7 @@ On initial install our project will contain one demo app for frontend.
 Its a simple single view app with one route and a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as enable features. Boiler provides several common features such as routing, orm, api, logging etc. For now we will only have routing enabled. See [Application features]() on how to enable and use all the features that boiler provides.
 
 
-Boiler uses somewhat unusual approach for defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/) which essentially means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies on application startup, which significantly improves startup times and testing speed. You define urls in `urls.py` file like this:
+Boiler uses somewhat unusual approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which essentially means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies on application startup, which significantly improves startup times and testing speed. You define urls in `urls.py` file like this:
 
 ```
 urls = dict()
