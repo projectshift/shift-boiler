@@ -1,4 +1,4 @@
-# MacOS: Sign python interpreter
+# MacOS: sign python interpreter
 
 If you are on a MacOS and run your dev server from under a virtual environment, you might see this a lot:
 

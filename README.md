@@ -36,13 +36,19 @@ chmod +x cli
 ./cli run
 ```
 
-That was a quickstart for robots. We also have a [quickstart for humans](docs/quickstart.md), with some further exaplanations.
+That was quickstart for robots. We also have a [quickstart for humans](docs/quickstart.md), with some further exaplanations.
 
 
 ## Documentation
 
   * [Quickstart for humans](docs/quickstart.md)
-  * [MacOS: Signing python interpreter](docs/sign_python.md)
+  * [Creating more apps](docs/multiapp.md)
+  * [Full configuration example](docs/config.md)
+  * [Boiler features](docs/features.md)
+  * [Testing: helpers and environment](docs/testing.md)
+  * [Working with colelctions](docs/testing.md)
+  * [Working with forms: entity validation and recaptcha](docs/forms.md)
+  * [MacOS: signing python interpreter](docs/sign_python.md)
 
 
 
