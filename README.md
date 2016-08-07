@@ -41,8 +41,6 @@ That was a quickstart for robots. We also have a [quickstart for humans](docs/qu
 
 ## Documentation
 
-Please note, this is still work in progress as is this whole library.
-
   * [Quickstart for humans](docs/quickstart.md)
   * [MacOS: Signing python interpreter](docs/sign_python.md)
 
