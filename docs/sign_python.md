@@ -4,15 +4,17 @@ If you are on a MacOS and run your dev server from under a virtual environment, 
 
 ![annoying](https://s3-eu-west-1.amazonaws.com/public-stuff-cdn/python_firewalled.png)
 
-So in order to get rif of this annoyance we will have to sign our virtualenv's python interpretor with a certificate. Boiler provides a cli command to do it, but we'll still have to create the certificate itself inside your Keychain Access app. A good thing is that you only need do it once and you can reuse the certificate to sign other virtual environments.
+So in order to get rid of this annoyance we will have to sign our virtualenv's python interpreter with a certificate. Boiler provides a cli command to do it, but we'll still have to create the certificate itself inside your Keychain Access app. 
 
-**Note:** we will create a certificate exclusively for code signing. It will ask you for a common name, which in this particular instance must be your username. If you don't know your username, you can find it out with:
+**Note:** We will create a certificate exclusively for code signing. It will ask you for a common name, which in this particular instance must be your username. If you don't know your username, you can find it out with:
 
 ```
 id -un
 ```
 
 ## Create certificate
+
+You only need to do it once and you can skip this step in the future and reuse the certificate to sign other virtual environments.
 
   1. Open Keychain Access
   2. Choose: Keychain Access > Certificate Assistant > Create Certificate
@@ -23,6 +25,7 @@ id -un
   7. Click Continue, and give it a serial number (maximum randomness)
   8. Accept defaults for the rest
 
+Credit goes to [Jay Taylor from StackOverflow](http://stackoverflow.com/questions/19688841/add-python-to-os-x-firewall-options)
   
 ## Sign your python
 
