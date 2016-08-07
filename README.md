@@ -126,7 +126,7 @@ The `views.py` file will contain your views. Initially it is prety straightforwa
 
 ### vars
 
-Vars dierctory is used for generated data. The idea here is for this directory to be dotally disposable. Your application will put temporary files in here as well as logs, test artifacts and other generated stuff.
+Vars dierctory is used for generated data. The idea here is for this directory to be totally disposable. Your application will put temporary files in here as well as logs, test artifacts and other generated stuff.
 
 ### nose.ini
 
