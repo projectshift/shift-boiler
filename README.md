@@ -22,6 +22,24 @@ Here are some main features all of which are pluggable and optional:
   * All of the features are pluggable and optional. Use whatever you need.
 
 
+## Ridiculously quick start
+
+```
+mkdir boiler-testdrive && cd boiler-testdrive
+virtualenv -p python3 env
+source env/bin/activate
+pip install shiftboiler flask
+echo '#!/usr/bin/env python3' >> cli
+echo 'from boiler.cli import cli as kernel; kernel.cli()' >> cli
+chmod +x cli
+./cli init .
+./cli run
+```
+
+That was a quickstart for robots. Below is a quickstart for humans, with some further exaplanations.
+
+
+
 ## Quickstart: install
 
 Create and activate virtual environment (optional, but you know you should use it, right?):
@@ -130,7 +148,7 @@ Vars dierctory is used for generated data. The idea here is for this directory t
 
 ### nose.ini
 
-We also provide a testing facility fr your code and this is a demo configuration. You can run your tests with `./cli test` command.
+We also provide a testing facility for your code and this is a demo configuration. You can run your tests with `./cli test` command.
 
 ### uwsgi 
 
