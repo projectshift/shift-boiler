@@ -24,7 +24,7 @@ Here are some main features all of which are pluggable and optional:
 
 ## Quickstart: install
 
-Create and activate virtual environment (optional):
+Create and activate virtual environment (optional, but you know you should use it, right?):
 
 ```
 virtualenv -p python3 env
