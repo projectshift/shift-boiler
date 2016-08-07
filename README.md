@@ -37,29 +37,39 @@ Install boiler with pip:
 pip install shiftboiler
 ```
 
-That will install the library with initial dependencies. The next thing to do is connect the cli. Create a new python file and put the following content in:
+That will install the library with initial dependencies. The next thing to do is connect the cli. Create a new file:
+
+```
+touch cli
+chmod +x cli
+```
+
+And put the following content in:
 
 ```python
+#!/usr/bin/env python3
 from boiler.cli import cli as kernel
 cli = kernel.cli
 cli()
 ```
 
-Then make it executable and run it:
+Then run it:
 
 ```
-chmod +x cli
 ./cli
 ```
-This is your main project cli. Later you can connect your own commands here as well as mount commands that we provide with boiler, for example database and migrations commands or user management commands (we will enable these features later). 
+
+This is your main project cli. Later you can connect your own commands here, as well as mount commands that we provide with boiler, for example database and migrations commands or user management commands (we will enable these features later). 
 
 ## Quickstart: initialise
 
-After installation initialize the project:
+After installation initialise the project:
 
 ```
 ./cli init .
 ```
+
+Initialiser will detect if there are files in target directory that might be overwritten and if found - will ask you what you want to do, skip these files or overwrite them.
 
 This will create a basic project structure that looks like this:
 
