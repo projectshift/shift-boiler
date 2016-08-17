@@ -4,7 +4,6 @@ wheel==0.29.0
 
 # cli
 click==6.6
-shiftschema==0.0.10
 
 # tetsing
 rednose==1.2.1
@@ -26,6 +25,7 @@ PyMySQL==0.7.6
 SQLAlchemy==1.0.14
 Flask-SQLAlchemy==2.1
 Flask-Alembic==1.2.1
+shiftschema==0.0.10
 
 # forms
 Flask-WTF==0.12

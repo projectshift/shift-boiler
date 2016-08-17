@@ -1,2 +1,0 @@
-from boiler.collections.paginated_collection import PaginatedCollection
-from boiler.collections.api_collection import ApiCollection

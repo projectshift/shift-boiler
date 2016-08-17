@@ -69,7 +69,7 @@ This feature has no external dependencies.
 
 ## Mail
 
-Mail feature will configure and initialize [Flask-Mail](https://pythonhosted.org/Flask-Mail/) extension with values from your current config file. You will need a
+Mail feature will configure and initialize [Flask-Mail](https://pythonhosted.org/Flask-Mail/) extension with values from your current config file. You will need a working SMTP server account to send out mails.
 
 Enable feature with:
 
@@ -83,7 +83,7 @@ Install this feature dependencies:
 pip install Flask-Mail==0.9.1
 ```
 
-[Read about error pages feature](features_mail.md)
+[Read about mail feature](features_mail.md)
 
 
 
