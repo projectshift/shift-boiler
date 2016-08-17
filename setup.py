@@ -104,6 +104,13 @@ setup(**dict(
         'shiftschema==0.0.10'
     ],
 
+    # entry points
+    entry_points=dict(
+        console_scripts=[
+            'boiler = boiler.cli.boiler:cli'
+        ]
+    ),
+
 
     # project license
     license=license_type

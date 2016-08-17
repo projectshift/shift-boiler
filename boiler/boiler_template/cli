@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+from boiler.cli import cli as kernel
+
+# root project command
+cli = kernel.cli
+
+# add orm cli
+# from boiler.cli import db
+# cli.add_command(db.cli, name='db')
+
+# add user cli
+# cli.add_command(user.cli, name='user')
+# from boiler.cli import user
+
+# and run
+cli()
+
