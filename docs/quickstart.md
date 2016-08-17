@@ -17,36 +17,12 @@ Install boiler with pip:
 pip install shiftboiler
 ```
 
-That will install the library with initial dependencies. The next thing to do is connect the cli. Create a new file:
-
-```
-touch cli
-chmod +x cli
-```
-
-And put the following content in:
-
-```python
-#!/usr/bin/env python3
-from boiler.cli import cli as kernel
-cli = kernel.cli
-cli()
-```
-
-Then run it:
-
-```
-./cli
-```
-
-This is your main project cli. Later you can connect your own commands here, as well as mount commands that we provide with boiler, for example database and migrations commands or user management commands (we will enable these features later).
-
 ## Initialise
 
 After installation initialise the project:
 
 ```
-./cli init .
+boiler init .
 ```
 
 Initialiser will detect if there are files in target directory that might be overwritten, and if found, will ask you what you want to do, skip these files or overwrite them.
@@ -73,6 +49,7 @@ dist.gitignore
 nose.ini
 uwsgi.ini
 uwsgi.py
+cli
 ```
 
 ### config
@@ -116,6 +93,27 @@ We also provide a testing facility for your code and this is a demo configuratio
 
 There is also an example configuration `uwsgi.ini` and startup script `uwsgi.py` for running the app wuth uWSGI. This is the recommended way to deploy to production.
 
+### cli
+
+
+
+### CLI
+
+Boiler will install initial application CLI with some commands that you can extend with your own. Out of the box it will come with commands for:
+
+  * Running flask development server
+  * Launching project-aware shell (with iPython support)
+  * Unit testing
+  * Managing database and migrations (optional, has to be enabled)
+  * Managing users, roles and permissions (optional, has to be enabled)
+
+
+Run the CLI:
+
+```
+./cli
+```
+
 
 
 ## Run
@@ -138,6 +136,6 @@ The development server will watch your code for changes and auto-reload and give
 
 ## Sign your python
 
-**Note to mac users** There is a known issue common across python applications that run under virtual environments on MacOS - each time your app is restarted, system firewall will annoyingly ask whether you want to allow incoming connections to your app.
+**Note to mac users** There is a known issue common across python applications that run under virtual environments on MacOS - each time your app is restarted, system firewall will annoyingly ask wether you want to allow incoming connections to your app.
 
 The solution for this is to sign your python interpreter with a certificate. To save you from googling, we provide a convenience command to do it, but you will still need to create a certificate in Keychain Access utility. Refer to [MacOS: signing python interpreter](sign_python.md) for instruction on how to create one.

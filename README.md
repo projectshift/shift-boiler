@@ -24,15 +24,19 @@ Here are some main features all of which are pluggable and optional:
 
 ## Ridiculously quick start
 
+Create virtual environment:
+
 ```
 mkdir boiler-testdrive && cd boiler-testdrive
 virtualenv -p python3 env
 source env/bin/activate
+```
+
+Install and run boiler:
+
+```
 pip install shiftboiler flask
-echo '#!/usr/bin/env python3' >> cli
-echo 'from boiler.cli import cli as kernel; kernel.cli()' >> cli
-chmod +x cli
-./cli init .
+boiler init .
 ./cli run
 ```
 

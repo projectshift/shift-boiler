@@ -32,7 +32,7 @@ Credit goes to [Jay Taylor from StackOverflow](http://stackoverflow.com/question
 From within you virtual environment run:
 
 ```
-./cli sign-python
+boiler sign-python
 ```
 
 This will sign your interpreter so you can add it to your firewall exceptions.
