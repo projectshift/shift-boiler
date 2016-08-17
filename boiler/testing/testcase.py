@@ -38,7 +38,7 @@ class BaseTestCase(unittest.TestCase):
     def create_db(self):
         """ Initialize database (integration tests) """
 
-        from boiler.features.orm import db
+        from boiler.feature.orm import db
         self.db = db
 
         # skip if exists

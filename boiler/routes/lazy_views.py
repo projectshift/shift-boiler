@@ -37,7 +37,7 @@ class LazyView:
         # do we have restfulness?
         try:
             from flask_restful import Resource
-            from boiler.features.api import api
+            from boiler.feature.api import api
             restful = True
         except ImportError:
             restful = False

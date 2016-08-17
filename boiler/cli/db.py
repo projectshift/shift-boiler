@@ -4,7 +4,7 @@ from alembic.util import CommandError
 from boiler.cli.colors import *
 
 from config.config import DefaultConfig
-from boiler.features.orm import db
+from boiler.feature.orm import db
 
 
 def get_config():

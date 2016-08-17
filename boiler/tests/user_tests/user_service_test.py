@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from flask import session
 from shiftschema.result import Result
 
-from boiler.features.mail import mail
+from boiler.feature.mail import mail
 from boiler.user.services import user_service, role_service
 from boiler.user import events, exceptions as x
 from boiler.user.events import events as user_events

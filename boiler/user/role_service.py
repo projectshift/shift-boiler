@@ -1,4 +1,4 @@
-from boiler.features.orm import db
+from boiler.feature.orm import db
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import RoleSchema, Role
 from boiler.user import events

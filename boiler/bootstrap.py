@@ -84,66 +84,66 @@ def configure_app(app, config=None):
 
 def add_debug_toolbar(app):
     """ Add debug toolbar capability """
-    from boiler.features.debug_toolbar import debug_toolbar_feature
+    from boiler.feature.debug_toolbar import debug_toolbar_feature
     debug_toolbar_feature(app)
 
 def add_routing(app):
     """ Add routing and lazy-views feature """
-    from boiler.features.routing import routing_feature
+    from boiler.feature.routing import routing_feature
     routing_feature(app)
 
 
 def add_jinja_extensions(app):
     """ Activate custom jinja extensions """
-    from boiler.features.jinja_extensions import jinja_extensions_feature
+    from boiler.feature.jinja_extensions import jinja_extensions_feature
     jinja_extensions_feature(app)
 
 
 def add_error_pages(app):
     """ Add custom error pages """
-    from boiler.features.error_pages import error_pages_feature
+    from boiler.feature.error_pages import error_pages_feature
     error_pages_feature(app)
 
 
 def add_mail(app):
     """ Add mailing functionality """
-    from boiler.features.mail import mail_feature
+    from boiler.feature.mail import mail_feature
     mail_feature(app)
 
 
 def add_orm(app):
     """ Add SQLAlchemy ORM integration """
-    from boiler.features.orm import orm_feature
+    from boiler.feature.orm import orm_feature
     orm_feature(app)
 
 
 def add_navigation(app):
     """ Add navigation to app """
-    from boiler.features.navigation import navigation_feature
+    from boiler.feature.navigation import navigation_feature
     navigation_feature(app)
 
 
 def add_api(app):
     """ Add restful api functionality """
-    from boiler.features.api import api_feature
+    from boiler.feature.api import api_feature
     api_feature(app)
 
 
 def add_logging(app):
     """ Add logging functionality """
-    from boiler.features.logging import logging_feature
+    from boiler.feature.logging import logging_feature
     logging_feature(app)
 
 
 def add_users(app):
     """ Add user management functionality """
-    from boiler.features.users import users_feature
+    from boiler.feature.users import users_feature
     users_feature(app)
 
 
 def add_localization(app):
     """ Enable support for localization and translations"""
-    from boiler.features.localization import localization_feature
+    from boiler.feature.localization import localization_feature
     localization_feature(app)
 
 

@@ -1,7 +1,7 @@
 import datetime
 from hashlib import md5
 from sqlalchemy.ext.hybrid import hybrid_property
-from boiler.features.orm import db
+from boiler.feature.orm import db
 from boiler.user import exceptions as x
 
 from shiftschema.schema import Schema
