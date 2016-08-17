@@ -52,6 +52,11 @@ uwsgi.py
 cli
 ```
 
+### cli
+
+This is your main project cli with some pre-installed commands. You can pick what commands you need or extend it with your own commands.
+
+
 ### config
 This is your application configuration directory and it has two files:
 
@@ -92,8 +97,6 @@ We also provide a testing facility for your code and this is a demo configuratio
 ### uwsgi
 
 There is also an example configuration `uwsgi.ini` and startup script `uwsgi.py` for running the app wuth uWSGI. This is the recommended way to deploy to production.
-
-### cli
 
 
 
