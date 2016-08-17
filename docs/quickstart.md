@@ -45,11 +45,11 @@ project
 var
     data
     logs
+cli
 dist.gitignore
 nose.ini
 uwsgi.ini
 uwsgi.py
-cli
 ```
 
 ### cli
