@@ -164,6 +164,18 @@ def init(destination, force=False, skip=True):
     return
 
 
+# -----------------------------------------------------------------------------
+# Install feature dependencies
+# -----------------------------------------------------------------------------
 
+def install_dependencies(feature):
+    """ Install dependencies for a feature """
+
+    """
+        1. Read features dir
+        2. If no feature name - list possible features
+        3. If got feature, install dependencies from file
+    """
+    pass
 
 

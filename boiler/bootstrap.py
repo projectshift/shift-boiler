@@ -82,10 +82,12 @@ def configure_app(app, config=None):
         local_config.LOCAL_CONFIG_APPLIED = True
         app.config.from_object(local_config())
 
+
 def add_debug_toolbar(app):
     """ Add debug toolbar capability """
     from boiler.feature.debug_toolbar import debug_toolbar_feature
     debug_toolbar_feature(app)
+
 
 def add_routing(app):
     """ Add routing and lazy-views feature """
