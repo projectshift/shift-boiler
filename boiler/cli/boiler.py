@@ -168,7 +168,7 @@ def init(destination, force=False, skip=True):
 # Install feature dependencies
 # -----------------------------------------------------------------------------
 
-@cli.command(name='install-dependencies')
+@cli.command(name='dependencies')
 @click.argument('feature', default=None, required=False)
 def install_dependencies(feature=None):
     """ Install dependencies for a feature """
