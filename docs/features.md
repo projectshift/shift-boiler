@@ -156,6 +156,96 @@ boiler dependencies api
 
 [Read about API feature](features_api.md)
 
+## ORM
+
+This feature will setup integration with SQLAlchemy to provide database functionality and Alembic to handle database migrations. there is also a set of CLI commands to manage your database.
+
+
+Enable feature with:
+
+```python
+bootstrap.add_orm(app)
+```
+
+Install this feature dependencies:
+
+```
+boiler dependencies orm
+```
+
+If you intend to use MySQL as your database, install the driver:
+
+```
+boiler dependencies mysql
+```
+
+To connect ORM commands to your project CLI edit `cli` file in your project root and mount the commands:
+
+```python
+from boiler.cli import db
+cli.add_command(db.cli, name='db')
+```
+
+[Read about ORM feature](features_orm.md)
+
+
+
+
+## Users
+
+There is a lot to users feature - it provide facilities to create and manage user profiles, authenticate with username, passwords and oauth, manage user profiles, reset passwords, confirm and activate accounts and a handy set of console commands for your cli to perform admin tasks.
+
+
+Enable feature with:
+
+```python
+bootstrap.add_users(app)
+```
+
+Install this feature dependencies:
+
+```
+boiler dependencies users
+```
+
+This feature uses several other features, so make sure to enable these as well:
+
+  * Mail
+  * Jinja Extensions
+
+To connect user commands to your project CLI edit `cli` file in your project root and mount the commands:
+
+```python
+# add user cli
+from boiler.cli import user
+cli.add_command(user.cli, name='user')
+```
+
+[Read about users feature](features_orm.md)
+
+
+
+## Localization
+
+This feature will set up integration with Babel to allow user-specific and app-specific localization of dates and numbers as well as translation functionality.
+
+
+Enable feature with:
+
+```python
+bootstrap.add_localization(app)
+```
+
+Install this feature dependencies:
+
+```
+boiler dependencies localization
+```
+
+[Read about localization feature](features_orm.md)
+
+
+
 
 
 
