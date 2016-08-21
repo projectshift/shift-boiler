@@ -169,22 +169,39 @@ def init(destination, force=False, skip=True):
 # -----------------------------------------------------------------------------
 
 @cli.command(name='install_dependencies')
+@click.argument('feature', default=None, required=False)
 def install_dependencies(feature=None):
     """ Install dependencies for a feature """
+    import pip, os
 
-    """
-        1. Read features dir
-        2. If no feature name - list possible features
-        3. If got feature, install dependencies from file
-    """
-    import pip
-    installed_packages = pip.get_installed_distributions()
+    echo(green('\nInstall dependencies:'))
+    echo(green('-' * 40))
 
+    req_path = os.path.join(os.getcwd(), 'requirements')
 
+    # list all features if no feature name
+    if not feature:
+        echo(yellow('Please specify a feature to install. \n'))
+        for index, item in enumerate(os.listdir(req_path)):
+            item = item.replace('.txt', '')
+            echo(green('{}. {}'.format(index + 1, item)))
 
-    # for package in installed_packages:
-    #     print('-' * 80)
-    #     print(package)
-    #     print('-' * 80)
+        echo()
+        return
+
+    # install if got feature name
+    feature_file = feature.lower() + '.txt'
+    feature_reqs = os.path.join(req_path, feature_file)
+
+    # check existence
+    if not os.path.isfile(feature_reqs):
+        msg = 'Unable to locate feature requirements file [{}]'
+        echo(red(msg.format(feature_file)) + '\n')
+        return
+
+    msg = 'Now installing dependencies for "{}" feature...'.format(feature)
+    echo(yellow(msg))
+    pip.main(['install', '-r', feature_reqs])
+    echo(green('DONE\n'))
 
 

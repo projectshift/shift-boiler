@@ -68,6 +68,8 @@ def shell():
 # -----------------------------------------------------------------------------
 
 # @todo: how can we intercept these args
+# @todo: check click variadic arguments
+# @todo: http://click.pocoo.org/5/arguments/
 nose_argv = None
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     nose_argv = sys.argv[2:]

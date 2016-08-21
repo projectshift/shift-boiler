@@ -1,0 +1,3 @@
+SQLAlchemy==1.0.14
+Flask-SQLAlchemy==2.1
+Flask-Alembic==1.2.1

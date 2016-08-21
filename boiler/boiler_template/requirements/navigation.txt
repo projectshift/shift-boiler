@@ -1,0 +1,1 @@
+Flask-Navigation==0.2.0
