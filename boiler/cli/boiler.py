@@ -82,7 +82,7 @@ def sign_python():
 def init(destination, force=False, skip=True):
     """ Initialise new project """
     import os
-    ignores = ['.DS_Store', '__pycache__']
+    ignores = ['.DS_Store', '__pycache__', ]
 
     echo(green('\nInitialise project:'))
     echo(green('-' * 40))
@@ -168,7 +168,8 @@ def init(destination, force=False, skip=True):
 # Install feature dependencies
 # -----------------------------------------------------------------------------
 
-def install_dependencies(feature):
+@cli.command(name='install_dependencies')
+def install_dependencies(feature=None):
     """ Install dependencies for a feature """
 
     """
@@ -176,6 +177,14 @@ def install_dependencies(feature):
         2. If no feature name - list possible features
         3. If got feature, install dependencies from file
     """
-    pass
+    import pip
+    installed_packages = pip.get_installed_distributions()
+
+
+
+    # for package in installed_packages:
+    #     print('-' * 80)
+    #     print(package)
+    #     print('-' * 80)
 
 
