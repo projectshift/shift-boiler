@@ -45,7 +45,7 @@ Please specify a feature to install.
 11. users
 ```
 
-You can then install dependencies for a feature ike this:
+You can then install dependencies for a feature like this:
 
 ```
 boiler dependencies flask
