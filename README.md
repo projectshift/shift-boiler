@@ -35,8 +35,9 @@ source env/bin/activate
 Install and run boiler:
 
 ```
-pip install shiftboiler flask
+pip install shiftboiler
 boiler init .
+boiler dependencies flask
 ./cli run
 ```
 

@@ -1,6 +1,6 @@
 # Boiler features
 
-Boiler uses a notion of features to talk about certain integrations that you can enable using simple trigger functions. Enabling a feature is a part of the bootstrap process, when you create your application, so you will typically do it in you application's `app.py` file. Here is how you enable a feature:
+Boiler uses a notion of features to talk about certain integrations that you can enable using simple trigger functions. Enabling a feature is a part of the bootstrap process, when you create your application, so you will typically do it in you application `app.py` file. Here is how you enable a feature:
 
 ```python
 # app.py
@@ -18,7 +18,40 @@ def create_app(*args, **kwargs):
 	return app
 ```
 
-Please note, that although the integration is in place, you will still need to install certain software when enabling a feature, for example you will need SQLAlchemy to enable ORM feature. We will list all features dependencies below, but most of the time, if you enable a feature and your app throws an exception, you can tell what is missing.
+Please note, that although the integration is in place, you will still need to install certain software when enabling a feature, for example you will need SQLAlchemy to enable ORM feature. For convenience we provide a set of dependency files that will be installed when you `boiler init` and a wrapper cli command for pip that will install certain set of dependencies. 
+
+You can list all installable dependencies with:
+
+```
+boiler dependencies
+```
+That will give you a list of what feature dependencies can be installed:
+
+```
+Install dependencies:
+----------------------------------------
+Please specify a feature to install.
+
+1. all
+2. api
+3. flask
+4. jinja_extensions
+5. localization
+6. mail
+7. mysql
+8. navigation
+9. orm
+10. testing
+11. users
+```
+
+You can then install dependencies for a feature ike this:
+
+```
+boiler dependencies flask
+```
+
+
 
 ## Routing
 
