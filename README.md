@@ -47,12 +47,12 @@ That was quickstart for robots. We also have a [quickstart for humans](docs/quic
 ## Documentation
 
   * [Quickstart for humans](docs/quickstart.md)
-  * [Creating more apps](docs/multiapp.md)
-  * [Full configuration example](docs/config.md)
+  * Creating more apps
+  * Full configuration example
   * [Boiler features](docs/features.md)
-  * [Testing: helpers and environment](docs/testing.md)
-  * [Working with collections](docs/testing.md)
-  * [Working with forms: entity validation and recaptcha](docs/forms.md)
+  * Testing: helpers and environment
+  * Working with collections
+  * Working with forms: entity validation and recaptcha
   * [MacOS: signing python interpreter](docs/sign_python.md)
 
 
