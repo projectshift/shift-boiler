@@ -52,7 +52,7 @@ setup(**dict(
     version=version,
     url=repo,
     download_url=repo + '/archive/v' + version + '.tar.gz',
-    description='Best practices setup for webapps, apis and cli applications',
+    description='Best practices setup for webapps, apis and cli applications with flask',
     keywords=[
         'python3',
         'flask',
