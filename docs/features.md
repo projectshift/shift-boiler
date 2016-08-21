@@ -55,7 +55,7 @@ boiler dependencies flask
 
 ## Routing
 
-Routing feature will automatically parse you application's `urls.py` file and create a LazyView for every url defined. Lazy views are laded on-deman as soon as url is hit significantly decreazing startup time.
+Routing feature will automatically parse you application's `urls.py` file and create a LazyView for every url defined. Lazy views are laded on-demand as soon as a url is hit, significantly decreasing startup time.
 
 
 Enable feature with:
@@ -113,10 +113,48 @@ bootstrap.add_mail(app)
 Install this feature dependencies:
 
 ```
-pip install Flask-Mail==0.9.1
+boiler dependencies mail
 ```
 
 [Read about mail feature](features_mail.md)
+
+
+## Jinja Extensions
+
+Jinja extensions feature is a set of usefull fiters and functions for jinja templating engine. It provides filters for localization, date formatting and others.
+
+Enable feature with:
+
+```python
+bootstrap.add_jinja_extensions(app)
+```
+
+Install this feature dependencies:
+
+```
+boiler dependencies jinja_extensions
+```
+
+[Read about jinja extensions](features_jinja.md)
+
+## API
+
+API feature is used in api-centric applications. Usually you will create a deicated app for your api (see [multiapp setup](multiapp.md)) and enable this feature. It will enable usage of restful resources and output all application errors and exceptions as proper json responses.
+
+
+Enable feature with:
+
+```python
+bootstrap.add_routing(app)
+```
+
+Install this feature dependencies:
+
+```
+boiler dependencies api
+```
+
+[Read about API feature](features_api.md)
 
 
 
