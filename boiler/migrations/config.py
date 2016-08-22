@@ -25,6 +25,6 @@ class MigrationsConfig(AlembicConfig):
         Get path to migrations templates
         This will get used when you run the db init command
         """
-        dir = os.path.join(os.getcwd(), 'boiler', 'migrations', 'templates')
+        dir = os.path.join(os.path.dirname(__file__), 'templates')
         return dir
 
