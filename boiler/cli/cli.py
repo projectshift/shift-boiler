@@ -67,23 +67,14 @@ def shell():
 # Testing commands
 # -----------------------------------------------------------------------------
 
-# @todo: how can we intercept these args
-# @todo: check click variadic arguments
-# @todo: http://click.pocoo.org/5/arguments/
-nose_argv = None
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    nose_argv = sys.argv[2:]
-    sys.argv = sys.argv[:2]
-
-
-@cli.command(name='test')
-def test():
+@cli.command(name='test',context_settings=dict(ignore_unknown_options=True))
+@click.argument('nose_argsuments', nargs=-1, type=click.UNPROCESSED)
+def test(nose_argsuments):
     """ Run application tests """
     from nose import run
     params = ['__main__', '-c', 'nose.ini']
-    params.extend(nose_argv)
+    params.extend(nose_argsuments)
     run(argv=params)
-
 
 
 
