@@ -1,5 +1,4 @@
-from boiler.config import default_config as config
-
+from project.frontend import config
 
 class DefaultConfig(config.DefaultConfig):
     """ Local development config """
