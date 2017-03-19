@@ -41,17 +41,26 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
 @cli.command(name='shell')
 def shell():
     """ Start application-aware shell """
-    context = dict()
+    from boiler.bootstrap import create_middleware
+    from config.config import DevConfig
+    from config.apps import apps
 
     # mount apps
-    from boiler.bootstrap import create_middleware
-    middleware = create_middleware()
-    context['apps'] = dict(frontend=middleware.app)
-    for mount in middleware.mounts:
-        context['apps'][mount] = middleware.mounts[mount]
+    context = dict()
+    middleware = create_middleware(config=DevConfig())
+    context['middleware'] = middleware.wsgi_app
+    default = apps['default_app']
+    context['apps'] = dict()
+    context['apps'][default] = middleware.wsgi_app.app
+
+    # for app in middleware.wsgi_app.mounts:
+    for mount, app in middleware.wsgi_app.mounts.items():
+        for name, cfg in apps['apps'].items():
+            if mount == cfg['base_url']:
+                context['apps'][name] = app
 
     # and push app context
-    app_context = middleware.app.app_context()
+    app_context = middleware.app_context()
     app_context.push()
 
     # and run
