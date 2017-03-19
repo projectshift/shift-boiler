@@ -59,6 +59,10 @@ def create_app(name, config=None, flask_params=None):
     options = dict(import_name=name)
     if flask_params is not None:
         options.update(flask_params)
+    if config.STATIC_URL is not None:
+        options['static_url_path'] = config.STATIC_URL
+    if config.STATIC_PATH is not None:
+        options['static_folder'] = config.STATIC_PATH
 
     # create an app
     app = Flask(**options)

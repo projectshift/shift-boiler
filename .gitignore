@@ -35,8 +35,9 @@ www.esproj
 /requirements
 /var
 /uwsgi.ini
-/uwsgi.py
+/wsgi.py
 /cli
+/web
 
 
 

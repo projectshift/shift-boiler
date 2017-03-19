@@ -35,6 +35,12 @@ class DefaultConfig(BaseConfig):
     # config path
     CONFIG_PATH = os.path.join(os.getcwd(), 'config')
 
+    # path to static resources (None to use default flask behavior)
+    # STATIC_URL = ''
+    # STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
+    STATIC_URL = None
+    STATIC_PATH = None
+
     # data path
     VAR = os.path.join(os.getcwd(), 'var')
     DATA = dict(
