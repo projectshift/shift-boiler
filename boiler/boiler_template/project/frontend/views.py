@@ -1,5 +1,13 @@
+from flask import render_template
+
+
 def home():
-    return '<h1>Welcome home!</h1>'
+    """
+    Home action
+    Displays project homepage
+    :return: string
+    """
+    return render_template('index/home.j2')
 
 
 

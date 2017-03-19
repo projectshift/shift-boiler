@@ -28,6 +28,7 @@ class DefaultConfig(BaseConfig):
     TIME_RESTARTS = False
     TESTING = False
     DEBUG = False
+    DEBUG_TB_ENABLED=False
     DEBUG_TB_PROFILER_ENABLED=False
     DEBUG_TB_INTERCEPT_REDIRECTS=False
 
@@ -141,6 +142,7 @@ class DevConfig(DefaultConfig):
     """ Default development config """
     TIME_RESTARTS = True
     DEBUG = True
+    DEBUG_TB_ENABLED=True
     DEBUG_TB_PROFILER_ENABLED = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
 
