@@ -27,6 +27,7 @@ www.esproj
 
 
 # install ignores
+/dist.gitignore
 /config
 /LICENSE
 /migrations

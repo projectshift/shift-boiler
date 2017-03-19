@@ -35,11 +35,13 @@ class DefaultConfig(BaseConfig):
     # config path
     CONFIG_PATH = os.path.join(os.getcwd(), 'config')
 
-    # path to static resources (None to use default flask behavior)
-    # STATIC_URL = ''
-    # STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
-    STATIC_URL = None
-    STATIC_PATH = None
+    # where built-in server and url_for look for static files (None for default)
+    FLASK_STATIC_URL = None
+    FLASK_STATIC_PATH = None
+
+    # asset helper settings (server must be capable of serving these files)
+    ASSETS_VERSION = None
+    ASSETS_PATH = None # None falls back to url_for('static')
 
     # data path
     VAR = os.path.join(os.getcwd(), 'var')

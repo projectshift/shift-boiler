@@ -1,5 +1,5 @@
 from boiler.config import default_config as config
-
+import os
 """
 Local config
 This file configures installation of this specific environment.
@@ -14,6 +14,9 @@ class DefaultConfig(config.DefaultConfig):
     SERVER_NAME = None
     SECRET_KEY = None
 
+    ASSETS_VERSION = 1
+    ASSETS_PATH = '/'
+    FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
 
 
 class DevConfig(config.DevConfig, DefaultConfig):
