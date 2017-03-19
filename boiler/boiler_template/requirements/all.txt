@@ -1,6 +1,4 @@
-# install tools
-twine==1.7.4
-wheel==0.29.0
+shiftboiler
 
 # cli
 click==6.6
