@@ -10,7 +10,13 @@ from importlib import import_module
 def create_middleware(config=None):
     """
     Create middleware
-    Creates werkzeug middleware to dispatch apps on wsgi level
+    Creates werkzeug middleware to dispatch apps on wsgi level and wrap it in
+    a dummy middleware app. This is required to return a Flask app object rather
+    than a DispatcherMiddleware, as the latter can not be run like a normal
+    app by uwsgi.
+
+    :param config: object - configuration object
+    :return: Flask - flask application instance
     """
     try:
         from config.apps import apps
@@ -28,13 +34,14 @@ def create_middleware(config=None):
         if app_name == apps['default_app']: default_app = app
         else: mounts[app_params['base_url']] = app
 
-    app = DispatcherMiddleware(default_app, mounts)
+    wrapper = Flask('middleware_app')
+    wrapper.wsgi_app = DispatcherMiddleware(default_app, mounts)
 
     # time restarts?
-    if app.app.config.get('TIME_RESTARTS'):
-        restart_timer.time_restarts(app.app.config.get('DATA')['data'])
+    if default_app.config.get('TIME_RESTARTS'):
+        restart_timer.time_restarts(default_app.config.get('DATA')['data'])
 
-    return app
+    return wrapper
 
 
 def create_app(name, config=None, flask_params=None):
