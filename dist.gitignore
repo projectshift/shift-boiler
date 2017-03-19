@@ -26,7 +26,7 @@ www.esproj
 /.coverage
 /config/*
 !/config/config.dist.py
-!/config/apps.dist.py
+!/config/apps.py
 /var/data/*
 !/var/data/.gitkeep
 /var/logs/*
