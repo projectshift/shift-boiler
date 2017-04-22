@@ -18,7 +18,7 @@ Here are some main features all of which are pluggable and optional:
   * User registration and [authentication](https://flask-login.readthedocs.io/en/latest/) including [OAuth](https://pythonhosted.org/Flask-OAuth/) support for facebook, google, twitter and vk
   * RBAC and access control with [Principal](http://pythonhosted.org/Flask-Principal/)
   * Routng with lazy-views and on-demand view import
-  * Set of useful Jinja additions and filters
+  * Set of useful Jinja additions and filters including support for versioned static assets.
   * All of the features are pluggable and optional. Use whatever you need.
 
 
