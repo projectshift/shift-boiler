@@ -38,7 +38,6 @@ Please specify a feature to install.
 4. jinja_extensions
 5. localization
 6. mail
-7. mysql
 8. navigation
 9. orm
 10. testing
@@ -171,12 +170,6 @@ Install this feature dependencies:
 
 ```
 boiler dependencies orm
-```
-
-If you intend to use MySQL as your database, install the driver:
-
-```
-boiler dependencies mysql
 ```
 
 To connect ORM commands to your project CLI edit `cli` file in your project root and mount the commands:
