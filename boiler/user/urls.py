@@ -45,6 +45,8 @@ user_urls['/login/social/google/auth/'] = route('boiler.user.views_social.Google
 user_urls['/login/social/google/'] = route('boiler.user.views_social.GoogleHandle', 'social.google.handle')
 user_urls['/login/social/twitter/auth/'] = route('boiler.user.views_social.TwitterAuthorize', 'social.twitter.auth')
 user_urls['/login/social/twitter/'] = route('boiler.user.views_social.TwitterHandle', 'social.twitter.handle')
+user_urls['/login/social/instagram/auth'] = route('boiler.user.views_social.InstagramAuthorize', 'social.instagram.auth')
+user_urls['/login/social/instagram/'] = route('boiler.user.views_social.InstagramHandle', 'social.instagram.handle')
 user_urls['/login/social/finalize/'] = route('boiler.user.views_social.FinalizeSocial', 'social.finalize', ['GET', 'POST'])
 
 # profile
@@ -59,3 +61,4 @@ user_urls['/user/social/connect-facebook/'] = route('boiler.user.views_profile.P
 user_urls['/user/social/connect-google/'] = route('boiler.user.views_profile.ProfileSocialConnectGoogle', 'user.social.connect.google')
 user_urls['/user/social/connect-twitter/'] = route('boiler.user.views_profile.ProfileSocialConnectTwitter', 'user.social.connect.twitter')
 user_urls['/user/social/connect-vkontakte/'] = route('boiler.user.views_profile.ProfileSocialConnectVkontakte', 'user.social.connect.vkontakte')
+user_urls['/user/social/connect-instagram/'] = route('boiler.user.views_profile.ProfileSocialConnectInstagram', 'user.social.connect.instagram')

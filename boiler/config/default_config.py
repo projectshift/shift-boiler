@@ -101,7 +101,7 @@ class DefaultConfig(BaseConfig):
         },
         'vkontakte': {
             'id': 'app-id',
-            'secret': 'app-secret',
+            'secret': 'service-access-key',
             'scope': 'email',
             'offline': True
         },
@@ -114,6 +114,11 @@ class DefaultConfig(BaseConfig):
             'secret': 'app-secret',
             'scope': 'email',
             'offline': True
+        },
+        'instagram': {
+            'id': 'app-id',
+            'secret': 'app-secret',
+            'scope': 'basic'
         },
     }
 

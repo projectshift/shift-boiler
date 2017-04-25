@@ -314,4 +314,6 @@ class ProfileSocialConnectTwitter(ConnectorMixin, social.TwitterHandle):
     pass
 class ProfileSocialConnectVkontakte(ConnectorMixin, social.VkontakteHandle):
     pass
+class ProfileSocialConnectInstagram(ConnectorMixin, social.InstagramHandle):
+    pass
 

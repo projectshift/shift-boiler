@@ -133,6 +133,22 @@ class OauthProviders:
         )
         return config
 
+    def instagram_config(self, id, secret, scope=None, **_):
+        """ Get config dictionary for instagram oauth """
+        scope = scope if scope else 'basic'
+        token_params = dict(scope=scope)
+
+        config = dict(
+            # request_token_url=None,
+            access_token_url='/oauth/access_token/',
+            authorize_url='/oauth/authorize/',
+            base_url='https://api.instagram.com/',
+            consumer_key=id,
+            consumer_secret=secret,
+            request_token_params=token_params
+        )
+        return config
+
 
 
 

@@ -89,6 +89,7 @@ class RegisterSchema(Schema):
         self.email.add_validator(validators.Email())
         self.email.add_validator(user_validators.UniqueEmail())
 
+
 class UpdateSchema(RegisterSchema):
     """ Update existing new user account """
     def schema(self):
@@ -143,6 +144,12 @@ class User(db.Model):
     vkontakte_id = db.Column(db.String(50), unique=True, index=True)
     vkontakte_token = db.Column(db.String(250), unique=True)
     vkontakte_expires = db.Column(db.DateTime)
+
+    # instagram
+    instagram_id = db.Column(db.String(50), unique=True, index=True)
+    instagram_handle = db.Column(db.String(250), unique=True)
+    instagram_token = db.Column(db.String(250), unique=True)
+    instagram_expires = db.Column(db.DateTime)
 
     # roles
     __roles = db.relationship('Role', secondary=UserRoles, lazy='select')
@@ -362,7 +369,7 @@ class User(db.Model):
 
     def remove_social_credentials(self, network):
         """ Removes social credentials from account """
-        known = ['facebook', 'google', 'twitter', 'vkontakte']
+        known = ['facebook', 'google', 'twitter', 'vkontakte', 'instagram']
         if network not in known:
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)
@@ -375,7 +382,7 @@ class User(db.Model):
 
     def add_social_credentials(self, network, **credentials):
         """ Add social credentials to profile"""
-        known = ['facebook', 'google', 'twitter', 'vkontakte']
+        known = ['facebook', 'google', 'twitter', 'vkontakte', 'instagram']
         if network not in known:
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)
@@ -424,8 +431,6 @@ class User(db.Model):
                 break
 
         return has_role
-
-
 
     @property
     def roles(self):

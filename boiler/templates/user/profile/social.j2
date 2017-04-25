@@ -52,6 +52,18 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="network network-instagram "><i class="fa fa-instagram"></i>Instagram</td>
+                                    <td class="tumbler">
+                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='instagram') }}">
+                                            {% if user.has_social('instagram') %}
+                                                <div class="switch switch-on" title="Turn off"><span></span></div>
+                                            {% else %}
+                                                <div class="switch switch-off" title="Turn on"><span></span></div>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="network network-google"><i class="fa fa-google"></i>Google</td>
                                     <td class="tumbler">
                                         <a href="{{ url_for('user.profile.social', id=user.id, toggle='google') }}">

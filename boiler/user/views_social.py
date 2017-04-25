@@ -4,6 +4,7 @@ from flask import render_template, request, url_for, flash, redirect, session
 from flask import abort
 from flask_login import current_user
 
+from boiler.cli.colors import *
 from boiler.user.services import oauth
 from boiler.user.services import user_service
 from boiler.user import exceptions as x
@@ -166,7 +167,7 @@ class FinalizeSocial(View):
         username = data.get('username')
         email = data.get('email')
         provider = data.get('provider')
-        valid = ['id', 'token', 'token_secret', 'expires', 'refresh_token']
+        valid = ['id', 'token', 'token_secret', 'expires', 'refresh_token', 'handle']
 
         for key in data:
             if key in valid:
@@ -222,12 +223,12 @@ class FacebookHandle(BaseHandle):
         """ Retrieve profile data from provider """
         res = auth_response
         token = res.get('access_token')
-        expires = res.get('expires')
+        expires = res.get('expires_in')
         expires = datetime.utcnow() + timedelta(seconds=int(expires))
 
         session[self.session_key] = (token, expires)
 
-        me = oauth.facebook.get('me')
+        me = oauth.facebook.get('me?fields=email,name')
         if me.status != 200:
             return None
 
@@ -236,12 +237,12 @@ class FacebookHandle(BaseHandle):
         id = me.get('id')
 
         data = dict(
-            provider = self.provider,
-            username = me['first_name'] + ' ' + me['last_name'],
-            email = email,
-            id = id,
-            token = token,
-            expires = expires
+            provider=self.provider,
+            username=me['name'],
+            email=email,
+            id=id,
+            token=token,
+            expires=expires
         )
 
         return data
@@ -257,6 +258,7 @@ class FacebookHandle(BaseHandle):
 class VkontakteAuthorize(BaseAuthorize):
     """ Redirect to vkontakte and request access """
     provider = 'vkontakte'
+
 
 class VkontakteHandle(BaseHandle):
     """ Handle redirect back from vkontakte """
@@ -280,12 +282,12 @@ class VkontakteHandle(BaseHandle):
         me = res.data['response'][0]
 
         data = dict(
-            provider = self.provider,
-            username = me.get('first_name') + ' ' + me.get('last_name'),
-            email = email,
-            id = id,
-            token = token,
-            expires = expires
+            provider=self.provider,
+            username=me.get('first_name') + ' ' + me.get('last_name'),
+            email=email,
+            id=id,
+            token=token,
+            expires=expires
         )
 
         return data
@@ -322,13 +324,13 @@ class GoogleHandle(BaseHandle):
         if email: email = email[0]['value'] # may be absent
 
         data = dict(
-            provider = self.provider,
-            email = email,
-            username = me.get('displayName'),
-            id = me.get('id'),
-            token = token,
-            expires = expires,
-            refresh_token = refresh_token
+            provider=self.provider,
+            email=email,
+            username=me.get('displayName'),
+            id=me.get('id'),
+            token=token,
+            expires=expires,
+            refresh_token=refresh_token
         )
 
         return data
@@ -354,12 +356,46 @@ class TwitterHandle(BaseHandle):
     def get_profile_data(self, auth_response):
         """ Retrieve profile data from provider """
         res = auth_response
+
+        print(res)
+
         data = dict(
-            provider = self.provider,
-            id = res.get('user_id'),
-            username = res.get('screen_name'),
-            email = None,
-            token = res.get('oauth_token'),
-            token_secret = res.get('oauth_token_secret'), # required!
+            provider=self.provider,
+            id=res.get('user_id'),
+            username=res.get('screen_name'),
+            email=None,
+            token=res.get('oauth_token'),
+            token_secret=res.get('oauth_token_secret'), # required!
+        )
+        return data
+
+
+# -----------------------------------------------------------------------------
+# Instagram
+# Note: instagram tokens do not expire (for now)
+# Note: instagram does not give you email
+# -----------------------------------------------------------------------------
+
+
+class InstagramAuthorize(BaseAuthorize):
+    """ Redirect to facebook and request access """
+    provider = 'instagram'
+
+
+class InstagramHandle(BaseHandle):
+    provider = 'instagram'
+
+    def get_profile_data(self, auth_response):
+        """ Retrieve profile data from provider """
+        res = auth_response
+        token = res.get('access_token')
+        me = res.get('user')
+        data = dict(
+            provider=self.provider,
+            username=me.get('full_name'),
+            email=None,
+            id=me.get('id'),
+            handle=me.get('username'),
+            token=token,
         )
         return data
