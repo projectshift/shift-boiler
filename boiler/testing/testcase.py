@@ -6,9 +6,9 @@ from boiler.testing.test_app import create_app
 from boiler.config.default_config import TestingConfig
 
 
-class BaseTestCase(unittest.TestCase):
+class FlaskTestCase(unittest.TestCase):
     """
-    Base test case
+    Base flask test case
     Provides the base to extend your tests from, bootstraps application
     and provides tools to operate on test database
     """
@@ -111,11 +111,11 @@ def patch_config(self):
             event.receivers = receivers[name]
 
 
-class ClientTestCase(BaseTestCase):
+class ViewTestCase(FlaskTestCase):
 
     def setUp(self):
         """ Extend base setup and create client """
-        BaseTestCase.setUp(self)
+        FlaskTestCase.setUp(self)
         self.client = self.app.test_client()
 
     # -------------------------------------------------------------------------

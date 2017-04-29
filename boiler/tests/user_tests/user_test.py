@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 
 from datetime import datetime, timedelta
 from boiler.user.models import User, Role
@@ -9,7 +9,7 @@ from boiler.user.services import role_service
 
 
 @attr('user', 'model')
-class UserTests(BaseTestCase):
+class UserTests(FlaskTestCase):
 
     def setUp(self):
         super().setUp()

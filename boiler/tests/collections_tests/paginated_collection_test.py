@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 
 from faker import Factory
 from boiler.collections import PaginatedCollection
@@ -10,7 +10,7 @@ from boiler.user.events import events as user_events
 
 
 @attr('kernel', 'collections', 'paginated_collection')
-class PaginatedCollectionTests(BaseTestCase):
+class PaginatedCollectionTests(FlaskTestCase):
     """
     Paginated collection test
     This is a test for a collection that allows pagination through
