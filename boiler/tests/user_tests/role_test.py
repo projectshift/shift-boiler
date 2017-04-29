@@ -1,15 +1,15 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 from boiler.user.events import events
 from boiler.user.models import Role, RoleSchema
 
 
 @attr('role', 'model')
-class RoleTests(BaseTestCase):
+class RoleTests(FlaskTestCase):
 
     def setUp(self):
-        BaseTestCase.setUp(self)
+        FlaskTestCase.setUp(self)
         self.data = dict(
             id=123,
             handle='ADMIN',

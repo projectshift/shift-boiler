@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 
 from faker import Factory
 from boiler.collections import ApiCollection
@@ -10,7 +10,7 @@ from boiler.user.events import events as user_events
 
 
 @attr('kernel', 'collections', 'api_collection')
-class ApiCollectionTests(BaseTestCase):
+class ApiCollectionTests(FlaskTestCase):
     """
     API collection tests
     These test pretty much repeat what we did for paginated collection.

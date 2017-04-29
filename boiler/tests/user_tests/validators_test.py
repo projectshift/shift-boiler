@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 
 from boiler.user import validators, events
 from boiler.user.services import user_service, role_service
@@ -7,7 +7,7 @@ from boiler.user.models import User, Role
 
 
 @attr('role', 'validator', 'uniquehandle')
-class UniqueRoleHandleTest(BaseTestCase):
+class UniqueRoleHandleTest(FlaskTestCase):
     def setUp(self):
         super().setUp()
         self.create_db()
@@ -43,7 +43,7 @@ class UniqueRoleHandleTest(BaseTestCase):
 
 
 @attr('user', 'validator', 'uniqueemail')
-class UniqueEmailTest(BaseTestCase):
+class UniqueEmailTest(FlaskTestCase):
 
     def setUp(self):
         super().setUp()
@@ -80,7 +80,7 @@ class UniqueEmailTest(BaseTestCase):
 
 
 @attr('user', 'validator', 'uniqueusername')
-class UniqueUsernameTest(BaseTestCase):
+class UniqueUsernameTest(FlaskTestCase):
 
     def setUp(self):
         super().setUp()
