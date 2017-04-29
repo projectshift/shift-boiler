@@ -1,11 +1,11 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import BaseTestCase
+from boiler.testing.testcase import FlaskTestCase
 from boiler.di import Container
 
 
 @attr('di', 'container')
-class ContainerTest(BaseTestCase):
+class ContainerTest(FlaskTestCase):
 
     def setUp(self):
         super().setUp()
@@ -18,6 +18,12 @@ class ContainerTest(BaseTestCase):
         """ Instantiating dependency container """
         container = Container()
         self.assertIsInstance(container, Container)
+
+
+    @attr('xxx')
+    def test_container_attached_to_app_on_bootstrap(self):
+        """ Attaching di container to app on bootstrap """
+        self.assertIsInstance(self.app.di, Container)
 
 
 
