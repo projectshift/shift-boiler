@@ -1,10 +1,13 @@
 from os import path
-from flask import Flask
-from werkzeug.wsgi import DispatcherMiddleware
-from boiler.config.default_config import DefaultConfig
-from boiler.timer import restart_timer
 from importlib.machinery import SourceFileLoader
 from importlib import import_module
+
+from flask import Flask
+from werkzeug.wsgi import DispatcherMiddleware
+
+from boiler.di import Container
+from boiler.config.default_config import DefaultConfig
+from boiler.timer import restart_timer
 
 
 def create_middleware(config=None):
@@ -67,6 +70,10 @@ def create_app(name, config=None, flask_params=None):
     # create an app
     app = Flask(**options)
     configure_app(app, config)
+
+    # create dependencies container
+    container = Container()
+    app.di = container
 
     return app
 
