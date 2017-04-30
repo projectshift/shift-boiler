@@ -24,23 +24,36 @@ class ContainerTest(FlaskTestCase):
         """ Attaching di container to app on bootstrap """
         self.assertIsInstance(self.app.di, Container)
 
-    @attr('zzz')
     def test_loading_app_config(self):
         """ Loading services definition on bootstrap """
         pass
 
-    def test_di_throw_on_missing_services_file(self):
+    def test_raise_on_missing_services_file(self):
         """ Throwing exception on missing service file """
         pass
 
-    def test_di_throws_on_bad_syntax(self):
-        """ Di throwing exception on bad services syntax """
+    def test_raise_on_bad_syntax(self):
+        """ DI raises exception on bad services syntax """
+        pass
+
+    def test_raise_on_bad_structure(self):
+        """ DI raises exception on bad services structure """
+        pass
+
+    def test_raise_on_missing_service_name(self):
+        """ DI raises exception on missing service name """
+        pass
+
+    def test_raise_on_duplicate_service_name(self):
+        """ DI raises exception on duplicate service name """
+        pass
+
+    @attr('zzz')
+    def test_raise_on_missing_class(self):
+        """ DI raises exception on missing service name """
         pass
 
 
-    def test_di_throws_on_bad_structure(self):
-        """ Di throwing exception on bad services structure """
-        pass
 
 
 

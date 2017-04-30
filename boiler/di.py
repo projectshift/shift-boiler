@@ -18,15 +18,23 @@ class Container:
     serve as a services and parameters registry. Bootstrapped from a yaml
     services definition it is used to instantiate and inject services and
     configuration parameters.
+
+    Why do we need a di container in python?
+    A lot of folks advocate against di container solutions giving a reason
+    of not needing one due to python's dynamic nature. A common example of
+    instantiating a service is to create it in a module and later import
+    to get a 'singleton' instance. We, however, discovered this approach to not
+    be flexible enough, e.g. when you need to pass some dynamic constructor
+    arguments (dependencies) that you do not know upfront.
     """
-    def __init__(self, app=None, config_path=None):
+    def __init__(self, app_config=None, config_path=None):
         """
         Container constructor
         Instantiates service container. Requires a path to service definition
         configuration file
         :param config_path: path to service definition app
         """
-        self.app = app
+        self.app_config = app_config
         self.services=dict()
         self.definitions=dict()
         self.processed_configs = []
@@ -55,20 +63,38 @@ class Container:
                 msg = 'Di syntax error in services file [{}].'
                 raise DiException(msg.format(config_path))
 
-        print(services)
-
         if not isinstance(services, (list, tuple)):
             msg = 'Bad structure in services config [{}]'
             raise DiException(msg.format(config_path))
 
         for service in services:
-            name = service['service']
+            if 'service' not in service.keys():
+                msg = 'Service name must be defined in [{}]'
+                raise DiException(msg.format(config_path))
+            name = service.pop('service')
             if name in self.definitions.keys():
                 msg = 'Duplicate service name [{}] in [{}]'
                 raise DiException(msg.format(name, config_path))
 
+            if 'class' not in service:
+                msg = 'Service [{}] does not define a class in [{}]'
+                raise DiException(msg.format(name, config_path))
 
-    def get(self, service_name, shared=True):
+            keys = service.keys()
+            args = service['args'] if 'args' in keys else []
+            kwargs = service['kwargs'] if 'kwargs' in keys else dict()
+            shared = service['shared'] if 'shared' in keys else True
+
+            definition = dict()
+            definition['class'] = service['class']
+            definition['args'] = args
+            definition['kwargs'] = kwargs
+            definition['shared'] = shared
+            self.definitions[name] = definition
+
+
+
+    def get(self, service_name):
         """
         Get service
         Looks up if we already have an instance and returns that (unless shared

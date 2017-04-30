@@ -5,6 +5,7 @@
     - one
     - two
     - three
+  shared: False
 
 - service: service2.name
   class: boiler.user.role_service.RoleService
