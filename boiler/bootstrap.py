@@ -72,7 +72,7 @@ def create_app(name, config=None, flask_params=None, services=None):
     configure_app(app, config)
 
     # create dependencies container
-    app.di = Container(services)
+    app.di = Container(app, services)
 
     return app
 

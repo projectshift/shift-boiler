@@ -1,13 +1,16 @@
-- service.name:
+
+- service: service.name
   class: boiler.user.user_service.UserService
   arguments:
     - one
     - two
     - three
 
-- service2.name:
+- service: service2.name
   class: boiler.user.role_service.RoleService
-  arguments:
+  args:
     - one
     - two
     - three
+  kwargs:
+    something: something else

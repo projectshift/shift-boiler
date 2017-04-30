@@ -25,14 +25,23 @@ class ContainerTest(FlaskTestCase):
         self.assertIsInstance(self.app.di, Container)
 
     @attr('zzz')
-    def test_reading_yaml_config(self):
-        """ Reading yaml service config"""
-        dir = os.path.dirname(__file__)
-        config = os.path.realpath(os.path.join(dir, 'services.yml'))
+    def test_loading_app_config(self):
+        """ Loading services definition on bootstrap """
+        pass
 
-        # from yaml import load, Loader
-        # with open(config) as data:
-        #     print(load(data, Loader=Loader))
+    def test_di_throw_on_missing_services_file(self):
+        """ Throwing exception on missing service file """
+        pass
+
+    def test_di_throws_on_bad_syntax(self):
+        """ Di throwing exception on bad services syntax """
+        pass
+
+
+    def test_di_throws_on_bad_structure(self):
+        """ Di throwing exception on bad services structure """
+        pass
+
 
 
 
