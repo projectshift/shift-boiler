@@ -52,7 +52,9 @@ class Container:
         :param services: list - list of definitions to add
         :return: boiler.di.Container
         """
+        inpath = ''
         if config_path:
+            inpath = ' in [{}]'.format(config_path)
             try:
                 with open(config_path, 'r') as data:
                     services = load(data, Loader)
@@ -64,20 +66,20 @@ class Container:
                 raise DiException(msg.format(config_path))
 
         if not isinstance(services, (list, tuple)):
-            msg = 'Bad structure in services config [{}]'
+            msg = 'Bad structure of services config' + inpath
             raise DiException(msg.format(config_path))
 
         for service in services:
             if 'service' not in service.keys():
-                msg = 'Service name must be defined in [{}]'
+                msg = 'Service name must be defined' + inpath
                 raise DiException(msg.format(config_path))
             name = service.pop('service')
             if name in self.definitions.keys():
-                msg = 'Duplicate service name [{}] in [{}]'
+                msg = 'Duplicate service name [{}]' + inpath
                 raise DiException(msg.format(name, config_path))
 
             if 'class' not in service:
-                msg = 'Service [{}] does not define a class in [{}]'
+                msg = 'Service [{}] does not define a class' + inpath
                 raise DiException(msg.format(name, config_path))
 
             keys = service.keys()
@@ -91,6 +93,9 @@ class Container:
             definition['kwargs'] = kwargs
             definition['shared'] = shared
             self.definitions[name] = definition
+
+        self.processed_configs.append(config_path)
+        return self
 
 
 

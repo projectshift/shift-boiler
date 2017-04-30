@@ -1,8 +1,10 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-import os
+from nose.tools import assert_raises
+import os, copy
+
 from boiler.testing.testcase import FlaskTestCase
-from boiler.di import Container
+from boiler.di import Container, DiException
 
 
 @attr('di', 'container')
@@ -26,32 +28,49 @@ class ContainerTest(FlaskTestCase):
 
     def test_loading_app_config(self):
         """ Loading services definition on bootstrap """
-        pass
+        self.assertTrue(len(self.app.di.processed_configs))
+        self.assertTrue(self.app.di.processed_configs[0].endswith(
+            'testing/services.yml'
+        ))
 
     def test_raise_on_missing_services_file(self):
         """ Throwing exception on missing service file """
-        pass
+        with assert_raises(DiException):
+            self.app.di.add_services('bad')
 
     def test_raise_on_bad_syntax(self):
         """ DI raises exception on bad services syntax """
-        pass
+        path = os.path.dirname(__file__)
+        bad = os.path.join(path, 'bad_syntax_services.yml')
+        with assert_raises(DiException):
+            self.app.di.add_services(bad)
 
     def test_raise_on_bad_structure(self):
         """ DI raises exception on bad services structure """
-        pass
+        path = os.path.dirname(__file__)
+        bad = os.path.join(path, 'bad_structure_services.yml')
+        with assert_raises(DiException):
+            self.app.di.add_services(bad)
 
     def test_raise_on_missing_service_name(self):
         """ DI raises exception on missing service name """
-        pass
+        with assert_raises(DiException):
+            self.app.di.add_services(services=[dict(servicename='Is missing')])
 
     def test_raise_on_duplicate_service_name(self):
         """ DI raises exception on duplicate service name """
-        pass
+        service = dict()
+        service['service'] = 'MeIsService'
+        service['class'] = 'Exception'
+        service2 = copy.deepcopy(service)
+        with assert_raises(DiException):
+            self.app.di.add_services(services=[service, service2])
 
-    @attr('zzz')
     def test_raise_on_missing_class(self):
         """ DI raises exception on missing service name """
-        pass
+        service = dict(service='MeIsService')
+        with assert_raises(DiException):
+            self.app.di.add_services(services=[service])
 
 
 
