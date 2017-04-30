@@ -47,7 +47,7 @@ def create_middleware(config=None):
     return wrapper
 
 
-def create_app(name, config=None, flask_params=None):
+def create_app(name, config=None, flask_params=None, services=None):
     """
     Create app
     Generalized way of creating a flask app. Use it in your concrete apps and
@@ -72,8 +72,7 @@ def create_app(name, config=None, flask_params=None):
     configure_app(app, config)
 
     # create dependencies container
-    container = Container()
-    app.di = container
+    app.di = Container(services)
 
     return app
 

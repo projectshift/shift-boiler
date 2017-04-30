@@ -1,0 +1,13 @@
+- service.name:
+  class: boiler.user.user_service.UserService
+  arguments:
+    - one
+    - two
+    - three
+
+- service2.name:
+  class: boiler.user.role_service.RoleService
+  arguments:
+    - one
+    - two
+    - three

@@ -1,5 +1,5 @@
 from boiler import bootstrap
-
+import os
 
 def create_app(*args, **kwargs):
     """
@@ -16,12 +16,16 @@ def create_app(*args, **kwargs):
     directory, otherwise it will automagically resolve to this file's parent dir.
 
     On how flask resolves template path see 'template_folder' here:
-    @see http://flask.pocoo.org/docs/0.11/api/
+    @see http://flask.pocoo.org/docs/0.12/api/
     """
 
-    # set pat hto boiler templates (test app only)
+    # set path to boiler templates (test app only)
     flask_params = dict(template_folder='../templates')
     kwargs['flask_params'] = flask_params
+
+    # add services
+    services = os.path.join(os.path.dirname(__file__), 'services.yml')
+    kwargs['services'] = services if os.path.exists(services) else None
 
     # and bootstrap
     app = bootstrap.create_app(__name__, *args, **kwargs)

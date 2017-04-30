@@ -8,4 +8,12 @@ class Container:
     services definition it is used to instantiate and inject services and
     configuration parameters.
     """
-    pass
+    def __init__(self, config_path=None):
+        """
+        Init
+        Instantiates service container. Requires a path to service definistion
+        configuration file
+        :param config_path:
+        """
+        pass
+
