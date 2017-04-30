@@ -1,4 +1,3 @@
-import os
 from yaml import load, dump, scanner
 try:
     from yaml import CLoader as Loader
@@ -97,7 +96,18 @@ class Container:
         self.processed_configs.append(config_path)
         return self
 
-
+    def get_parameter(self, parameter):
+        """
+        Get parameter
+        Returns a value of config parameter
+        :param parameter: string - parameter name
+        :return: mixed
+        """
+        value = self.app_config.get(parameter)
+        if not value:
+            msg = 'Unable to get config parameter [{}]'
+            raise DiException(msg.format(parameter))
+        return value
 
     def get(self, service_name):
         """
@@ -108,7 +118,17 @@ class Container:
         :param service_name: string - service name as defined in config
         :return: boiler.di.Container
         """
-        pass
+        definition = self.definitions.get(service_name, None)
+        if not definition:
+            msg = 'Service [{}] is not defined'
+            raise DiException(msg.format(service_name))
+
+        if service_name in self.services and definition['shared']:
+            return self.services[service_name]
+
+
+
+
 
 
 

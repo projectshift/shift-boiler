@@ -72,6 +72,38 @@ class ContainerTest(FlaskTestCase):
         with assert_raises(DiException):
             self.app.di.add_services(services=[service])
 
+    def test_can_get_config_parameter(self):
+        """ DI can get config parameter"""
+        self.assertEquals(
+            self.app.config['CONFIG_PATH'],
+            self.app.di.get_parameter('CONFIG_PATH')
+        )
+
+    def test_raise_on_trying_to_inject_missing_parameter(self):
+        """ DI raises on injecting nonexistent config parameter"""
+        with assert_raises(DiException):
+            self.app.di.get_parameter('NONEXISTENT')
+
+    def test_raise_when_getting_undefined_service(self):
+        """ DI Raises exception when getting undefined service"""
+        with assert_raises(DiException):
+            self.app.di.get('i.dont.exist')
+
+
+    def test_can_create_service(self):
+        """ DI can create a service"""
+        service = dict()
+        service['service'] = 'service.test'
+        service['class'] = 'boiler.di.Container'
+        self.app.di.add_services(services=[service])
+
+        result = self.app.di.get('service.test')
+        self.assertIsInstance(result, Container)
+
+    def test_return_if_already_instantiated(self):
+        """ Returning previously instantiated service from registry"""
+        pass
+
 
 
 
