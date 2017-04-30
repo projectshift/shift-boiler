@@ -15,3 +15,13 @@
     - three
   kwargs:
     something: something else
+
+- service: service3.name
+  class: boiler.tests.di.test_service.TestService
+  calls:
+    - method: set_tree
+      args:
+        - one value
+        - two value
+      kwargs:
+        three: '%CONFIG_PATH%'

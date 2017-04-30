@@ -74,7 +74,7 @@ class Container:
                 msg = 'Service name must be defined' + inpath
                 raise DiException(msg.format(config_path))
             name = service.pop('service')
-            if name in self.definitions.keys():
+            if name in self.definitions.keys() or name in self.services.keys():
                 msg = 'Duplicate service name [{}]' + inpath
                 raise DiException(msg.format(name, config_path))
 
@@ -87,16 +87,49 @@ class Container:
             kwargs = service['kwargs'] if 'kwargs' in keys else dict()
             shared = service['shared'] if 'shared' in keys else True
 
+            calls = dict()
+            if 'calls' in service.keys():
+                if not isinstance(service['calls'], list):
+                    msg = 'Bad structure of services config' + inpath
+                    raise DiException(msg.format(config_path))
+
+                for call in service['calls']:
+                    method = call.get('method')
+                    if not method:
+                        msg = 'Setter injector must define method name '+inpath
+                        raise DiException(msg)
+
+                    call_args = call.get('args', [])
+                    call_kwargs = call.get('kwargs', {})
+                    calls[method] = dict(args=call_args, kwargs=call_kwargs)
+
             definition = dict()
             definition['class'] = service['class']
             definition['args'] = args
             definition['kwargs'] = kwargs
             definition['shared'] = shared
+            definition['calls'] = calls
             self.definitions[name] = definition
 
         if config_path:
             self.processed_configs.append(config_path)
 
+        return self
+
+    def attach_service(self, name, service):
+        """
+        Attach service
+        Manually attaches object to container. Will raise an exception if name
+        already exists either in services or definitions.
+        :param name: serv
+        :param service:
+        :return:
+        """
+        if name in self.definitions.keys():
+            msg = 'Duplicate service name [{}]'
+            raise DiException(msg.format(name))
+
+        self.definitions[name] = service
         return self
 
     def get_parameter(self, parameter):
@@ -152,13 +185,26 @@ class Container:
         if service_name in self.services and definition['shared']:
             return self.services[service_name]
 
+        # create
         args = self.get_argument(definition['args'])
         kwargs = self.get_argument(definition['kwargs'])
-
         service_class = import_string(definition['class'])
         service = service_class(*args, **kwargs)
+
+        # call setters
+        for setter_name, args in definition['calls'].items():
+            call_args = self.get_argument(args['args'])
+            call_kwargs = self.get_argument(args['kwargs'])
+            setter = getattr(service, setter_name, None)
+            if not callable(setter):
+                msg = "Called nonexistent setter [{}] on [{}]"
+                raise DiException(msg.format(setter_name, service_name))
+            setter(*call_args, **call_kwargs)
+
+        # set and return
         self.services[service_name] = service
-        return self.services[service_name]
+        return service
+
 
 
 

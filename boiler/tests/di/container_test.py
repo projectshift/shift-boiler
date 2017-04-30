@@ -110,7 +110,6 @@ class ContainerTest(FlaskTestCase):
         service2 = self.app.di.get('service.test')
         self.assertTrue(service1 is service2)
 
-    @attr('zzz')
     def test_resolve_recursive_arguments(self):
         """ Resolving recursive di arguments """
         definitions = []
@@ -178,6 +177,46 @@ class ContainerTest(FlaskTestCase):
             self.app.config.get('CONFIG_PATH'),
             service2.two['list_value'][2]
         )
+
+    def test_raise_on_bad_setter_injection_structure(self):
+        """ DI raises on bad setter injection structure """
+        definition = dict()
+        definition['service'] = 'service.two'
+        definition['class'] = 'boiler.tests.di.test_service.TestService'
+        definition['calls'] = dict()
+        with assert_raises(DiException):
+            self.app.di.add_services(services=definition)
+
+    @attr('zzz')
+    def test_can_se_setter_injection(self):
+        """ Using setter injection """
+        definition = dict()
+        definition['service'] = 'service.two'
+        definition['class'] = 'boiler.tests.di.test_service.TestService'
+
+        di = self.app.di
+        service = di.get('service3.name')
+        print(service)
+
+
+
+        self.pp(di.definitions)
+
+    def test_raise_on_calling_nonexistent_setter(self):
+        """ DI raises on calling nonexistent setter"""
+        pass
+
+
+    def test_can_manually_attach_service(self):
+        """ Manually attaching service to DI container"""
+        pass
+
+    def test_raise_on_duplicate_service_when_attaching_manually(self):
+        """ DI raises exception on duplicate service when manually attaching"""
+        pass
+
+
+
 
 
 
