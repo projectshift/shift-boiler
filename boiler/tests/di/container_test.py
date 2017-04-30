@@ -187,7 +187,6 @@ class ContainerTest(FlaskTestCase):
         with assert_raises(DiException):
             self.app.di.add_services(services=definition)
 
-    @attr('zzz')
     def test_can_se_setter_injection(self):
         """ Using setter injection """
         definition = dict()
@@ -196,24 +195,32 @@ class ContainerTest(FlaskTestCase):
 
         di = self.app.di
         service = di.get('service3.name')
-        print(service)
-
-
-
-        self.pp(di.definitions)
+        self.assertEquals('one value', service.one)
+        self.assertEquals('two value', service.two)
+        self.assertEquals(self.app.config['CONFIG_PATH'], service.three)
 
     def test_raise_on_calling_nonexistent_setter(self):
         """ DI raises on calling nonexistent setter"""
-        pass
-
+        definition = dict()
+        definition['service'] = 'service.two'
+        definition['class'] = 'boiler.tests.di.test_service.TestService'
+        definition['calls'] = [dict(method='crap')]
+        self.app.di.add_services(services=[definition])
+        with assert_raises(DiException):
+            self.app.di.get('service.two')
 
     def test_can_manually_attach_service(self):
         """ Manually attaching service to DI container"""
-        pass
+        service = TestService()
+        self.app.di.attach_service('attached', service)
+        self.assertTrue(service is self.app.di.get('attached'))
 
     def test_raise_on_duplicate_service_when_attaching_manually(self):
         """ DI raises exception on duplicate service when manually attaching"""
-        pass
+        service = TestService()
+        self.app.di.attach_service('attached', service)
+        with assert_raises(DiException):
+            self.app.di.attach_service('attached', service)
 
 
 

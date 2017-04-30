@@ -19,7 +19,7 @@
 - service: service3.name
   class: boiler.tests.di.test_service.TestService
   calls:
-    - method: set_tree
+    - method: setter
       args:
         - one value
         - two value

@@ -53,6 +53,8 @@ class Container:
         :return: boiler.di.Container
         """
         inpath = ''
+
+        # load file
         if config_path:
             inpath = ' in [{}]'.format(config_path)
             try:
@@ -65,10 +67,12 @@ class Container:
                 msg = 'Di syntax error in services file [{}].'
                 raise DiException(msg.format(config_path))
 
+        # validate structure
         if not isinstance(services, (list, tuple)):
             msg = 'Bad structure of services config' + inpath
             raise DiException(msg.format(config_path))
 
+        # process definitions
         for service in services:
             if 'service' not in service.keys():
                 msg = 'Service name must be defined' + inpath
@@ -82,11 +86,13 @@ class Container:
                 msg = 'Service [{}] does not define a class' + inpath
                 raise DiException(msg.format(name, config_path))
 
+            # process args
             keys = service.keys()
             args = service['args'] if 'args' in keys else []
             kwargs = service['kwargs'] if 'kwargs' in keys else dict()
             shared = service['shared'] if 'shared' in keys else True
 
+            # process etters
             calls = dict()
             if 'calls' in service.keys():
                 if not isinstance(service['calls'], list):
@@ -103,6 +109,7 @@ class Container:
                     call_kwargs = call.get('kwargs', {})
                     calls[method] = dict(args=call_args, kwargs=call_kwargs)
 
+            # remap
             definition = dict()
             definition['class'] = service['class']
             definition['args'] = args
@@ -111,9 +118,9 @@ class Container:
             definition['calls'] = calls
             self.definitions[name] = definition
 
+        # save and return
         if config_path:
             self.processed_configs.append(config_path)
-
         return self
 
     def attach_service(self, name, service):
@@ -125,11 +132,11 @@ class Container:
         :param service:
         :return:
         """
-        if name in self.definitions.keys():
+        if name in self.definitions.keys() or name in self.services.keys():
             msg = 'Duplicate service name [{}]'
             raise DiException(msg.format(name))
 
-        self.definitions[name] = service
+        self.services[name] = service
         return self
 
     def get_parameter(self, parameter):
@@ -179,13 +186,16 @@ class Container:
         """
         definition = self.definitions.get(service_name, None)
         if not definition:
+            if service_name in self.services.keys():
+                return self.services[service_name] # injected
             msg = 'Service [{}] is not defined'
             raise DiException(msg.format(service_name))
 
+        # return if exists
         if service_name in self.services and definition['shared']:
             return self.services[service_name]
 
-        # create
+        # otherwise create
         args = self.get_argument(definition['args'])
         kwargs = self.get_argument(definition['kwargs'])
         service_class = import_string(definition['class'])
@@ -201,7 +211,7 @@ class Container:
                 raise DiException(msg.format(setter_name, service_name))
             setter(*call_args, **call_kwargs)
 
-        # set and return
+        # save and return
         self.services[service_name] = service
         return service
 
