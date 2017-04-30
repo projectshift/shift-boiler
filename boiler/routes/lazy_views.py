@@ -29,7 +29,6 @@ class LazyView:
             err += 'Try to manually import it to debug.'
             raise ImportError(err.format(self.import_name))
 
-
     @cached_property
     def view(self):
         result = import_string(self.import_name)

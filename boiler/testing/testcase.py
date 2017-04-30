@@ -1,5 +1,6 @@
 import os, unittest, json
 from contextlib import contextmanager
+from pprint import PrettyPrinter
 from flask import current_app
 from werkzeug.utils import parse_cookie
 from boiler.testing.test_app import create_app
@@ -12,6 +13,9 @@ class FlaskTestCase(unittest.TestCase):
     Provides the base to extend your tests from, bootstraps application
     and provides tools to operate on test database
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.pprinter = PrettyPrinter(indent=2)
 
     def setUp(self, app=None):
         """
@@ -90,6 +94,11 @@ class FlaskTestCase(unittest.TestCase):
             yield None
         finally:
             current_app.config = original_config
+
+    def pp(self, what):
+        """ Pretty-print stuff"""
+        self.pprinter.pprint(what)
+
 
 
 def patch_config(self):

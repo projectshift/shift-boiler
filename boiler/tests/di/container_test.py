@@ -5,9 +5,10 @@ import os, copy
 
 from boiler.testing.testcase import FlaskTestCase
 from boiler.di import Container, DiException
+from boiler.tests.di.test_service import TestService
 
 
-@attr('di', 'container')
+@attr('di', 'container', 'integration')
 class ContainerTest(FlaskTestCase):
 
     def setUp(self):
@@ -89,20 +90,99 @@ class ContainerTest(FlaskTestCase):
         with assert_raises(DiException):
             self.app.di.get('i.dont.exist')
 
-
     def test_can_create_service(self):
         """ DI can create a service"""
-        service = dict()
-        service['service'] = 'service.test'
-        service['class'] = 'boiler.di.Container'
-        self.app.di.add_services(services=[service])
-
-        result = self.app.di.get('service.test')
-        self.assertIsInstance(result, Container)
+        definition = dict()
+        definition['service'] = 'service.test'
+        definition['class'] = 'boiler.di.Container'
+        self.app.di.add_services(services=[definition])
+        service = self.app.di.get('service.test')
+        self.assertIsInstance(service, Container)
 
     def test_return_if_already_instantiated(self):
         """ Returning previously instantiated service from registry"""
-        pass
+        definition = dict()
+        definition['service'] = 'service.test'
+        definition['class'] = 'boiler.di.Container'
+        definition['shared'] = True
+        self.app.di.add_services(services=[definition])
+        service1 = self.app.di.get('service.test')
+        service2 = self.app.di.get('service.test')
+        self.assertTrue(service1 is service2)
+
+    @attr('zzz')
+    def test_resolve_recursive_arguments(self):
+        """ Resolving recursive di arguments """
+        definitions = []
+
+        definition = dict()
+        definition['service'] = 'container'
+        definition['class'] = 'boiler.di.Container'
+        definitions.append(definition)
+
+        definition = dict()
+        definition['service'] = 'service.one'
+        definition['class'] = 'boiler.tests.di.test_service.TestService'
+        definition['args'] = ['normal value', [
+            'another normal value',
+            '%CONFIG_PATH%'
+        ]]
+        definitions.append(definition)
+
+        definition2 = dict()
+        definition2['service'] = 'service.two'
+        definition2['class'] = 'boiler.tests.di.test_service.TestService'
+        definition2['kwargs'] = dict(
+            one=['normal value', '@service.one'],
+            two={
+                'container': '@container',
+                'config': '%CONFIG_PATH%',
+                'value': 'another normal value',
+                'list_value': [
+                    'one',
+                    'two',
+                    '%CONFIG_PATH%'
+                ]
+            }
+        )
+        definitions.append(definition2)
+
+        di = self.app.di
+        di.add_services(services=definitions)
+        service2 = di.get('service.two')
+        self.assertIsInstance(service2, TestService)
+
+        conf = definition2
+
+        # # check list
+        self.assertIsInstance(service2.one, list)
+        self.assertEquals(conf['kwargs']['one'][0], service2.one[0])
+        self.assertTrue(di.get('service.one') is service2.one[1])
+
+        # check dict
+        self.assertIsInstance(service2.two, dict)
+        self.assertTrue(di.get('container') is service2.two['container'])
+        self.assertEquals(
+            self.app.config.get('CONFIG_PATH'),
+            service2.two['config']
+        )
+        self.assertEquals(
+            definition2['kwargs']['two']['value'],
+            service2.two['value']
+        )
+
+        self.assertIsInstance(service2.two['list_value'], list)
+        self.assertEquals('one', service2.two['list_value'][0])
+        self.assertEquals('two', service2.two['list_value'][1])
+        self.assertEquals(
+            self.app.config.get('CONFIG_PATH'),
+            service2.two['list_value'][2]
+        )
+
+
+
+
+
 
 
 

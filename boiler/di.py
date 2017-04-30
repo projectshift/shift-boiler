@@ -1,3 +1,4 @@
+from werkzeug.utils import import_string
 from yaml import load, dump, scanner
 try:
     from yaml import CLoader as Loader
@@ -93,7 +94,9 @@ class Container:
             definition['shared'] = shared
             self.definitions[name] = definition
 
-        self.processed_configs.append(config_path)
+        if config_path:
+            self.processed_configs.append(config_path)
+
         return self
 
     def get_parameter(self, parameter):
@@ -108,6 +111,29 @@ class Container:
             msg = 'Unable to get config parameter [{}]'
             raise DiException(msg.format(parameter))
         return value
+
+    def get_argument(self, arg):
+        """
+        Get argument
+        Walk argument value tree and interpolate config params and services.
+        Does it's thing recursively so we can support list and dict arguments
+
+        :param arg: mixed
+        :return: mixed
+        """
+        if isinstance(arg, str):
+            if arg.startswith('@'):
+                return self.get(arg.strip('@'))
+            if arg.startswith('%') and arg.endswith('%'):
+                return self.get_parameter(arg.strip('%'))
+            return arg
+
+        if isinstance(arg, (list, tuple)):
+            return [self.get_argument(item) for item in arg]
+
+        if isinstance(arg, dict):
+            arg = {k: self.get_argument(v) for (k, v) in arg.items()}
+            return arg
 
     def get(self, service_name):
         """
@@ -125,6 +151,14 @@ class Container:
 
         if service_name in self.services and definition['shared']:
             return self.services[service_name]
+
+        args = self.get_argument(definition['args'])
+        kwargs = self.get_argument(definition['kwargs'])
+
+        service_class = import_string(definition['class'])
+        service = service_class(*args, **kwargs)
+        self.services[service_name] = service
+        return self.services[service_name]
 
 
 
