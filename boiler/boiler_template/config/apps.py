@@ -6,6 +6,6 @@ apps = dict(default_app='frontend', apps={})
 
 # frontend app
 apps['apps']['frontend'] = dict(
-    module='project.frontend',
+    module='project.backend',
     base_url='/'
 )

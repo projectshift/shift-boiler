@@ -1,4 +1,4 @@
-from project.frontend import config
+from project.backend import config
 
 class DefaultConfig(config.DefaultConfig):
     """ Local development config """
