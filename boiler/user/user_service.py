@@ -157,7 +157,7 @@ class UserService(AbstractService):
             html = render_template('user/mail/account-confirm.html', **data)
             txt = render_template('user/mail/account-confirm.txt', **data)
         if not self.require_confirmation:
-            html = render_template('user/mail/welcome.html', **data)
+            html = render_template('user/mail/welcome.htmlz', **data)
             txt = render_template('user/mail/welcome.txt', **data)
 
         self.mail.send(Message(

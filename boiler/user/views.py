@@ -138,11 +138,13 @@ class Register(View):
             data = {}
             for field in self.data_fields:
                 data[field] = getattr(form, field).data
-            ok = user_service.register(**data)
-            if ok:
+            user = user_service.register(**data)
+            if not user:
+                redirect(url_for(self.redirect_fail_endpoint))
+            elif user and user_service.require_confirmation:
                 return redirect(url_for(self.redirect_success_endpoint))
             else:
-                redirect(url_for(self.redirect_fail_endpoint))
+                raise Exception('force login should happen here')
 
         elif form.is_submitted():
             flash(self.invalid_message, 'danger')

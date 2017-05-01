@@ -9,7 +9,7 @@
 
             <div class="form-box">
                 <h2>Thank you!</h2>
-                <p class="user-result-message">You have successfully registered. Please check your email inbox and confirm your email address.</p>
+                <p class="user-result-message">You have successfully registered. {% if config['USER_ACCOUNTS_REQUIRE_CONFIRMATION'] %}Please check your email inbox and confirm your email address.{% endif %}</p>
                 <div class="controls">
                     <a href="{{ url_for('user.social_login') }}" class="btn btn-lg btn-primary btn-block">Back to login</a>
                 </div>

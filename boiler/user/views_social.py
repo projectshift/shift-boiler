@@ -123,19 +123,17 @@ class BaseHandle(BaseSocial):
             return redirect(self.next)
 
         # attempt login
-        user_service = oauth = get_service('user.user_service')
+        user_service = get_service('user.user_service')
         try:
             ok = user_service.attempt_social_login(self.provider, data['id'])
             if ok:
                 flash(self.logged_in_msg.format(self.provider), 'success')
                 return redirect(self.logged_in)
-
         except x.AccountLocked as locked:
             msg = self.lock_msg.format(locked.locked_until)
             flash(msg, 'danger')
             url = url_for(self.lock_redirect, **self.lock_redirect_params)
             return redirect(url)
-
         except x.EmailNotConfirmed as not_confirmed:
             return redirect(url_for(self.unconfirmed_email_endpoint))
 
@@ -193,7 +191,12 @@ class FinalizeSocial(View):
             )
             user_service.register(**data)
             session.pop('social_data')  # cleanup
-            return redirect(url_for(self.ok_endpoint, **self.ok_params))
+            if user_service.require_confirmation:
+                return redirect(url_for(self.ok_endpoint, **self.ok_params))
+
+            # if confirmation not required - login
+            if not user_service.require_confirmation:
+                raise Exception('force login should happen here')
 
         elif form.is_submitted():
             flash(self.invalid_message, 'danger')
