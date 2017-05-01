@@ -24,6 +24,7 @@ class UserService(AbstractService):
         """
         self.db = db
         self.mail = mail
+        self.require_confirmation = require_confirmation
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -64,7 +65,7 @@ class UserService(AbstractService):
 
         # check for email being confirmed
         is_new = user.email and not user.email_new
-        if is_new and not user.email_confirmed:
+        if is_new and not user.email_confirmed and self.require_confirmation:
             raise x.EmailNotConfirmed(email=user.email_secure)
 
         verified = user.verify_password(password)
@@ -91,7 +92,7 @@ class UserService(AbstractService):
 
         # check for email being confirmed
         is_new = user.email and not user.email_new
-        if is_new and not user.email_confirmed:
+        if is_new and not user.email_confirmed and self.require_confirmation:
             raise x.EmailNotConfirmed(email=user.email_secure)
 
         login_user(user=user, remember=True)
@@ -151,8 +152,13 @@ class UserService(AbstractService):
             link=user.email_link
         )
         data = dict(username=user.username, link=link)
-        html = render_template('user/mail/account-confirm.html', **data)
-        txt = render_template('user/mail/account-confirm.txt', **data)
+
+        if self.require_confirmation:
+            html = render_template('user/mail/account-confirm.html', **data)
+            txt = render_template('user/mail/account-confirm.txt', **data)
+        if not self.require_confirmation:
+            html = render_template('user/mail/welcome.html', **data)
+            txt = render_template('user/mail/welcome.txt', **data)
 
         self.mail.send(Message(
             subject=subject,
