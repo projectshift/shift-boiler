@@ -1,7 +1,7 @@
 # Dependency Injection Container
 -------  
 
-Since version `v0.1.0` boiler features a dependency injection container. It makes sure your apps are decoupled and whatches that there is only one instance of service created (unless told otherwise).
+Since version `v0.1.0` boiler features a dependency injection container. It makes sure your apps are decoupled and whatches that there is only one instance of each service created (unless told otherwise).
 
 ### DI in python?
 
