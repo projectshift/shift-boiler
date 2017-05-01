@@ -146,7 +146,7 @@ class DefaultConfig(BaseConfig):
 
     # users
     USER_PUBLIC_PROFILES = True
-    USER_ACCOUNTS_REQUIRE_CONFIRMATION = False
+    USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
 
     # templating
     TEMPLATES_FALLBACK_TO_KERNEL = True
