@@ -130,8 +130,6 @@ class DefaultConfig(BaseConfig):
     RECAPTCHA_PUBLIC_KEY = None
     RECAPTCHA_PRIVATE_KEY = None
 
-    # users
-    USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
 
     # v1
     RECAPTCHA_OPTIONS = dict(
@@ -148,7 +146,7 @@ class DefaultConfig(BaseConfig):
 
     # users
     USER_PUBLIC_PROFILES = True
-    USER_REQUIRE_EMAIL_CONFIRMATION = True
+    USER_ACCOUNTS_REQUIRE_CONFIRMATION = False
 
     # templating
     TEMPLATES_FALLBACK_TO_KERNEL = True
