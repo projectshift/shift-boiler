@@ -31,7 +31,7 @@ app.di.get('some_service')
 app.di.get_parameter('CONFIG_PARAMETER')
 ```
 
-If you have an instance of your upp, or you can use `current_app` for that:
+If you have an instance of your app, or you can use `current_app` for that:
 
 ```python
 from flask import current_app
