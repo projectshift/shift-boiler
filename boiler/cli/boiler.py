@@ -177,7 +177,7 @@ def install_dependencies(feature=None):
     echo(green('\nInstall dependencies:'))
     echo(green('-' * 40))
 
-    req_path = os.path.join(os.getcwd(), 'requirements')
+    req_path = os.path.realpath(os.path.dirname(__file__) + '/../_requirements')
 
     # list all features if no feature name
     if not feature:
