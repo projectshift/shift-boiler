@@ -19,7 +19,7 @@ And then later elsewhere:
 from project.services import user_service
 ```
 
-We found this approach to be not flexible enough, especially in cases when you need to inject arbitrary parameters into services that you do not know upfront. For example, in a multi-app setup you mihgt need several app-specific instances of a single service.
+We found this approach to be not flexible enough, especially in cases when you need to inject arbitrary parameters into services that you do not know upfront. Or, for example, in a multi-app setup you mihgt need several app-specific instances of a single service.
 
 
 ### Accessing the DI
