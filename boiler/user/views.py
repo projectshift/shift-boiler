@@ -5,6 +5,7 @@ from flask import flash, redirect, render_template, url_for, abort, request
 from flask import session
 from flask_login import current_user, login_required
 
+from boiler.di import get_service
 from boiler.user import forms
 from boiler.user.models import RegisterSchema, UpdateSchema
 from boiler.user import exceptions as x
@@ -46,7 +47,7 @@ class Logout(View):
     redirect = '/'
 
     def dispatch_request(self):
-
+        user_service = get_service('user.user_service')
         user_service.logout()
         flash(self.logout_message, 'success')
         return redirect(self.redirect)
@@ -73,6 +74,7 @@ class Login(View):
             next_redirect = request.args.get('next')
 
         form = self.form()
+        user_service = get_service('user.user_service')
         if form.validate_on_submit():
             try:
                 ok = user_service.login(
@@ -131,6 +133,7 @@ class Register(View):
             return redirect('/')
 
         form = self.form(schema=self.schema())
+        user_service = get_service('user.user_service')
         if form.validate_on_submit():
             data = {}
             for field in self.data_fields:
@@ -194,6 +197,7 @@ class ConfirmEmailRequest(View):
             user = current_user._get_current_object()
 
         # if not logged in, ask for email and find user
+        user_service = get_service('user.user_service')
         if not user:
             form = self.form()
             if form.validate_on_submit():
@@ -259,6 +263,7 @@ class ConfirmEmail(View):
     redirect = '/'
 
     def dispatch_request(self, id=None, link=None):
+        user_service = get_service('user.user_service')
         try:
             ok = user_service.confirm_email_with_link(link)
         except x.EmailLinkExpired:
@@ -289,6 +294,7 @@ class RecoverPasswordRequest(View):
     params = {}
 
     def dispatch_request(self):
+        user_service = get_service('user.user_service')
         form = self.form()
         if form.validate_on_submit():
             user = user_service.first(email=form.email.data)
@@ -338,6 +344,7 @@ class RecoverPassword(View):
     params = {}
 
     def dispatch_request(self, link=None):
+        user_service = get_service('user.user_service')
         user = user_service.first(password_link=link)
         if not user: abort(404)
 

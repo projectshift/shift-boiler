@@ -130,6 +130,9 @@ class DefaultConfig(BaseConfig):
     RECAPTCHA_PUBLIC_KEY = None
     RECAPTCHA_PRIVATE_KEY = None
 
+    # users
+    USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
+
     # v1
     RECAPTCHA_OPTIONS = dict(
         theme='custom',
@@ -163,6 +166,7 @@ class DevConfig(DefaultConfig):
 class TestingConfig(DefaultConfig):
     """ Default testing config """
     TESTING = True
+    MAIL_DEBUG = True
 
     # use sqlite in testing
     test_db = 'sqlite:///{}'.format(DefaultConfig.TEST_DB_PATH)

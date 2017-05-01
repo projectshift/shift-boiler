@@ -1,8 +1,10 @@
-
 WELCOME, {{username | upper}}!
 ------------------------------------------------------------------------------
 
-Thank you for registering and welcome to our site!
+Thank you for registering and welcome to our site! One thing left to do is
+confirm your email address. Confirm email with this link:
+
+{{link}}
 
 
 Disclaimer:

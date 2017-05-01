@@ -68,9 +68,11 @@ def users_feature(app):
     role_service = RoleService(db=app.di.get('app.db'))
     app.di.attach_service('user.role_service', role_service)
 
+    confirmations = app.di.get_parameter('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
     user_service = UserService(
         db=app.di.get('app.db'),
-        mail=app.di.get('app.mail')
+        mail=app.di.get('app.mail'),
+        require_confirmation=confirmations
     )
     app.di.attach_service('user.user_service', user_service)
 

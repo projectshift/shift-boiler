@@ -15,10 +15,12 @@ class UserService(AbstractService):
     """
     __model__ = User
 
-    def __init__(self, db, mail):
+    def __init__(self, db, mail, require_confirmation=True):
         """
         Initialize service
         :param db: sql alchemy instance
+        :param mail: mailer instance
+        :param require_confirmation: whether new accounts require confirmation
         """
         self.db = db
         self.mail = mail
@@ -149,8 +151,8 @@ class UserService(AbstractService):
             link=user.email_link
         )
         data = dict(username=user.username, link=link)
-        html = render_template('user/mail/welcome.html', **data)
-        txt = render_template('user/mail/welcome.txt', **data)
+        html = render_template('user/mail/account-confirm.html', **data)
+        txt = render_template('user/mail/account-confirm.txt', **data)
 
         self.mail.send(Message(
             subject=subject,
@@ -220,8 +222,8 @@ class UserService(AbstractService):
             link=user.email_link
         )
         data = dict(username=user.username, link=link)
-        html = render_template('user/mail/confirm.html', **data)
-        txt = render_template('user/mail/confirm.txt', **data)
+        html = render_template('user/mail/email-change-confirm.html', **data)
+        txt = render_template('user/mail/email-change-confirm.txt', **data)
 
         self.mail.send(Message(
             subject=subject,
@@ -275,8 +277,8 @@ class UserService(AbstractService):
             link=user.password_link
         )
         data = dict(username=user.username, link=link)
-        html = render_template('user/mail/change-password.html', **data)
-        txt = render_template('user/mail/change-password.txt', **data)
+        html = render_template('user/mail/password-change.html', **data)
+        txt = render_template('user/mail/password-change.txt', **data)
 
         self.mail.send(Message(
             subject=subject,

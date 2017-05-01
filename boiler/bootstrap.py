@@ -23,7 +23,6 @@ def create_middleware(config=None):
     """
     try:
         from config.apps import apps
-
     except ImportError:
         msg = 'Unable to import apps config. Check config/apps.py file.'
         raise ImportError(msg)

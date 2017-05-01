@@ -41,7 +41,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_instantiate(self):
         """ Creating user service """
-        service = UserService()
+        service = UserService(db=mock.Mock(), mail=mock.Mock())
         self.assertIsInstance(service, UserService)
 
     def test_save(self):
@@ -386,8 +386,8 @@ class UserServiceTests(FlaskTestCase):
             )
             spy.assert_called_with(user)
 
-    def test_welcome_message_send(self):
-        """ Welcome message can be sent """
+    def test_account_confirmation_message_send(self):
+        """ Account confirmation message can be sent """
         user = User(email='test@test.com', username='tester', password='123')
         mail = get_service('app.mail')
         user_service = get_service('user.user_service')
@@ -402,8 +402,8 @@ class UserServiceTests(FlaskTestCase):
             self.assertTrue(user.email_link in msg.html)
             self.assertTrue(user.email_link in msg.body)
 
-    def test_welcome_message_resend(self):
-        """ Welcome message can be resent """
+    def test_account_confirmation_message_resend(self):
+        """ Account confirmation message can be resent """
         mail = get_service('app.mail')
         user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
