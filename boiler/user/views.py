@@ -127,6 +127,8 @@ class Register(View):
     redirect_success_endpoint = 'user.register.success'
     redirect_fail_endpoint = 'user.register.fail'
     params = {}
+    force_login_redirect = '/'
+    force_login_message = 'Logged in'
 
     def dispatch_request(self):
         if current_user.is_authenticated:
@@ -144,7 +146,9 @@ class Register(View):
             elif user and user_service.require_confirmation:
                 return redirect(url_for(self.redirect_success_endpoint))
             else:
-                raise Exception('force login should happen here')
+                user_service.force_login(user)
+                flash(self.force_login_message, 'success')
+                return redirect(self.force_login_redirect)
 
         elif form.is_submitted():
             flash(self.invalid_message, 'danger')

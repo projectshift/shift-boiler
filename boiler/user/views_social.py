@@ -149,6 +149,8 @@ class FinalizeSocial(View):
     invalid_message = 'Please correct errors'
     ok_endpoint = 'user.register.success'
     ok_params = {}
+    force_login_redirect = '/'
+    force_login_message = 'Logged in'
 
     def dispatch_request(self):
         """ Register socially  """
@@ -189,14 +191,16 @@ class FinalizeSocial(View):
                 username=form.username.data,
                 email=form.email.data,
             )
-            user_service.register(**data)
+            user = user_service.register(**data)
             session.pop('social_data')  # cleanup
             if user_service.require_confirmation:
                 return redirect(url_for(self.ok_endpoint, **self.ok_params))
 
             # if confirmation not required - login
             if not user_service.require_confirmation:
-                raise Exception('force login should happen here')
+                user_service.force_login(user)
+                flash(self.force_login_message, 'success')
+                return redirect(self.force_login_redirect)
 
         elif form.is_submitted():
             flash(self.invalid_message, 'danger')

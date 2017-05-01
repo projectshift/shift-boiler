@@ -1,6 +1,7 @@
 from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
+from boiler.user import events, event_handlers
 from boiler.di import get_service
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
@@ -135,7 +136,6 @@ class UserService(AbstractService):
 
         self.db.session.add(user)
         self.db.session.commit()
-
         if user.id:
             events.register_event.send(user)
             return user
@@ -157,8 +157,9 @@ class UserService(AbstractService):
             html = render_template('user/mail/account-confirm.html', **data)
             txt = render_template('user/mail/account-confirm.txt', **data)
         if not self.require_confirmation:
-            html = render_template('user/mail/welcome.htmlz', **data)
+            html = render_template('user/mail/welcome.html', **data)
             txt = render_template('user/mail/welcome.txt', **data)
+
 
         self.mail.send(Message(
             subject=subject,
