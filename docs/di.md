@@ -111,7 +111,7 @@ This will create an instance of service without passing anything in. You oftenti
     - inject arguments
     - positionaly
   kwargs:
-  	or_like: keyword arguments
+  	or_as: keyword arguments
   
 ```
 
