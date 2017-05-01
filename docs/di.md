@@ -104,7 +104,7 @@ Now let's define a simple service:
 
 This will create an instance of service without passing anything in. You oftentimes however will need to actually inject some dependencies:
 
-```python
+```yml
 - service: another.service
   class: project.backend.SimpleService
   args:
