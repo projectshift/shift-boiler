@@ -158,8 +158,8 @@ class Container:
         :param parameter: string - parameter name
         :return: mixed
         """
-        value = self.app_config.get(parameter)
-        if not value:
+        value = self.app_config.get(parameter, None)
+        if value is None:
             msg = 'Unable to get config parameter [{}]'
             raise DiException(msg.format(parameter))
         return value
