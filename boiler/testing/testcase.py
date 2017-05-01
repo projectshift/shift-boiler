@@ -41,7 +41,6 @@ class FlaskTestCase(unittest.TestCase):
 
     def create_db(self):
         """ Initialize database (integration tests) """
-
         from boiler.feature.orm import db
         self.db = db
 

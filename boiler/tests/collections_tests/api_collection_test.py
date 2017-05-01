@@ -3,9 +3,9 @@ from nose.plugins.attrib import attr
 from boiler.testing.testcase import FlaskTestCase
 
 from faker import Factory
+from boiler.di import get_service
 from boiler.collections import ApiCollection
 from boiler.user.models import User
-from boiler.user.services import user_service
 from boiler.user.events import events as user_events
 
 
@@ -32,6 +32,7 @@ class ApiCollectionTests(FlaskTestCase):
                     email=fake.email(),
                     password=fake.password()
                 )
+                user_service = get_service('user.user_service')
                 user_service.save(user)
                 items.append(user)
 

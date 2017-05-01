@@ -6,8 +6,7 @@ from datetime import datetime, timedelta
 from flask import session
 from shiftschema.result import Result
 
-from boiler.feature.mail import mail
-from boiler.user.services import user_service, role_service
+from boiler.di import get_service
 from boiler.user import events, exceptions as x
 from boiler.user.events import events as user_events
 from boiler.user.models import User, Role
@@ -23,6 +22,7 @@ class UserServiceTests(FlaskTestCase):
 
     def create_user(self, confirm_email=True):
         """ A shortcut to quickly create and return a user """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = user_service.create(
                 username='tester',
@@ -47,6 +47,7 @@ class UserServiceTests(FlaskTestCase):
     def test_save(self):
         """ Persisting user """
         user = User(email='test@test.com', username='tester', password='123')
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user_service.save(user)
         self.assertEqual(1, user.id)
@@ -57,11 +58,13 @@ class UserServiceTests(FlaskTestCase):
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             events.user_save_event.connect(spy, weak=False)
+            user_service = get_service('user.user_service')
             user_service.save(user)
             spy.assert_called_with(user)
 
     def test_save_returns_validation_errors(self):
         """ Saving returns validation error on bad data """
+        user_service = get_service('user.user_service')
         result = user_service.save(User())
         self.assertFalse(result)
         self.assertIsInstance(result, Result)
@@ -70,12 +73,14 @@ class UserServiceTests(FlaskTestCase):
         """ Deleting a user"""
         user = self.create_user()
         id = user.id
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user_service.delete(user)
             self.assertIsNone(user_service.get(id))
 
     def test_delete_emits_event(self):
         """ Deleting a user emits event """
+        user_service = get_service('user.user_service')
         user = self.create_user()
         with user_events.disconnect_receivers():
             event = events.user_delete_event
@@ -91,6 +96,7 @@ class UserServiceTests(FlaskTestCase):
     def test_login_successful_with_valid_credentials(self):
         """ Can login with valid credentials """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 res = user_service.login(user.email, '123456')
@@ -100,6 +106,7 @@ class UserServiceTests(FlaskTestCase):
     def test_force_login(self):
         """ Can force login a user """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 res = user_service.force_login(user)
@@ -109,6 +116,7 @@ class UserServiceTests(FlaskTestCase):
     def test_force_login_emits_event(self):
         """ Force login emits event """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 spy = mock.Mock()
@@ -118,6 +126,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_fails_with_bad_credentials(self):
         """ Fail to login with bad credentials """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 email = 'no-such-email'
@@ -127,6 +136,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_emits_event_on_success(self):
         """ Login emits event on success """
+        user_service = get_service('user.user_service')
         user = self.create_user()
         event = events.login_event
         with user_events.disconnect_receivers():
@@ -138,6 +148,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_emits_event_on_bad_credentials(self):
         """ Login emits event on bad credentials"""
+        user_service = get_service('user.user_service')
         user = self.create_user()
         event = events.login_failed_event
         with user_events.disconnect_receivers():
@@ -150,6 +161,7 @@ class UserServiceTests(FlaskTestCase):
     def test_login_emit_event_on_nonexistent_user(self):
         """ Login emits event on nonexistent user login """
         event = events.login_failed_nonexistent_event
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             event.connect(spy, weak=False)  # weak please
@@ -160,6 +172,7 @@ class UserServiceTests(FlaskTestCase):
     def test_logout(self):
         """ Can logout """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 result = user_service.login(user.email, '123456')
@@ -173,6 +186,7 @@ class UserServiceTests(FlaskTestCase):
         """ Logout emits event """
         user = self.create_user()
         event = events.logout_event
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             event.connect(spy, weak=False)  # weak please
@@ -188,6 +202,7 @@ class UserServiceTests(FlaskTestCase):
     def test_attempts_social_login(self):
         """ Attempting login with social user profile """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             facebook_id = '123456790'
             user.facebook_id = facebook_id
@@ -212,6 +227,7 @@ class UserServiceTests(FlaskTestCase):
         """ Increment failed logins counter on failure """
         user = self.create_user()
         self.assertEqual(0, user.failed_logins)
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             with self.app.test_request_context():
                 user_service.login(user.email, 'BAD!')
@@ -219,6 +235,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_locks_on_reaching_limit(self):
         """ Lock account on reaching failed logins limit """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             user.failed_logins = 10
@@ -230,6 +247,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_fails_if_locked(self):
         """ Abort login if account locked """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             user.lock_account()
@@ -240,6 +258,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_login_fails_if_email_unconfirmed_for_new_users(self):
         """ Abort login if email is not confirmed for new users"""
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user(False)
             with self.app.test_request_context():
@@ -247,16 +266,16 @@ class UserServiceTests(FlaskTestCase):
                     user_service.login(user.email, 'BAD!')
 
     def test_login_possible_if_email_unconfirmed_for_existing_users(self):
+        user_service = get_service('user.user_service')
         """ Login possible if email is not confirmed for existing users"""
         with user_events.disconnect_receivers():
             user = self.create_user()
             with self.app.test_request_context():
                 user_service.login(user.email, 'BAD!')
 
-
-
     def test_login_drops_counter_on_success(self):
         """ Drop failed login counter on success """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             user.failed_logins = 5
@@ -267,6 +286,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_force_login_fails_if_locked(self):
         """ Abort force login if locked """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             user.lock_account()
@@ -277,6 +297,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_force_login_fails_if_email_unconfirmed_for_new_users(self):
         """ Abort force login if email is not confirmed for new users"""
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user(False)
             with self.app.test_request_context():
@@ -285,6 +306,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_force_login_doesnt_fail_if_email_unconfirmed_for_existing(self):
         """ Force login for existing users with unconfirmed email """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             with self.app.test_request_context():
@@ -292,6 +314,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_force_login_drops_counter_on_success(self):
         """ Drop failed login counter on force login """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             user.failed_logins = 5
@@ -306,6 +329,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_register_returns_validation_errors(self):
         """ Registering returns validation error on bad data """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             result = user_service.register(
                 username='tester',
@@ -317,6 +341,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_register(self):
         """ Can register new user """
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = user_service.register(
                 username='tester',
@@ -334,6 +359,7 @@ class UserServiceTests(FlaskTestCase):
             password = '111111',
         )
 
+        user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = user_service.register(**data)
 
@@ -352,6 +378,7 @@ class UserServiceTests(FlaskTestCase):
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             event.connect(spy, weak=False)
+            user_service = get_service('user.user_service')
             user = user_service.register(
                 username='tester',
                 email='test@test.com',
@@ -362,6 +389,8 @@ class UserServiceTests(FlaskTestCase):
     def test_welcome_message_send(self):
         """ Welcome message can be sent """
         user = User(email='test@test.com', username='tester', password='123')
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with mail.record_messages() as out:
             with self.app.test_request_context():
                 url = 'http://my.confirm.url/'
@@ -375,6 +404,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_welcome_message_resend(self):
         """ Welcome message can be resent """
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 u = user_service.register(
@@ -401,6 +432,7 @@ class UserServiceTests(FlaskTestCase):
     def test_email_confirm_fails_with_bad_link(self):
         """ Fail to initially confirm email with bad link  """
         link = 'no-such-link'
+        user_service = get_service('user.user_service')
         self.assertFalse(user_service.confirm_email_with_link(link))
 
     def test_email_confirm_raises_on_expired_link(self):
@@ -410,6 +442,7 @@ class UserServiceTests(FlaskTestCase):
             user.email = 'updated@test.com'
             user.email_link_expires = datetime.utcnow() - timedelta(hours=12)
             self.assertFalse(user.email_confirmed)
+            user_service = get_service('user.user_service')
             user_service.save(user)
         with self.assertRaises(x.EmailLinkExpired):
             user_service.confirm_email_with_link(user.email_link)
@@ -417,6 +450,7 @@ class UserServiceTests(FlaskTestCase):
     def test_email_confirm_possible(self):
         """ Doing initial email confirmation"""
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user.email = 'updated@test.com'
             user_service.save(user)
@@ -429,6 +463,7 @@ class UserServiceTests(FlaskTestCase):
     def test_email_confirm_emits_event(self):
         """ Initial email confirmation emits event """
         user = self.create_user()
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user.email = 'updated@test.com'
             spy = mock.Mock()
@@ -444,12 +479,14 @@ class UserServiceTests(FlaskTestCase):
     def test_change_email_returns_validation_errors(self):
         """ Change email returns validation errors on bad data """
         u = User(email='ok@ok.com', username='user', password='123')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             res = user_service.change_email(u, 'not-an-email')
             self.assertIsInstance(res, Result)
 
     def test_change_email_possible(self):
         """ Email change procedure is possible"""
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 u = self.create_user()
@@ -466,6 +503,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_change_email_emits_event(self):
         """ Email change request emits event"""
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 u = self.create_user()
@@ -476,6 +514,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_change_email_message_send(self):
         """ Email change confirmation message can be sent"""
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user = self.create_user()
             user.email = 'updated@test.com'
@@ -492,6 +532,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_change_email_message_resend(self):
         """ Email change confirmation message can be resent"""
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with mail.record_messages() as out:
                 u = self.create_user()
@@ -514,6 +556,7 @@ class UserServiceTests(FlaskTestCase):
         """ Password change returns validation errors on bad data """
         u = self.create_user()
         u.username = '1'  # trigger error
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             res = user_service.change_password(u, '0987654')
             self.assertIsInstance(res, Result)
@@ -521,6 +564,7 @@ class UserServiceTests(FlaskTestCase):
     def test_password_change(self):
         """ Password change possible """
         u = self.create_user()
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 user_service.force_login(u)
@@ -532,6 +576,7 @@ class UserServiceTests(FlaskTestCase):
     def test_password_change_emits_event(self):
         """ Password change  """
         u = self.create_user()
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             spy = mock.Mock()
             events.password_changed_event.connect(spy, weak=False)
@@ -543,9 +588,10 @@ class UserServiceTests(FlaskTestCase):
                 self.assertTrue(u.verify_password('0987654'))
                 spy.assert_called_with(u)
 
-
     def test_send_password_message(self):
         """ Sending confirmation message to change password """
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user = self.create_user()
             user.generate_password_link()
@@ -562,6 +608,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_request_password_reset(self):
         """ Request password reset generates a link and sends message """
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with mail.record_messages() as out:
                 with self.app.test_request_context():
@@ -573,6 +621,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_request_password_reset_emits_event(self):
         """ Requesting password reset emits event """
+        mail = get_service('app.mail')
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             with mail.record_messages() as out:
                 with self.app.test_request_context():
@@ -587,6 +637,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_can_add_role_to_user(self):
         """ Adding role to user """
+        user_service = get_service('user.user_service')
+        role_service = get_service('user.role_service')
         with events.events.disconnect_receivers():
             user = self.create_user()
             role = Role(handle='test_role', title='Testing')
@@ -599,6 +651,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_adding_role_emits_event(self):
         """ Adding role to user emits event """
+        user_service = get_service('user.user_service')
+        role_service = get_service('user.role_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             role = Role(handle='test_role', title='Testing')
@@ -611,6 +665,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_can_remove_role_from_user(self):
         """ Removing role from user """
+        user_service = get_service('user.user_service')
+        role_service = get_service('user.role_service')
         with events.events.disconnect_receivers():
             user = self.create_user()
             role = Role(handle='test_role', title='Testing')
@@ -626,6 +682,8 @@ class UserServiceTests(FlaskTestCase):
 
     def test_removing_role_emits_event(self):
         """ Removing role form a user emits event """
+        user_service = get_service('user.user_service')
+        role_service = get_service('user.role_service')
         with user_events.disconnect_receivers():
             user = self.create_user()
             role = Role(handle='test_role', title='Testing')

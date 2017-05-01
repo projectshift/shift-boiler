@@ -1,8 +1,8 @@
 from nose.plugins.attrib import attr
 from boiler.testing.testcase import FlaskTestCase
 
+from boiler.di import get_service
 from boiler.user import validators, events
-from boiler.user.services import user_service, role_service
 from boiler.user.models import User, Role
 
 
@@ -15,6 +15,7 @@ class UniqueRoleHandleTest(FlaskTestCase):
     def create_role(self):
         """ Create a role for testing"""
         with events.events.disconnect_receivers():
+            role_service = get_service('user.role_service')
             role = Role(handle='test', title='testing role')
             role_service.save(role)
         return role
@@ -53,6 +54,7 @@ class UniqueEmailTest(FlaskTestCase):
         """ Create a user for testing"""
         with events.events.disconnect_receivers():
             user = User(username='test', email='test@test.com', password=123)
+            user_service = get_service('user.user_service')
             user_service.save(user)
         return user
 
@@ -90,6 +92,7 @@ class UniqueUsernameTest(FlaskTestCase):
         """ Create a user for testing"""
         with events.events.disconnect_receivers():
             user = User(username='test', email='test@test.com', password=123)
+            user_service = get_service('user.user_service')
             user_service.save(user)
         return user
 

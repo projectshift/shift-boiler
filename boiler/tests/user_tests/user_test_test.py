@@ -3,9 +3,9 @@ from nose.plugins.attrib import attr
 from boiler.testing.testcase import FlaskTestCase
 
 from datetime import datetime, timedelta
+from boiler.di import get_service
 from boiler.user.models import User, Role
 from boiler.user import events, exceptions as x
-from boiler.user.services import role_service
 
 
 @attr('user', 'model')
@@ -365,7 +365,7 @@ class UserTests(FlaskTestCase):
     def test_can_add_role(self):
         """ Adding role to user """
         role = Role(handle='demo', title='Demo role')
-        role_service.save(role)
+        get_service('user.role_service').save(role)
         user = User(**self.data)
         user.add_role(role)
         self.assertIn(role, user.roles)
@@ -375,11 +375,11 @@ class UserTests(FlaskTestCase):
         user = User(**self.data)
 
         role1 = Role(handle='testrole1', title='Test role 1')
-        role_service.save(role1)
+        get_service('user.role_service').save(role1)
         user.add_role(role1)
 
         role2 = Role(handle='testrole2', title='Test role 2')
-        role_service.save(role2)
+        get_service('user.role_service').save(role2)
 
         # check by handle
         self.assertTrue(user.has_role('testrole1'))
@@ -389,12 +389,10 @@ class UserTests(FlaskTestCase):
         self.assertTrue(user.has_role(role1))
         self.assertFalse(user.has_role(role2))
 
-
-
     def test_can_remove_role(self):
         """ Removing role from user """
         role = Role(handle='demo', title='Demo role')
-        role_service.save(role)
+        get_service('user.role_service').save(role)
         user = User(**self.data)
         user.add_role(role)
         self.assertIn(role, user.roles)

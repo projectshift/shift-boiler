@@ -2,7 +2,7 @@ from nose.plugins.attrib import attr
 from boiler.testing.testcase import ViewTestCase
 
 from flask import url_for
-from boiler.user.services import user_service
+from boiler.di import get_service
 from boiler.user import events
 from boiler.user import views
 
@@ -22,6 +22,7 @@ class UserViewsTest(ViewTestCase):
 
     def create_user(self, password='123456'):
         """ A shortcut to quickly create and return a user """
+        user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user = user_service.create(
                 username='tester',

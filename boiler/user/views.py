@@ -8,7 +8,6 @@ from flask_login import current_user, login_required
 from boiler.user import forms
 from boiler.user.models import RegisterSchema, UpdateSchema
 from boiler.user import exceptions as x
-from boiler.user.services import user_service
 
 """
 User views
@@ -47,6 +46,7 @@ class Logout(View):
     redirect = '/'
 
     def dispatch_request(self):
+
         user_service.logout()
         flash(self.logout_message, 'success')
         return redirect(self.redirect)

@@ -1,13 +1,12 @@
 import datetime
 from hashlib import md5
 from sqlalchemy.ext.hybrid import hybrid_property
-from boiler.feature.orm import db
 from boiler.user import exceptions as x
 
 from shiftschema.schema import Schema
 from shiftschema import validators, filters
 from boiler.user import validators as user_validators
-
+from boiler.feature.orm import db
 
 # association table
 UserRoles = db.Table('user_roles',

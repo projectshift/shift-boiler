@@ -1,5 +1,5 @@
 from flask import session
-from boiler.user.services import oauth
+from boiler.di import get_service
 
 
 class OauthProviders:
@@ -57,6 +57,7 @@ class OauthProviders:
 
     def register_token_getter(self, provider):
         """ Register callback to retrieve token from session """
+        oauth = get_service('user.oauth')
         app = oauth.remote_apps[provider]
         decorator = getattr(app, 'tokengetter')
 

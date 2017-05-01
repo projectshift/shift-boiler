@@ -1,6 +1,7 @@
 from boiler import bootstrap
 import os
 
+
 def create_app(*args, **kwargs):
     """
     Create app for testing
@@ -30,7 +31,7 @@ def create_app(*args, **kwargs):
     # and bootstrap
     app = bootstrap.create_app(__name__, *args, **kwargs)
     bootstrap.add_orm(app)
-    bootstrap.add_users(app)
     bootstrap.add_mail(app)
+    bootstrap.add_users(app)
     bootstrap.add_routing(app)
     return app

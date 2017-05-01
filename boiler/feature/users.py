@@ -2,9 +2,12 @@ from flask import session
 from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
-from boiler.user.services import login_manager, principal, user_service, oauth
+from flask_login import LoginManager
+from flask_principal import Principal
+from flask_oauthlib.client import OAuth
 from boiler.user.util.oauth_providers import OauthProviders
-from boiler.user import event_handlers
+from boiler.user.role_service import RoleService
+from boiler.user.user_service import UserService
 
 
 def users_feature(app):
@@ -15,26 +18,33 @@ def users_feature(app):
     """
 
     # init login manager
+    login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'
     login_manager.login_message = 'Please login'
+    app.di.attach_service('user.login_manager', login_manager)
 
     @login_manager.user_loader
     def load_user(id):
         return user_service.get(id)
 
     # init OAuth
+    oauth = OAuth()
     oauth.init_app(app)
+    app.di.attach_service('user.oauth', oauth)
 
     registry = OauthProviders(app)
     providers = registry.get_providers()
-    for provider in providers:
-        if provider not in oauth.remote_apps:
-            oauth.remote_app(provider, **providers[provider])
-            registry.register_token_getter(provider)
+    with app.app_context():
+        for provider in providers:
+            if provider not in oauth.remote_apps:
+                oauth.remote_app(provider, **providers[provider])
+                registry.register_token_getter(provider)
 
     # init principal
+    principal = Principal()
     principal.init_app(app)
+    app.di.attach_service('user.principal', principal)
 
     @principal.identity_loader
     def load_identity():
@@ -53,4 +63,16 @@ def users_feature(app):
         identity.provides.add(UserNeed(current_user.id))
         for role in current_user.roles:
             identity.provides.add(RoleNeed(role.handle))
+
+    # set up user services
+    role_service = RoleService(db=app.di.get('app.db'))
+    app.di.attach_service('user.role_service', role_service)
+
+    user_service = UserService(
+        db=app.di.get('app.db'),
+        mail=app.di.get('app.mail')
+    )
+    app.di.attach_service('user.user_service', user_service)
+
+
 

@@ -1,9 +1,8 @@
 from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
+from boiler.di import get_service
 from boiler.abstract.abstract_service import AbstractService
-from boiler.feature.orm import db
-from boiler.feature.mail import mail
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
 
@@ -16,6 +15,14 @@ class UserService(AbstractService):
     """
     __model__ = User
 
+    def __init__(self, db, mail):
+        """
+        Initialize service
+        :param db: sql alchemy instance
+        """
+        self.db = db
+        self.mail = mail
+
     def save(self, user, commit=True):
         """ Persist user and emit event """
         self.is_instance(user)
@@ -25,9 +32,9 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        db.session.add(user)
+        self.db.session.add(user)
         if commit:
-            db.session.commit()
+            self.db.session.commit()
 
         events.user_save_event.send(user)
         return user
@@ -123,8 +130,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        db.session.add(user)
-        db.session.commit()
+        self.db.session.add(user)
+        self.db.session.commit()
 
         if user.id:
             events.register_event.send(user)
@@ -145,7 +152,7 @@ class UserService(AbstractService):
         html = render_template('user/mail/welcome.html', **data)
         txt = render_template('user/mail/welcome.txt', **data)
 
-        mail.send(Message(
+        self.mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -179,8 +186,8 @@ class UserService(AbstractService):
 
         # confirm otherwise
         user.confirm_email()
-        db.session.add(user)
-        db.session.commit()
+        self.db.session.add(user)
+        self.db.session.commit()
         events.email_confirmed_event.send(user)
         return user
 
@@ -197,8 +204,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        db.session.add(user)
-        db.session.commit()
+        self.db.session.add(user)
+        self.db.session.commit()
 
         events.email_update_requested_event.send(user)
         return user
@@ -216,7 +223,7 @@ class UserService(AbstractService):
         html = render_template('user/mail/confirm.html', **data)
         txt = render_template('user/mail/confirm.txt', **data)
 
-        mail.send(Message(
+        self.mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -248,8 +255,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        db.session.add(user)
-        db.session.commit()
+        self.db.session.add(user)
+        self.db.session.commit()
 
         # logout if a web request
         if has_request_context():
@@ -271,7 +278,7 @@ class UserService(AbstractService):
         html = render_template('user/mail/change-password.html', **data)
         txt = render_template('user/mail/change-password.txt', **data)
 
-        mail.send(Message(
+        self.mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -282,8 +289,8 @@ class UserService(AbstractService):
     def request_password_reset(self, user, base_url):
         """ Regenerate password link and send message """
         user.generate_password_link()
-        db.session.add(user)
-        db.session.commit()
+        self.db.session.add(user)
+        self.db.session.commit()
         events.password_change_requested_event.send(user)
         self.send_password_change_message(user, base_url)
 

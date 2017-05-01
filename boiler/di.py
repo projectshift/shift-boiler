@@ -1,9 +1,21 @@
+from flask import current_app
 from werkzeug.utils import import_string
 from yaml import load, dump, scanner
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+
+
+def get_service(service):
+    """
+    Get service
+    A shorthand function for getting service from di container. Internally uses
+    flask;s current app so must be called from within application context (duh)
+    :param service: string - service name
+    :return: mixed
+    """
+    return current_app.di.get(service)
 
 
 class DiException(Exception):
