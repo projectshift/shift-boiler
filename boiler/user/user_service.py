@@ -21,7 +21,8 @@ class UserService(AbstractService):
         db,
         mail,
         require_confirmation=True,
-        send_welcome_message=True):
+        send_welcome_message=True,
+        email_subjects=None):
         """
         Initialize service
         :param db: sql alchemy instance
@@ -32,7 +33,8 @@ class UserService(AbstractService):
         self.db = db
         self.mail = mail
         self.require_confirmation = require_confirmation
-        self.send_welcome_message = send_welcome_message
+        self.welcome_message = send_welcome_message
+        self.email_subjects = email_subjects if email_subjects else dict()
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -151,15 +153,31 @@ class UserService(AbstractService):
 
     def send_welcome_message(self, user, base_url):
         """ Send welcome mail with email confirmation link """
+        if not self.require_confirmation and not self.welcome_message:
+            return
+
+        # get subject
+        subject = ''
+        subjects = self.email_subjects
+        if self.require_confirmation:
+            subject = 'Welcome,  please activate your account!'
+            if 'welcome_confirm' in subjects.keys():
+                subject = subjects['welcome_confirm']
+        if not self.require_confirmation:
+            subject = 'Welcome to our site!'
+            if 'welcome' in subjects.keys():
+                subject = subjects['welcome']
+
+        # prepare data
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         recipient = (user.username, user.email)
-        subject = 'Welcome to our site!'
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
         )
         data = dict(username=user.username, link=link)
 
+        # render message
         if self.require_confirmation:
             html = render_template('user/mail/account-confirm.html', **data)
             txt = render_template('user/mail/account-confirm.txt', **data)
@@ -167,7 +185,7 @@ class UserService(AbstractService):
             html = render_template('user/mail/welcome.html', **data)
             txt = render_template('user/mail/welcome.txt', **data)
 
-
+        # and send
         self.mail.send(Message(
             subject=subject,
             recipients=[recipient],
@@ -228,9 +246,11 @@ class UserService(AbstractService):
 
     def send_email_changed_message(self, user, base_url):
         """ Send email change confirmation message """
+        subject = 'Confirm new email'
+        if 'email_change' in self.email_subjects.keys():
+            subject = self.email_subjects['email_change']
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         recipient = (user.username, user.email_new)
-        subject = 'Confirm new email'
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
@@ -283,9 +303,12 @@ class UserService(AbstractService):
 
     def send_password_change_message(self, user, base_url):
         """ Send password change message"""
+        subject = 'Change your password here'
+        if 'password_change' in self.email_subjects.keys():
+            subject = self.email_subjects['password_change']
+            
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         recipient = (user.username, user.email)
-        subject = 'Change your password here'
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.password_link
