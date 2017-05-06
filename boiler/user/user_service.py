@@ -16,16 +16,23 @@ class UserService(AbstractService):
     """
     __model__ = User
 
-    def __init__(self, db, mail, require_confirmation=True):
+    def __init__(
+        self,
+        db,
+        mail,
+        require_confirmation=True,
+        send_welcome_message=True):
         """
         Initialize service
         :param db: sql alchemy instance
         :param mail: mailer instance
         :param require_confirmation: whether new accounts require confirmation
+        :param require_confirmation: whether welcome email will be sent
         """
         self.db = db
         self.mail = mail
         self.require_confirmation = require_confirmation
+        self.send_welcome_message = send_welcome_message
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
