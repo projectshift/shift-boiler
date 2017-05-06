@@ -16,16 +16,23 @@ class UserService(AbstractService):
     """
     __model__ = User
 
-    def __init__(self, db, mail, require_confirmation=True):
+    def __init__(
+        self,
+        db,
+        mail,
+        require_confirmation=True,
+        send_welcome_message=True):
         """
         Initialize service
         :param db: sql alchemy instance
         :param mail: mailer instance
         :param require_confirmation: whether new accounts require confirmation
+        :param require_confirmation: whether welcome email will be sent
         """
         self.db = db
         self.mail = mail
         self.require_confirmation = require_confirmation
+        self.send_welcome_message = send_welcome_message
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -144,6 +151,9 @@ class UserService(AbstractService):
 
     def send_welcome_message(self, user, base_url):
         """ Send welcome mail with email confirmation link """
+        # if not self.require_confirmation and not self.send_welcome_message:
+        #     return
+
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         recipient = (user.username, user.email)
         subject = 'Welcome to our site!'
@@ -159,7 +169,6 @@ class UserService(AbstractService):
         if not self.require_confirmation:
             html = render_template('user/mail/welcome.html', **data)
             txt = render_template('user/mail/welcome.txt', **data)
-
 
         self.mail.send(Message(
             subject=subject,
