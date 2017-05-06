@@ -148,6 +148,12 @@ class DefaultConfig(BaseConfig):
     USER_PUBLIC_PROFILES = True
     USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
     USER_SEND_WELCOME_MESSAGE = True
+    USER_EMAIL_SUBJECTS = {
+        'welcome': 'Welcome to our site!',
+        'welcome_confirm': 'Welcome,  please activate your account!',
+        'email_change': 'Please confirm your new email.',
+        'password_change': 'Change your password here.',
+    }
 
     # templating
     TEMPLATES_FALLBACK_TO_KERNEL = True
