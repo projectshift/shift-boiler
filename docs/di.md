@@ -121,10 +121,10 @@ The code above will create a service and inject into constructor two positional 
 - service: service.with_dependencies
   class: project.backend.ServiceWithDependencies
   args:
-    - @simple.service
-    - @another.service
+    - '@simple.service'
+    - '@another.service'
   kwargs:
-    from_config: %CONFIG_PARAMETER%
+    from_config: '%CONFIG_PARAMETER%'
 ```
 
 This example shows how you can reference other services with `@service_name` and application config parameters with `%CONFIG_PARAMETER%`.
@@ -135,9 +135,9 @@ Apart from strings, config parameters and other services, values can be lists an
 - service: service.complex_dependencies
   class: project.backend.ServiceWithNestedDependencies
   args:
-    - simple string
-    - @service
-    - %CONFIG_PARAMETER%
+    - 'simple string'
+    - '@service'
+    - '%CONFIG_PARAMETER%'
     - ['lists', 'also', 'work', '@simple.service']   
 ```
 
