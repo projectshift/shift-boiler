@@ -86,9 +86,11 @@ class RecoverPasswordRequestForm(Form):
 
 class RecoverPasswordForm(Form):
     password = PasswordField('password', validators=[
+        DataRequired(),
         EqualTo('confirm_password', 'Password must match confirmation')
     ])
     confirm_password = PasswordField('confirm', validators=[
+        DataRequired(),
         EqualTo('password', 'Password must match confirmation')
     ])
 
