@@ -27,9 +27,11 @@ class RegisterForm(Form):
     email = StringField('email')
 
     password = PasswordField('password', validators=[
+        DataRequired(),
         EqualTo('confirm', 'Password must match confirmation')
     ])
     confirm = PasswordField('confirm', validators=[
+        DataRequired(),
         EqualTo('password', 'Password must match confirmation')
     ])
 
