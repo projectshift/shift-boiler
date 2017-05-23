@@ -170,7 +170,7 @@ class UserService(AbstractService):
 
         # prepare data
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email)
+        recipient = (user.username, user.email) if user.username != user.email else user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
@@ -250,7 +250,7 @@ class UserService(AbstractService):
         if 'email_change' in self.email_subjects.keys():
             subject = self.email_subjects['email_change']
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email_new)
+        recipient = (user.username, user.email) if user.username != user.email else user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
@@ -306,9 +306,9 @@ class UserService(AbstractService):
         subject = 'Change your password here'
         if 'password_change' in self.email_subjects.keys():
             subject = self.email_subjects['password_change']
-            
+
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email)
+        recipient = (user.username, user.email) if user.username != user.email else user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.password_link
