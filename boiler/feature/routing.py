@@ -8,6 +8,9 @@ def routing_feature(app):
     Allows to define application routes un urls.py file and use lazy views.
     Additionally enables regular exceptions in route definitions
     """
+    # enable regex routes
+    app.url_map.converters['regex'] = RegexConverter
+
     urls = app.name.rsplit('.', 1)[0] + '.urls.urls'
 
     # important issue ahead
@@ -30,5 +33,4 @@ def routing_feature(app):
             methods=route_options['methods']
         )
 
-    # enable regex routes
-    app.url_map.converters['regex'] = RegexConverter
+
