@@ -1,10 +1,12 @@
 from werkzeug.utils import import_string
+from boiler.routes.regex import RegexConverter
 
 
 def routing_feature(app):
     """
     Add routing feature
-    Allows to define applivation routes un urls.py file and use lazy views
+    Allows to define application routes un urls.py file and use lazy views.
+    Additionally enables regular exceptions in route definitions
     """
     urls = app.name.rsplit('.', 1)[0] + '.urls.urls'
 
@@ -27,3 +29,6 @@ def routing_feature(app):
             view_func=route_options['view'],
             methods=route_options['methods']
         )
+
+    # enable regex routes
+    app.url_map.converters['regex'] = RegexConverter
