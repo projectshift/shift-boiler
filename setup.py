@@ -93,7 +93,7 @@ setup(**dict(
     ],
 
     # project packages
-    packages=find_packages(exclude=['tests*']),
+    packages=find_packages(exclude=['tests*', 'migrations*']),
 
     # include none-code data files from manifest.in (http://goo.gl/Uf0Yxc)
     include_package_data=True,
