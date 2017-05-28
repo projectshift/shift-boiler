@@ -8,12 +8,12 @@ class DefaultConfig(config.DefaultConfig):
     SECRET_KEY = None
 
 
-class DevConfig(config.DevConfig, DefaultConfig):
+class DevConfig(config.DevConfig):
     """ Local development config """
     pass
 
 
-class TestingConfig(config.TestingConfig, DefaultConfig):
+class TestingConfig(config.TestingConfig):
     """ Local testing config """
 
 

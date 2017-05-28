@@ -19,12 +19,12 @@ class DefaultConfig(config.DefaultConfig):
     FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
 
 
-class DevConfig(config.DevConfig, DefaultConfig):
+class DevConfig(DefaultConfig, config.DevConfig):
     """ Local development config """
     pass
 
 
-class TestingConfig(config.TestingConfig, DefaultConfig):
+class TestingConfig(DefaultConfig, config.TestingConfig):
     """ Local testing config """
 
 
