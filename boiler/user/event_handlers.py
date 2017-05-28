@@ -91,11 +91,13 @@ def email_confirmed_event(user):
     current_app.logger.info(msg)
     # doggy.increment('user.email_confirmed')
 
+
 def password_change_requested_event(user):
     """ Request password change event"""
     msg = 'User ({}){} requested password change'.format(user.id, user.username)
     current_app.logger.info(msg)
     # doggy.increment('user.password_change_requested')
+
 
 def password_changed_event(user):
     """ Handle password changed event """
