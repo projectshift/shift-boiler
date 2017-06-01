@@ -38,10 +38,9 @@ def find_user(search_params):
     """
     user = None
     params = {prop: value for prop, value in search_params.items() if value}
-    with get_app().app_context():
-        user_service = get_service('user.user_service')
-        if 'id' in params or 'email' in params or 'username' in params:
-            user = user_service.first(**params)
+    user_service = get_service('user.user_service')
+    if 'id' in params or 'email' in params or 'username' in params:
+        user = user_service.first(**params)
     return user
 
 
