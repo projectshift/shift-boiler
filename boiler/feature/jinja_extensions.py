@@ -24,7 +24,8 @@ def jinja_extensions_feature(app):
 
     # register custom jinja functions
     app.jinja_env.globals.update(dict(
-        asset=functions.asset
+        asset=functions.asset,
+        dev_proxy=functions.dev_proxy
     ))
 
 
