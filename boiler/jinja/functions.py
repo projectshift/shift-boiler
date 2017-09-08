@@ -1,4 +1,4 @@
-from flask import current_app as app
+from flask import current_app as app, has_request_context, request
 
 def asset(url = None):
     """
