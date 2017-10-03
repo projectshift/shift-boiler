@@ -342,7 +342,7 @@ class RecoverPassword(View):
     template = 'user/recover-password/change/change.j2'
     ok_redirect = 'user.login'
     ok_redirect_params = dict()
-    ok_message = 'Password change. Login with  new password.'
+    ok_message = 'Password changed. Login with  new password.'
     expired_redirect = 'user.recover.password.expired'
     expired_redirect_params = dict()
     confirm_endpoint = 'user.recover.password.link'
