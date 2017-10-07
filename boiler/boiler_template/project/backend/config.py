@@ -26,6 +26,7 @@ class DevConfig(config.DevConfig, DefaultConfig):
 
 class TestingConfig(config.TestingConfig, DefaultConfig):
     """ Local testing config """
+    pass
 
 
 
