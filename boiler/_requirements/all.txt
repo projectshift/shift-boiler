@@ -31,7 +31,7 @@ Flask-Navigation==0.2.0
 PyMySQL==0.7.11
 SQLAlchemy==1.1.15
 Flask-SQLAlchemy==2.3.2
-Flask-Alembic==1.2.1
+Flask-Alembic==2.0.1
 
 
 # api
