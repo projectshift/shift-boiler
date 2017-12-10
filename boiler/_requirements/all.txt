@@ -4,14 +4,14 @@ shiftboiler
 click==6.6
 
 # tetsing
-rednose==1.2.1
+rednose==1.2.3
 nose==1.3.7
-fake-factory==0.5.9
+Faker==0.8.7
 
 # flask
 blinker==1.4
 speaklater==1.3
-Flask==0.12.1
+Flask==0.12.2
 Flask-WTF==0.14.2
 Flask-DebugToolbar==0.10.1
 PyYAML==3.12
@@ -29,22 +29,22 @@ Flask-Navigation==0.2.0
 
 # orm
 PyMySQL==0.7.11
-SQLAlchemy==1.0.14
-Flask-SQLAlchemy==2.1
+SQLAlchemy==1.1.15
+Flask-SQLAlchemy==2.3.2
 Flask-Alembic==1.2.1
 
 
 # api
-Flask-RESTful==0.3.5
+Flask-RESTful==0.3.6
 
 # localize and translate
-Flask-Babel==0.11.1
+Flask-Babel==0.11.2
 
 # user
-bcrypt==3.1.3
+bcrypt==3.1.4
 passlib==1.7.1
-Flask-Login==0.4.0
-Flask-OAuthlib==0.9.3
+Flask-Login==0.4.1
+Flask-OAuthlib==0.9.4
 Flask-Principal==0.4.0
 
 
