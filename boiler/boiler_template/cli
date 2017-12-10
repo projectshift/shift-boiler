@@ -9,8 +9,8 @@ cli = kernel.cli
 # cli.add_command(db.cli, name='db')
 
 # add user cli
-# cli.add_command(user.cli, name='user')
 # from boiler.cli import user
+# cli.add_command(user.cli, name='user')
 
 # and run
 cli()
