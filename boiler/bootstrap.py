@@ -34,7 +34,9 @@ def create_middleware(config=None):
         mod = import_module(module)
         app = mod.create_app(config=config)
         if app_name == apps['default_app']: default_app = app
-        else: mounts[app_params['base_url']] = app
+        else:
+            base_url = app_params['base_url'].rstrip('/') # no trailing slash!
+            mounts[base_url] = app
 
     wrapper = Flask('middleware_app')
     wrapper.wsgi_app = DispatcherMiddleware(default_app, mounts)

@@ -39,6 +39,7 @@ class BaseSocial(View):
     logged_in_redirect_params = {}
     auth_failed_msg = 'Authorization failed'
     data_failed_msg = 'Failed getting profile data'
+    flash = True # flash messages
 
     @property
     def app(self):
@@ -113,13 +114,13 @@ class BaseHandle(BaseSocial):
 
         res = self.app.authorized_response()
         if res is None:
-            flash(self.auth_failed_msg, 'danger')
+            if self.flash: flash(self.auth_failed_msg, 'danger')
             return redirect(self.next)
 
         # retrieve profile
         data = self.get_profile_data(res)
         if data is None:
-            flash(self.data_failed_msg, 'danger')
+            if self.flash: flash(self.data_failed_msg, 'danger')
             return redirect(self.next)
 
         # attempt login
@@ -127,11 +128,12 @@ class BaseHandle(BaseSocial):
         try:
             ok = user_service.attempt_social_login(self.provider, data['id'])
             if ok:
-                flash(self.logged_in_msg.format(self.provider), 'success')
+                if self.flash:
+                    flash(self.logged_in_msg.format(self.provider), 'success')
                 return redirect(self.logged_in)
         except x.AccountLocked as locked:
             msg = self.lock_msg.format(locked.locked_until)
-            flash(msg, 'danger')
+            if self.flash: flash(msg, 'danger')
             url = url_for(self.lock_redirect, **self.lock_redirect_params)
             return redirect(url)
         except x.EmailNotConfirmed as not_confirmed:
@@ -199,11 +201,11 @@ class FinalizeSocial(View):
             # if confirmation not required - login
             if not user_service.require_confirmation:
                 user_service.force_login(user)
-                flash(self.force_login_message, 'success')
+                if self.flash: flash(self.force_login_message, 'success')
                 return redirect(self.force_login_redirect)
 
         elif form.is_submitted():
-            flash(self.invalid_message, 'danger')
+            if self.flash: flash(self.invalid_message, 'danger')
 
         return render_template(
             self.template,

@@ -15,6 +15,7 @@ class DevConfig(config.DevConfig):
 
 class TestingConfig(config.TestingConfig):
     """ Local testing config """
+    pass
 
 
 

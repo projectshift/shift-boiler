@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.1.5'
+version='0.1.7'
 
 # development status
 # dev_status = '1 - Planning'
@@ -101,7 +101,7 @@ setup(**dict(
     # project dependencies
     install_requires=[
         'click==6.6',
-        'shiftschema==0.0.10'
+        'shiftschema==0.0.11'
     ],
 
     # entry points

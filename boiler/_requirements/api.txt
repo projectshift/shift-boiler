@@ -1,1 +1,1 @@
-Flask-RESTful==0.3.5
+Flask-RESTful==0.3.6

@@ -21,6 +21,8 @@ www.esproj
 /man
 
 # Project ignores
+node_modules
+npm-debug.log
 .sass-cache
 .tmp
 /.coverage

@@ -68,6 +68,7 @@ class Me(View):
 class Profile(View):
     """ Generic profile view """
     decorators = [only_owner]
+    flash = True # flash messages
 
     def dispatch_request(self):
         raise NotImplementedError()
@@ -139,13 +140,13 @@ class ProfileSettings(Profile):
             user.username = form.username.data
             ok = user_service.save(user)
             if ok:
-                flash(self.ok_message, 'success')
+                if self.flash: flash(self.ok_message, 'success')
                 return redirect(url_for(request.endpoint, id=id))
             else:
-                flash(self.exception_message, 'danger')
+                if self.flash: flash(self.exception_message, 'danger')
 
         elif form.is_submitted():
-            flash(self.invalid_message, 'danger')
+            if self.flash: flash(self.invalid_message, 'danger')
 
         self.navigation_callback(id=id)
         params = dict(form=form, user=user, myself=myself)
@@ -179,19 +180,19 @@ class ProfileEmailChange(Profile):
         if myself and 'cancel_change' in request.args:
             user.cancel_email_change()
             user_service.save(user)
-            flash(self.cancel_message)
+            if self.flash: flash(self.cancel_message)
             return render_template(self.template, **params)
 
         # otherwise execute form
         if form.validate_on_submit():
             ok = user_service.change_email(user, form.email.data)
             if ok:
-                flash(self.ok_message, 'success')
+                if self.flash: flash(self.ok_message, 'success')
                 return render_template(self.template, **params)
             else:
-                flash(self.exception_message, 'danger')
+                if self.flash: flash(self.exception_message, 'danger')
         elif form.is_submitted():
-            flash(self.invalid_message, 'danger')
+            if self.flash: flash(self.invalid_message, 'danger')
 
         return render_template(self.template, **params)
 
@@ -219,10 +220,10 @@ class ProfilePasswordChange(Profile):
         if form.validate_on_submit():
             ok = user_service.change_password(user, form.password.data)
             if ok:
-                flash(self.ok_message, 'success')
+                if self.flash: flash(self.ok_message, 'success')
                 return redirect(url_for(self.ok_redirect))
             else:
-                flash(self.exception_message, 'danger')
+                if self.flash: flash(self.exception_message, 'danger')
 
         params = dict(form=form, user=user, myself=myself)
         self.navigation_callback(id=id)
@@ -266,7 +267,7 @@ class ProfileSocial(Profile):
                 user.remove_social_credentials(provider)
                 ok = user_service.save(user)
                 if ok:
-                    flash(self.disabled_message, 'success')
+                    if self.flash: flash(self.disabled_message, 'success')
                     return redirect(url_for('user.profile.social', id=user.id))
 
         # render dashboard
@@ -286,6 +287,7 @@ class ConnectorMixin:
     profile_social_endpoint = 'user.profile.social'
     profile_social_params = {}
     decorators = [login_required]
+    flash = True # flash messages
 
     def dispatch_request(self):
         # back to profile socials url
@@ -295,13 +297,13 @@ class ConnectorMixin:
 
         res = self.app.authorized_response()
         if res is None:
-            flash(self.auth_failed_msg, 'danger')
+            if self.flash: flash(self.auth_failed_msg, 'danger')
             return redirect(back)
 
         # retrieve profile
         data = self.get_profile_data(res)
         if data is None:
-            flash(self.data_failed_msg, 'danger')
+            if self.flash: flash(self.data_failed_msg, 'danger')
             return redirect(back)
 
         # add social credentials
@@ -309,7 +311,7 @@ class ConnectorMixin:
         user.add_social_credentials(self.provider, **data)
         user_service = get_service('user.user_service')
         user_service.save(user)
-        flash(self.ok_message, 'success')
+        if self.flash: flash(self.ok_message, 'success')
         return redirect(back)
 
 class ProfileSocialConnectFacebook(ConnectorMixin, social.FacebookHandle):
