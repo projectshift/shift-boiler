@@ -9,7 +9,6 @@ Here are some main features all of which are pluggable and optional:
   * [Click](http://click.pocoo.org/) integration for CLI apps
   * [Multi-app](http://flask.pocoo.org/docs/0.11/patterns/appdispatch/) Flask setup can run several apps side by side
   * Web app scaffolding
-  * IoC with dependency injection container
   * API app scaffolding and [Restfulness](http://flask-restful-cn.readthedocs.io/en/0.3.4/)
   * ORM with [SQLAlchemy](http://www.sqlalchemy.org/)
   * Database migrations with [Alembic](https://pypi.python.org/pypi/Flask-Alembic)
@@ -50,7 +49,6 @@ That was quickstart for robots. We also have a [quickstart for humans](docs/quic
   * [Quickstart for humans](docs/quickstart.md)
   * Creating more apps
   * Full configuration example
-  * [Dependency Injection](docs/di.md)
   * [Boiler features](docs/features.md)
   * Testing: helpers and environment
   * Working with collections
