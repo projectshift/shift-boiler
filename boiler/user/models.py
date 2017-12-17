@@ -74,12 +74,6 @@ class Role(db.Model):
 class RegisterSchema(Schema):
     """ Register new user account """
     def schema(self):
-        self.add_property('username')
-        self.username.required = True
-        self.username.add_filter(filters.Strip())
-        self.username.add_validator(validators.Length(min=3, max=200))
-        self.username.add_validator(user_validators.UniqueUsername())
-
         self.add_property('email')
         self.email.required = True
         self.email.add_filter(filters.Strip())
@@ -104,7 +98,6 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     created = db.Column(db.DateTime)
-    username = db.Column(db.String(128), nullable=False, unique=True)
 
     # locking
     failed_logins = db.Column(db.Integer(), default=0)
@@ -170,8 +163,8 @@ class User(db.Model):
 
     def __repr__(self):
         """ Printable representation of user """
-        u = '<User id="{}" name="{}", email="{}">'
-        return u.format(self.id, self.username, self.email_secure)
+        u = '<User id="{}" email="{}">'
+        return u.format(self.id, self.email_secure)
 
     def generate_hash(self, length=30):
         """ Generate random string of given length """

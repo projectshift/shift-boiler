@@ -52,7 +52,6 @@ user_urls['/login/social/finalize/'] = route('boiler.user.views_social.FinalizeS
 # profile
 user_urls['/me/'] = route('boiler.user.views_profile.Me', 'user.me')
 user_urls['/user/<int:id>/'] = route('boiler.user.views_profile.ProfileHome', 'user.profile.home')
-user_urls['/user/<int:id>/settings/'] = route('boiler.user.views_profile.ProfileSettings', 'user.profile.settings', ['GET', 'POST'])
 user_urls['/user/<int:id>/email/'] = route('boiler.user.views_profile.ProfileEmailChange', 'user.profile.email', ['GET', 'POST'])
 user_urls['/user/<int:id>/email/resend/'] = route('boiler.user.views_profile.ProfileConfirmEmailResend', 'user.profile.email.confirm.resend')
 user_urls['/user/<int:id>/password/'] = route('boiler.user.views_profile.ProfilePasswordChange', 'user.profile.password', ['GET', 'POST'])

@@ -23,7 +23,6 @@ class LoginForm(Form):
 
 class RegisterForm(Form):
     recaptcha = Recaptcha1Field()
-    username = StringField('username')
     email = StringField('email')
 
     password = PasswordField('password', validators=[
@@ -45,10 +44,7 @@ class ResendEmailConfirmationForm(Form):
 
 
 class FinalizeSocial(Form):
-    username = StringField('username')
-
-    email = StringField('email', validators=[
-    ])
+    email = StringField('email', validators=[])
 
 
 class ChangeEmailForm(Form):
@@ -73,10 +69,6 @@ class ChangePasswordForm(Form):
         DataRequired(),
         EqualTo('password', 'Password must match confirmation')
     ])
-
-
-class DetailsForm(Form):
-    username = StringField('first_name')
 
 
 class RecoverPasswordRequestForm(Form):

@@ -170,12 +170,12 @@ class UserService(AbstractService):
 
         # prepare data
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email) if user.username != user.email else user.email
+        recipient = user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
         )
-        data = dict(username=user.username, link=link)
+        data = dict(link=link)
 
         # render message
         if self.require_confirmation:
@@ -250,12 +250,12 @@ class UserService(AbstractService):
         if 'email_change' in self.email_subjects.keys():
             subject = self.email_subjects['email_change']
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email) if user.username != user.email else user.email
+        recipient = user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link
         )
-        data = dict(username=user.username, link=link)
+        data = dict(link=link)
         html = render_template('user/mail/email-change-confirm.html', **data)
         txt = render_template('user/mail/email-change-confirm.txt', **data)
 
@@ -308,12 +308,12 @@ class UserService(AbstractService):
             subject = self.email_subjects['password_change']
 
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = (user.username, user.email) if user.username != user.email else user.email
+        recipient = user.email
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.password_link
         )
-        data = dict(username=user.username, link=link)
+        data = dict(link=link)
         html = render_template('user/mail/password-change.html', **data)
         txt = render_template('user/mail/password-change.txt', **data)
 

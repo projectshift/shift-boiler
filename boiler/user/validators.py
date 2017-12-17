@@ -24,12 +24,6 @@ class UniqueUserProperty(AbstractValidator):
         return Error(self.error)
 
 
-class UniqueUsername(UniqueUserProperty):
-    """ Validates that provided username is unique """
-    error = 'Username already exists'
-    property = 'username'
-
-
 class UniqueEmail(UniqueUserProperty):
     """ Validates that provided email is unique """
     error = 'Email already in use'

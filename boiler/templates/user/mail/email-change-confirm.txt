@@ -1,4 +1,4 @@
-CONFIRM EMAIL, {{username | upper}}!
+CONFIRM EMAIL!
 ------------------------------------------------------------------------------
 
 You recently requested to change your email address. Before

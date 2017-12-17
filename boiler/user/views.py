@@ -124,7 +124,7 @@ class Register(View):
     """ Performs user registration """
     form = forms.RegisterForm
     schema = RegisterSchema
-    data_fields = ['username', 'email', 'password']
+    data_fields = ['email', 'password']
     template = 'user/register/register.j2'
     invalid_message = 'Form invalid'
     redirect_success_endpoint = 'user.register.success'

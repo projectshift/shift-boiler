@@ -25,7 +25,6 @@ class UserServiceTests(FlaskTestCase):
         user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = user_service.create(
-                username='tester',
                 email='test@test.com',
                 password='123456'
             )
@@ -46,7 +45,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_save(self):
         """ Persisting user """
-        user = User(email='test@test.com', username='tester', password='123')
+        user = User(email='test@test.com', password='123')
         user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user_service.save(user)
@@ -54,7 +53,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_save_emits_event(self):
         """ Saving a user emits event """
-        user = User(email='test@test.com', username='tester', password='123')
+        user = User(email='test@test.com', password='123')
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             events.user_save_event.connect(spy, weak=False)
@@ -332,7 +331,6 @@ class UserServiceTests(FlaskTestCase):
         user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             result = user_service.register(
-                username='tester',
                 email='not.email',
                 password='123'
             )
@@ -344,7 +342,6 @@ class UserServiceTests(FlaskTestCase):
         user_service = get_service('user.user_service')
         with user_events.disconnect_receivers():
             user = user_service.register(
-                username='tester',
                 email='test@test.com',
                 password='123'
             )
@@ -354,7 +351,6 @@ class UserServiceTests(FlaskTestCase):
     def test_register_password_can_be_verified(self):
         """ REGRESSION: Password provided at registration can be verified """
         data = dict(
-            username = 'tester',
             email = 'tester@test.com',
             password = '111111',
         )
@@ -380,7 +376,6 @@ class UserServiceTests(FlaskTestCase):
             event.connect(spy, weak=False)
             user_service = get_service('user.user_service')
             user = user_service.register(
-                username='tester',
                 email='test@test.com',
                 password='123'
             )
@@ -388,7 +383,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_account_confirmation_message_send(self):
         """ Account confirmation message can be sent """
-        user = User(email='test@test.com', username='tester', password='123')
+        user = User(email='test@test.com', password='123')
         mail = get_service('app.mail')
         user_service = get_service('user.user_service')
         with mail.record_messages() as out:
@@ -409,7 +404,6 @@ class UserServiceTests(FlaskTestCase):
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 u = user_service.register(
-                    username='test',
                     email='tester@test.com',
                     password='123456'
                 )
@@ -478,7 +472,7 @@ class UserServiceTests(FlaskTestCase):
 
     def test_change_email_returns_validation_errors(self):
         """ Change email returns validation errors on bad data """
-        u = User(email='ok@ok.com', username='user', password='123')
+        u = User(email='ok@ok.com', password='123')
         user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             res = user_service.change_email(u, 'not-an-email')
@@ -555,7 +549,7 @@ class UserServiceTests(FlaskTestCase):
     def test_password_change_returns_validation_errors(self):
         """ Password change returns validation errors on bad data """
         u = self.create_user()
-        u.username = '1'  # trigger error
+        u.email = '1'  # trigger error
         user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             res = user_service.change_password(u, '0987654')

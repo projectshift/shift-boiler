@@ -165,7 +165,6 @@ class FinalizeSocial(View):
         if not data:
             abort(500)
 
-        username = data.get('username')
         email = data.get('email')
         provider = data.get('provider')
         valid = ['id', 'token', 'token_secret', 'expires', 'refresh_token', 'handle']
@@ -185,14 +184,10 @@ class FinalizeSocial(View):
         form = self.form(schema=self.schema())
         if not form.is_submitted():
             form.email.data = email
-            form.username.data = username
 
         # register and add social tokens
         if form.validate_on_submit():
-            data.update(
-                username=form.username.data,
-                email=form.email.data,
-            )
+            data.update(email=form.email.data)
             user = user_service.register(**data)
             session.pop('social_data')  # cleanup
             if user_service.require_confirmation:
@@ -248,7 +243,6 @@ class FacebookHandle(BaseHandle):
 
         data = dict(
             provider=self.provider,
-            username=me['name'],
             email=email,
             id=id,
             token=token,
@@ -294,7 +288,6 @@ class VkontakteHandle(BaseHandle):
 
         data = dict(
             provider=self.provider,
-            username=me.get('first_name') + ' ' + me.get('last_name'),
             email=email,
             id=id,
             token=token,
@@ -338,7 +331,6 @@ class GoogleHandle(BaseHandle):
         data = dict(
             provider=self.provider,
             email=email,
-            username=me.get('displayName'),
             id=me.get('id'),
             token=token,
             expires=expires,
@@ -374,7 +366,6 @@ class TwitterHandle(BaseHandle):
         data = dict(
             provider=self.provider,
             id=res.get('user_id'),
-            username=res.get('screen_name'),
             email=None,
             token=res.get('oauth_token'),
             token_secret=res.get('oauth_token_secret'), # required!
@@ -404,10 +395,8 @@ class InstagramHandle(BaseHandle):
         me = res.get('user')
         data = dict(
             provider=self.provider,
-            username=me.get('full_name'),
             email=None,
             id=me.get('id'),
-            handle=me.get('username'),
             token=token,
         )
         return data

@@ -1,5 +1,5 @@
 
-WELCOME, {{username | upper}}!
+WELCOME!
 ------------------------------------------------------------------------------
 
 Thank you for registering and welcome to our site!

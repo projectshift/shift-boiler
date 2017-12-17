@@ -40,13 +40,6 @@
                         <form action="" method="post" name="profile-editor">
                             {{ form.hidden_tag() }}
 
-                            {# usename #}
-                            <div class="form-group">
-                                <label for="email">Username</label>
-                                {{ form.username(class='form-control') }}
-                                <div class="errors">{% for error in form.errors.username %}<span>{{ error }}</span><br>{% endfor %}</div>
-                            </div>
-
 
                             {# submit #}
                             <div class="form-group">

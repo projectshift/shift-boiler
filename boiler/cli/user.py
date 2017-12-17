@@ -39,7 +39,7 @@ def find_user(search_params):
     user = None
     params = {prop: value for prop, value in search_params.items() if value}
     user_service = get_service('user.user_service')
-    if 'id' in params or 'email' in params or 'username' in params:
+    if 'id' in params or 'email' in params:
         user = user_service.first(**params)
     return user
 
@@ -59,14 +59,13 @@ def cli():
 # -----------------------------------------------------------------------------
 
 @cli.command(name='create-user')
-@click.option('--username', type=str, default=None, prompt=True)
 @click.option('--email', type=str, default=None, prompt=True)
 @click.option('--password', type=str, hide_input=True, prompt=True, confirmation_prompt=True)
-def create(username, email, password):
+def create(email, password):
     """ Creates a new user record """
     with get_app().app_context():
         user_service = get_service('user.user_service')
-        user = User(username=username, email=email, password=password)
+        user = User(email=email, password=password)
         result = user_service.save(user)
         if not isinstance(result, User):
             print_validation_errors(result)
@@ -79,10 +78,9 @@ def create(username, email, password):
 
 @cli.command(name='find-user')
 @click.option('--id', type=int, default=None)
-@click.option('--username', type=str, default=None)
 @click.option('--email', type=str, default=None)
 def find(*_, **kwargs):
-    """ Find user by email/username """
+    """ Find user by id/email"""
     click.echo(green('\nFind user:'))
     click.echo(green('-' * 40))
 
@@ -113,7 +111,7 @@ def change_password(*_, user_id=None, password=None):
 
         result = user_service.change_password(user, password)
         if isinstance(result, User):
-            msg = 'Changed password for user {} \n'.format(user.username)
+            msg = 'Changed password for user {} \n'.format(user.email)
             click.echo(green(msg))
             return
 
@@ -145,7 +143,7 @@ def change_email(*_, user_id=None, new_email=None):
         user.confirm_email()
         user_service.save(user)
         msg = 'Change email for user {} to {} \n'
-        click.echo(green(msg.format(user.username, new_email)))
+        click.echo(green(msg.format(user.email, new_email)))
 
 
 @cli.command(name='role-create')
@@ -232,7 +230,7 @@ def add_role(*_, role_handle=None, user_id=None):
             return
 
         user_service.add_role_to_user(user, role)
-        msg = 'Added role "{}" to user "{}"'.format(role.handle, user.username)
+        msg = 'Added role "{}" to user "{}"'.format(role.handle, user.email)
         click.echo(green(msg))
         return
 
@@ -263,7 +261,7 @@ def remove_role(*_, role_handle=None, user_id=None):
         user_service.remove_role_from_user(user, remove_role)
         msg = 'Role "{}" removed from user "{}"\n'.format(
             remove_role.handle,
-            user.username
+            user.email
         )
         click.echo(green(msg))
         return

@@ -29,7 +29,6 @@ class PaginatedCollectionTests(FlaskTestCase):
             items = []
             for i in range(how_many):
                 user = User(
-                    username=fake.user_name(),
                     email=fake.email(),
                     password=fake.password()
                 )

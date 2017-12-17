@@ -83,7 +83,6 @@ class Profile(View):
         nav = get_service('app.navigation')
         nav.Bar('profile', [
             nav.Item('Profile home', 'user.profile.home', args=kwargs),
-            nav.Item('Account details', 'user.profile.settings', args=kwargs),
             nav.Item('Change email', 'user.profile.email', args=kwargs),
             nav.Item('Manage password', 'user.profile.password', args=kwargs),
             nav.Item('Social', 'user.profile.social', args=kwargs),
@@ -114,43 +113,6 @@ class ProfileHome(Profile):
         myself = self.is_myself(id)
         self.navigation_callback(id=id)
         return render_template(self.template, myself=myself, user=user)
-
-# -----------------------------------------------------------------------------
-# Settings
-# -----------------------------------------------------------------------------
-
-
-class ProfileSettings(Profile):
-    """ Displays user profile page """
-    template = 'user/profile/settings.j2'
-    form = DetailsForm
-    schema = UpdateSchema
-    invalid_message = 'Form invalid'
-    exception_message = 'Service error'
-    ok_message = 'Profile details updated'
-    navigation_callback = Profile.init_navigation
-
-    def dispatch_request(self, id=None):
-        user_service = get_service('user.user_service')
-        user = user_service.get_or_404(id)
-        myself = self.is_myself(id)
-        schema = self.schema()
-        form = self.form(obj=user, schema=schema, context=user)
-        if form.validate_on_submit():
-            user.username = form.username.data
-            ok = user_service.save(user)
-            if ok:
-                if self.flash: flash(self.ok_message, 'success')
-                return redirect(url_for(request.endpoint, id=id))
-            else:
-                if self.flash: flash(self.exception_message, 'danger')
-
-        elif form.is_submitted():
-            if self.flash: flash(self.invalid_message, 'danger')
-
-        self.navigation_callback(id=id)
-        params = dict(form=form, user=user, myself=myself)
-        return render_template(self.template, **params)
 
 
 # -----------------------------------------------------------------------------

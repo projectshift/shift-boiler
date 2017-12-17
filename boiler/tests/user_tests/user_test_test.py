@@ -16,9 +16,8 @@ class UserTests(FlaskTestCase):
         self.create_db()
 
         self.data = dict(
-            id = 123,
-            username = 'Willy Wonka',
-            email = 'w.wonka@factory.co.uk'
+            id=123,
+            email='w.wonka@factory.co.uk'
         )
 
     # ------------------------------------------------------------------------
@@ -220,7 +219,7 @@ class UserTests(FlaskTestCase):
 
     def test_existing_users_can_cancel_email_changes(self):
         """ Existing users can cancel email change"""
-        user = User(username='New User', email='first@outlook.com')
+        user = User(email='first@outlook.com')
         user.confirm_email()
         self.assertTrue(user.email_confirmed)
         self.assertIsNone(user.email_link)
@@ -238,7 +237,7 @@ class UserTests(FlaskTestCase):
 
     def test_new_users_cant_cancel_email_change(self):
         """ New users can not request email change cancellation """
-        user = User(username='New User', email='first@outlook.com')
+        user = User(email='first@outlook.com')
         user.require_email_confirmation()
         self.assertIsNotNone(user.email_link)
 

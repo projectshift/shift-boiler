@@ -25,7 +25,6 @@ class UserViewsTest(ViewTestCase):
         user_service = get_service('user.user_service')
         with events.events.disconnect_receivers():
             user = user_service.create(
-                username='tester',
                 email='test@test.com',
                 password=password
             )

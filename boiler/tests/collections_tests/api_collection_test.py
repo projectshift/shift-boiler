@@ -28,7 +28,6 @@ class ApiCollectionTests(FlaskTestCase):
             items = []
             for i in range(how_many):
                 user = User(
-                    username=fake.user_name(),
                     email=fake.email(),
                     password=fake.password()
                 )
@@ -57,7 +56,6 @@ class ApiCollectionTests(FlaskTestCase):
 
     def test_can_get_collection(self):
         """ Getting collection as dictionary """
-        items1 = self.create_fake_data(2)
         serializer = self.serializer
         collection = ApiCollection(User.query, serialize_function=serializer)
         collection = collection.dict()
@@ -71,7 +69,6 @@ class ApiCollectionTests(FlaskTestCase):
 
     def test_can_get_collection_as_json(self):
         """ Getting API collection as json """
-        items1 = self.create_fake_data(2)
         serializer = self.serializer
         collection = ApiCollection(User.query, serialize_function=serializer)
         json = collection.json()
