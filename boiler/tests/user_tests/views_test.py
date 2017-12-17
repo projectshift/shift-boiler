@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import ViewTestCase
+from boiler.tests.base_testcase import BoilerViewTestCase
 
 from flask import url_for
 from boiler.user import events
@@ -8,7 +8,7 @@ from boiler.user.services import user_service
 
 
 @attr('user', 'views')
-class UserViewsTest(ViewTestCase):
+class UserViewsTest(BoilerViewTestCase):
     """
     User views tests
     We are now going to test generic user views with integration testing.

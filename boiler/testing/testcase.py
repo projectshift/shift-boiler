@@ -3,8 +3,25 @@ from contextlib import contextmanager
 from pprint import PrettyPrinter
 from flask import current_app
 from werkzeug.utils import parse_cookie
-from boiler.testing.test_app import create_app
-from boiler.config.default_config import TestingConfig
+
+
+def patch_config(self):
+    """
+    Patch config
+    An extension to blinker namespace that provides a context manager for
+    testing, which allows to temporarily disconnect all receivers.
+    """
+    receivers = {}
+    try:
+        for name in self:
+            event = self[name]
+            receivers[name] = event.receivers
+            event.receivers = {}
+        yield {}
+    finally:
+        for name in self:
+            event = self[name]
+            event.receivers = receivers[name]
 
 
 class FlaskTestCase(unittest.TestCase):
@@ -17,20 +34,16 @@ class FlaskTestCase(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.pprinter = PrettyPrinter(indent=2)
 
-    def setUp(self, app=None):
+    def setUp(self, app):
         """
         Setup before each test
         Set up will need an app for testing. You can pass one in, or it will
         create a default boiler testing app for you.
         """
         super().setUp()
-        if not hasattr(self, 'app'):
-            if not app:
-                app = create_app(config=TestingConfig())
-
-            self.app = app
-            self.app_context = self.app.app_context()
-            self.app_context.push()
+        self.app = app
+        self.app_context = self.app.app_context()
+        self.app_context.push()
 
     def tearDown(self):
         """ Clean up after yourself """
@@ -99,31 +112,11 @@ class FlaskTestCase(unittest.TestCase):
         self.pprinter.pprint(what)
 
 
-
-def patch_config(self):
-    """
-    Patch config
-    An extension to blinker namespace that provides a context manager for
-    testing, which allows to temporarily disconnect all receivers.
-    """
-    receivers = {}
-    try:
-        for name in self:
-            event = self[name]
-            receivers[name] = event.receivers
-            event.receivers = {}
-        yield {}
-    finally:
-        for name in self:
-            event = self[name]
-            event.receivers = receivers[name]
-
-
 class ViewTestCase(FlaskTestCase):
 
-    def setUp(self):
+    def setUp(self, app):
         """ Extend base setup and create client """
-        FlaskTestCase.setUp(self)
+        FlaskTestCase.setUp(self, app)
         self.client = self.app.test_client()
 
     # -------------------------------------------------------------------------

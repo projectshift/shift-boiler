@@ -21,7 +21,7 @@ def create_app(*args, **kwargs):
     """
 
     # set path to boiler templates (test app only)
-    flask_params = dict(template_folder='../templates')
+    flask_params = dict(template_folder='../../templates')
     kwargs['flask_params'] = flask_params
 
     # and bootstrap

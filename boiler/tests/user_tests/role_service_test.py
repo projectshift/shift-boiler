@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.testing.testcase import FlaskTestCase
+from boiler.tests.base_testcase import BoilerTestCase
 from shiftschema.result import Result
 
 from boiler.user.role_service import RoleService
@@ -10,7 +10,7 @@ from boiler.user import events
 
 
 @attr('role', 'service')
-class RoleServiceTests(FlaskTestCase):
+class RoleServiceTests(BoilerTestCase):
 
     def setUp(self):
         super().setUp()
