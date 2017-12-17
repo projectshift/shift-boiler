@@ -1,5 +1,7 @@
 from flask_mail import Mail
 
+# init mail
+mail = Mail()
 
 def mail_feature(app):
     """
@@ -8,6 +10,4 @@ def mail_feature(app):
     integration with FlaskMail and relies on mailer credentials config to
     be present. Many other features may rely on this one to send emails.
     """
-    mail = Mail()
     mail.init_app(app)
-    app.di.attach_service('app.mail', mail)

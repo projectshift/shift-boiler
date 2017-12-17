@@ -3,10 +3,12 @@ from flask import request, session
 from flask.views import View
 from flask_login import current_user, login_required
 
-from boiler.di import get_service
-from boiler.user.forms import DetailsForm, ChangeEmailForm, ChangePasswordForm
+from boiler.user.forms import ChangeEmailForm, ChangePasswordForm
 from boiler.user.models import UpdateSchema
 from boiler.user import views_social as social
+from boiler.user.services import user_service, oauth
+
+from boiler.feature.navigation import navigation
 
 """
 User profile
@@ -80,7 +82,7 @@ class Profile(View):
 
     @staticmethod
     def init_navigation(*_, **kwargs):
-        nav = get_service('app.navigation')
+        nav = navigation
         nav.Bar('profile', [
             nav.Item('Profile home', 'user.profile.home', args=kwargs),
             nav.Item('Change email', 'user.profile.email', args=kwargs),
@@ -108,7 +110,6 @@ class ProfileHome(Profile):
             elif current_user.id != id:
                 abort(403)
 
-        user_service = get_service('user.user_service')
         user = user_service.get_or_404(id)
         myself = self.is_myself(id)
         self.navigation_callback(id=id)
@@ -132,7 +133,6 @@ class ProfileEmailChange(Profile):
 
     def dispatch_request(self, id=None):
         self.navigation_callback(id=id)
-        user_service = get_service('user.user_service')
         user = user_service.get_or_404(id)
         myself = self.is_myself(id)
         form = self.form(schema=self.schema(), context=user)
@@ -175,7 +175,6 @@ class ProfilePasswordChange(Profile):
     navigation_callback = Profile.init_navigation
 
     def dispatch_request(self, id=None):
-        user_service = get_service('user.user_service')
         user = user_service.get_or_404(id)
         myself = self.is_myself(id)
         form = self.form(schema=self.schema(), context=user)
@@ -211,12 +210,10 @@ class ProfileSocial(Profile):
         params.update(self.handle_endpoint_params)
         endpoint = self.handle_endpoint.format(provider)
         callback = url_for(endpoint, _external=True, **params)
-        oauth = get_service('user.oauth')
         app = getattr(oauth, provider)
         return app.authorize(callback=callback)
 
     def dispatch_request(self, id=None):
-        user_service = get_service('user.user_service')
         user = user_service.get_or_404(id)
         myself = self.is_myself(id)
 
@@ -271,7 +268,6 @@ class ConnectorMixin:
         # add social credentials
         user = current_user._get_current_object()
         user.add_social_credentials(self.provider, **data)
-        user_service = get_service('user.user_service')
         user_service.save(user)
         if self.flash: flash(self.ok_message, 'success')
         return redirect(back)

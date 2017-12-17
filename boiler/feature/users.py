@@ -2,12 +2,10 @@ from flask import session
 from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
-from flask_login import LoginManager
-from flask_principal import Principal
-from flask_oauthlib.client import OAuth
+
+from boiler.user.services import login_manager, oauth, principal
+from boiler.user.services import user_service
 from boiler.user.util.oauth_providers import OauthProviders
-from boiler.user.role_service import RoleService
-from boiler.user.user_service import UserService
 
 
 def users_feature(app):
@@ -17,22 +15,20 @@ def users_feature(app):
     and oauth integration
     """
 
+    # init user service
+    user_service.init(app)
+
     # init login manager
-    login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'
     login_manager.login_message = 'Please login'
-    app.di.attach_service('user.login_manager', login_manager)
 
     @login_manager.user_loader
     def load_user(id):
         return user_service.get(id)
 
     # init OAuth
-    oauth = OAuth()
     oauth.init_app(app)
-    app.di.attach_service('user.oauth', oauth)
-
     registry = OauthProviders(app)
     providers = registry.get_providers()
     with app.app_context():
@@ -42,9 +38,7 @@ def users_feature(app):
                 registry.register_token_getter(provider)
 
     # init principal
-    principal = Principal()
     principal.init_app(app)
-    app.di.attach_service('user.principal', principal)
 
     @principal.identity_loader
     def load_identity():
@@ -64,21 +58,7 @@ def users_feature(app):
         for role in current_user.roles:
             identity.provides.add(RoleNeed(role.handle))
 
-    # set up user services
-    role_service = RoleService(db=app.di.get('app.db'))
-    app.di.attach_service('user.role_service', role_service)
 
-    confirmations = app.di.get_parameter('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
-    send_welcome = app.di.get_parameter('USER_SEND_WELCOME_MESSAGE')
-    subjects = app.di.get_parameter('USER_EMAIL_SUBJECTS')
-    user_service = UserService(
-        db=app.di.get('app.db'),
-        mail=app.di.get('app.mail'),
-        require_confirmation=confirmations,
-        send_welcome_message=send_welcome,
-        email_subjects=subjects
-    )
-    app.di.attach_service('user.user_service', user_service)
 
 
 

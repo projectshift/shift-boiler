@@ -15,28 +15,12 @@ the case, you can install it with homebrew:
 
 # get app config (bootstrapped application required)
 try:
-    config = current_app.config
-    config = config['PASSLIB']
-
-    default = config['default']
-    schemes = list(config['schemes'].keys())
-    default_rounds = {}
-    for scheme in config['schemes']:
-        key = scheme + '__default_rounds'
-        default_rounds[key] = config['schemes'][scheme]
-
+    default = current_app.config.get('PASSLIB_ALGO')
+    schemes = current_app.config.get('PASSLIB_SCHEMES')
 except RuntimeError as e:
     raise RuntimeError('Unable to get config: ' + str(e))
 
 passlib_context = CryptContext(
-
-    # schemes
     schemes=schemes,
     default=default,
-
-    # vary rounds parameter randomly
-    all__vary_rounds=0.1,
-
-    # default schemes costs
-    **default_rounds
 )

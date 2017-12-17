@@ -1,8 +1,8 @@
 from flask import current_app
+from boiler.feature.orm import db
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import RoleSchema, Role
 from boiler.user import events
-
 
 
 class RoleService(AbstractService):
@@ -11,13 +11,6 @@ class RoleService(AbstractService):
     Handles common operations on role entities.
     """
     __model__ = Role
-
-    def __init__(self, db):
-        """
-        Initialize service
-        :param db: sql alchemy instance
-        """
-        self.db = db
 
     def save(self, role, commit=True):
         """ Persist role model """
@@ -28,9 +21,9 @@ class RoleService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(role)
+        db.session.add(role)
         if commit:
-            self.db.session.commit()
+            db.session.commit()
 
         events.role_saved_event.send(role)
         return role
@@ -43,8 +36,8 @@ class RoleService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(role)
-        self.db.session.commit()
+        db.session.add(role)
+        db.session.commit()
 
         events.role_created_event.send(role)
         return role

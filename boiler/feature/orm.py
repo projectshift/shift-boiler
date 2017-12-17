@@ -18,4 +18,3 @@ def orm_feature(app):
     :return: None
     """
     db.init_app(app)
-    app.di.attach_service('app.db', db)

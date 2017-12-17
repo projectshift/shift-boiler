@@ -1,7 +1,7 @@
 from flask import current_app, url_for
 from boiler.user import events
-from boiler.di import get_service
 from flask import has_request_context, current_app
+from boiler.user.services import user_service
 
 """
 Event handlers
@@ -60,10 +60,7 @@ def register_event(user):
     """ Handle registration event """
     confirm = current_app.di.get_parameter('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
     base_url = url_for('user.confirm.email.request', _external=True) if confirm else ''
-
-    user_service = get_service('user.user_service')
     user_service.send_welcome_message(user, base_url=base_url)
-
     msg = 'User ({}){} registered'.format(user.id, user.email)
     current_app.logger.info(msg)
     # doggy.increment('user.registered')
@@ -77,7 +74,6 @@ def email_update_requested_event(user):
 
     if has_request_context():
         base_url = url_for('user.confirm.email.request', _external=True)
-        user_service = get_service('user.user_service')
         user_service.send_email_changed_message(user, base_url=base_url)
     else:
         msg = 'Update message is not sent, because executed '

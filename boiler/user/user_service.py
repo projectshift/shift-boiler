@@ -1,8 +1,9 @@
 from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
-from boiler.user import events, event_handlers
-from boiler.di import get_service
+from boiler.feature.orm import db
+from boiler.feature.mail import mail
+
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
@@ -16,25 +17,36 @@ class UserService(AbstractService):
     """
     __model__ = User
 
-    def __init__(
-        self,
-        db,
-        mail,
-        require_confirmation=True,
-        send_welcome_message=True,
-        email_subjects=None):
+    def __init__(self, app=None):
         """
         Initialize service
-        :param db: sql alchemy instance
-        :param mail: mailer instance
-        :param require_confirmation: whether new accounts require confirmation
-        :param require_confirmation: whether welcome email will be sent
+        May optionally receive a flask app object to initialise itself from
+        its configuration. This works the same as flask extensions do.
+
+        :param app: flask.Flask
         """
-        self.db = db
-        self.mail = mail
-        self.require_confirmation = require_confirmation
-        self.welcome_message = send_welcome_message
-        self.email_subjects = email_subjects if email_subjects else dict()
+        self.welcome_message = True
+        self.require_confirmation = True
+        self.email_subjects = dict()
+
+        # initialise from flask app
+        if app: self.init(app)
+
+    def init(self, app):
+        """
+        Initialise from flask app
+        This gets configuration values from a flask application.
+        :param app: flask.Flask
+        :return: boiler.user.user_servce.UserService
+        """
+        cfg = app.config
+        self.welcome_message = cfg.get('USER_SEND_WELCOME_MESSAGE')
+        self.require_confirmation = cfg.get(
+            'USER_ACCOUNTS_REQUIRE_CONFIRMATION'
+        )
+
+        subjects = cfg.get('USER_EMAIL_SUBJECTS')
+        self.email_subjects = subjects if subjects else dict()
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -45,9 +57,9 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(user)
+        db.session.add(user)
         if commit:
-            self.db.session.commit()
+            db.session.commit()
 
         events.user_save_event.send(user)
         return user
@@ -143,8 +155,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(user)
-        self.db.session.commit()
+        db.session.add(user)
+        db.session.commit()
         if user.id:
             events.register_event.send(user)
             return user
@@ -186,7 +198,7 @@ class UserService(AbstractService):
             txt = render_template('user/mail/welcome.txt', **data)
 
         # and send
-        self.mail.send(Message(
+        mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -220,8 +232,8 @@ class UserService(AbstractService):
 
         # confirm otherwise
         user.confirm_email()
-        self.db.session.add(user)
-        self.db.session.commit()
+        db.session.add(user)
+        db.session.commit()
         events.email_confirmed_event.send(user)
         return user
 
@@ -238,9 +250,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(user)
-        self.db.session.commit()
-
+        db.session.add(user)
+        db.session.commit()
         events.email_update_requested_event.send(user)
         return user
 
@@ -259,7 +270,7 @@ class UserService(AbstractService):
         html = render_template('user/mail/email-change-confirm.html', **data)
         txt = render_template('user/mail/email-change-confirm.txt', **data)
 
-        self.mail.send(Message(
+        mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -291,8 +302,8 @@ class UserService(AbstractService):
         if not valid:
             return valid
 
-        self.db.session.add(user)
-        self.db.session.commit()
+        db.session.add(user)
+        db.session.commit()
 
         # logout if a web request
         if has_request_context():
@@ -317,7 +328,7 @@ class UserService(AbstractService):
         html = render_template('user/mail/password-change.html', **data)
         txt = render_template('user/mail/password-change.txt', **data)
 
-        self.mail.send(Message(
+        mail.send(Message(
             subject=subject,
             recipients=[recipient],
             body=txt,
@@ -328,8 +339,8 @@ class UserService(AbstractService):
     def request_password_reset(self, user, base_url):
         """ Regenerate password link and send message """
         user.generate_password_link()
-        self.db.session.add(user)
-        self.db.session.commit()
+        db.session.add(user)
+        db.session.commit()
         events.password_change_requested_event.send(user)
         self.send_password_change_message(user, base_url)
 

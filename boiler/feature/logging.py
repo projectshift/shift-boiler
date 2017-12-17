@@ -8,7 +8,6 @@ def logging_feature(app):
     Add logging
     Accepts flask application and registers logging functionality within it
     """
-    app.di.attach_service('app.logger', app.logger)
 
     # this is important because otherwise only log warn, err and crit
     app.logger.setLevel(logging.INFO)

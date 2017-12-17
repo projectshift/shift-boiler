@@ -2,13 +2,14 @@ from werkzeug import exceptions as e
 from flask import jsonify
 from flask_restful import Api
 
+# create api service
+api = Api()
 
 def api_feature(app):
     """ Enables flask restful resources in views"""
     # create api service
     api = Api()
     api.init_app(app)
-    app.di.attach_service('app.api', api)
     json_exceptions(app)
 
 

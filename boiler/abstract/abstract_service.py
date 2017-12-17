@@ -1,6 +1,6 @@
 import logging
 from flask import current_app
-
+from boiler.feature.orm import db
 
 class AbstractService:
     """
@@ -17,8 +17,7 @@ class AbstractService:
         if level is None:
             level = logging.INFO
 
-        logger = current_app.di.get('app.logger')
-        logger.log(msg=message, level=level)
+        current_app.logger.log(msg=message, level=level)
 
     def is_instance(self, model):
         """
@@ -43,7 +42,6 @@ class AbstractService:
 
         :return:                None
         """
-        db = current_app.di.get('app.db')
         db.session.commit()
 
     def new(self, **kwargs):
@@ -79,7 +77,6 @@ class AbstractService:
         :param commit:          bool, commit transaction?
         :return:                object, saved model
         """
-        db = current_app.di.get('app.db')
         self.is_instance(model)
         db.session.add(model)
         if commit:
@@ -97,7 +94,6 @@ class AbstractService:
         :param commit:          bool, commit?
         :return:                object, deleted model
         """
-        db = current_app.di.get('app.db')
         self.is_instance(model)
         db.session.delete(model)
         if commit:

@@ -5,4 +5,3 @@ Flask==0.12.1
 Flask-WTF==0.14.2
 Flask-DebugToolbar==0.10.1
 Flask-Navigation==0.2.0
-PyYAML==3.12

@@ -4,12 +4,10 @@ from flask import render_template, request, url_for, flash, redirect, session
 from flask import abort
 from flask_login import current_user
 
-from boiler.di import get_service
 from boiler.user import exceptions as x
 from boiler.user.models import RegisterSchema
 from boiler.user.forms import FinalizeSocial as FinalizeSocialForm
-
-from pprint import pprint
+from boiler.user.services import oauth, user_service
 
 """
 Social authentication views
@@ -44,7 +42,6 @@ class BaseSocial(View):
     @property
     def app(self):
         """ Get configured oauth app """
-        oauth = get_service('user.oauth')
         return getattr(oauth, self.provider)
 
     @property
@@ -124,7 +121,6 @@ class BaseHandle(BaseSocial):
             return redirect(self.next)
 
         # attempt login
-        user_service = get_service('user.user_service')
         try:
             ok = user_service.attempt_social_login(self.provider, data['id'])
             if ok:
@@ -177,7 +173,6 @@ class FinalizeSocial(View):
         data = new_data
 
         already_registered = False
-        user_service = oauth = get_service('user.user_service')
         if email and user_service.first(email=email):
             already_registered = True
 
@@ -232,7 +227,6 @@ class FacebookHandle(BaseHandle):
 
         session[self.session_key] = (token, expires)
 
-        oauth = get_service('user.oauth')
         me = oauth.facebook.get('me?fields=email,name')
         if me.status != 200:
             return None
@@ -282,7 +276,6 @@ class VkontakteHandle(BaseHandle):
 
         session[self.session_key] = (token, expires)
 
-        oauth = get_service('user.oauth')
         res = oauth.vkontakte.get('users.get', data=dict(user_id=id))
         me = res.data['response'][0]
 
@@ -322,7 +315,6 @@ class GoogleHandle(BaseHandle):
         session[self.session_key] = (token, expires)
 
         # get user data
-        oauth = get_service('user.oauth')
         res = oauth.google.get('plus/v1/people/me/')
         me = res.data
         email = me.get('emails')

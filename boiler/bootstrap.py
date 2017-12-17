@@ -5,7 +5,6 @@ from importlib import import_module
 from flask import Flask
 from werkzeug.wsgi import DispatcherMiddleware
 
-from boiler.di import Container
 from boiler.config.default_config import DefaultConfig
 from boiler.timer import restart_timer
 
@@ -48,7 +47,7 @@ def create_middleware(config=None):
     return wrapper
 
 
-def create_app(name, config=None, flask_params=None, services=None):
+def create_app(name, config=None, flask_params=None):
     """
     Create app
     Generalized way of creating a flask app. Use it in your concrete apps and
@@ -70,10 +69,6 @@ def create_app(name, config=None, flask_params=None, services=None):
     # create an app
     app = Flask(**options)
     configure_app(app, config)
-
-    # create dependencies container
-    app.di = Container(app.config, services)
-
     return app
 
 

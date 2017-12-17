@@ -24,10 +24,6 @@ def create_app(*args, **kwargs):
     flask_params = dict(template_folder='../templates')
     kwargs['flask_params'] = flask_params
 
-    # add services
-    services = os.path.join(os.path.dirname(__file__), 'services.yml')
-    kwargs['services'] = services if os.path.exists(services) else None
-
     # and bootstrap
     app = bootstrap.create_app(__name__, *args, **kwargs)
     bootstrap.add_orm(app)

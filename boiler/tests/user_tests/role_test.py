@@ -21,9 +21,6 @@ class RoleTests(FlaskTestCase):
     # General
     # ------------------------------------------------------------------------
 
-    def test_example(self):
-        self.assertTrue(True)
-
     def test_populate_at_creation(self):
         """ Populating at creation """
         data = self.data

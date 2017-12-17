@@ -43,13 +43,14 @@ class LazyView:
 
         # is classy?
         if isinstance(result, type):
-            result = result.as_view(self.import_name)
 
             # and also restful?
-            if restful:
-                is_restful = Resource in result.__bases__
-                if is_restful:
-                    result = api.output(result)
+            is_restful = restful and Resource in result.__bases__
+
+            if is_restful:
+                result = api.output(result)
+            else:
+                result = result.as_view(self.import_name)
 
         return result
 

@@ -3,8 +3,7 @@ from config.config import DefaultConfig
 from boiler.cli.colors import *
 from boiler.bootstrap import create_middleware
 from boiler.user.models import User, Role
-from boiler.di import get_service
-
+from boiler.user.services import user_service, role_service
 
 def get_app():
     """
@@ -38,7 +37,6 @@ def find_user(search_params):
     """
     user = None
     params = {prop: value for prop, value in search_params.items() if value}
-    user_service = get_service('user.user_service')
     if 'id' in params or 'email' in params:
         user = user_service.first(**params)
     return user
@@ -64,7 +62,6 @@ def cli():
 def create(email, password):
     """ Creates a new user record """
     with get_app().app_context():
-        user_service = get_service('user.user_service')
         user = User(email=email, password=password)
         result = user_service.save(user)
         if not isinstance(result, User):
@@ -103,7 +100,6 @@ def change_password(*_, user_id=None, password=None):
     click.echo(green('-' * 40))
 
     with get_app().app_context():
-        user_service = get_service('user.user_service')
         user = find_user(dict(id=user_id))
         if not user:
             click.echo(red('User not found\n'))
@@ -128,7 +124,6 @@ def change_email(*_, user_id=None, new_email=None):
     click.echo(green('-' * 40))
 
     with get_app().app_context():
-        user_service = get_service('user.user_service')
         user = find_user(dict(id=user_id))
         if not user:
             click.echo(red('User not found\n'))
@@ -156,7 +151,6 @@ def create_role(*_, **kwargs):
     click.echo(green('-' * 40))
 
     with get_app().app_context():
-        role_service = get_service('user.role_service')
         role = Role(**kwargs)
         result = role_service.save(role)
         if not isinstance(result, Role):
@@ -216,9 +210,6 @@ def add_role(*_, role_handle=None, user_id=None):
     click.echo(green('\nAdding role to user:'))
     click.echo(green('-' * 40))
     with get_app().app_context():
-        user_service = get_service('user.user_service')
-        role_service = get_service('user.role_service')
-
         user = find_user(dict(id=user_id))
         if not user:
             click.echo(red('User not found\n'))
@@ -257,7 +248,6 @@ def remove_role(*_, role_handle=None, user_id=None):
             click.echo(red('User does not have such role\n'))
             return
 
-        user_service = get_service('user.user_service')
         user_service.remove_role_from_user(user, remove_role)
         msg = 'Role "{}" removed from user "{}"\n'.format(
             remove_role.handle,

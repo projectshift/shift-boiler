@@ -85,12 +85,8 @@ class DefaultConfig(BaseConfig):
     DEFAULT_TIMEZONE = 'UTC'
 
     # passwords
-    PASSLIB = dict(default='bcrypt')
-    PASSLIB['schemes'] = dict(
-        bcrypt=14,
-        sha512_crypt=8000,
-        pbkdf2_sha512=8000,
-    )
+    PASSLIB_ALGO = 'bcrypt'
+    PASSLIB_SCHEMES = ['bcrypt', 'md5_crypt']
 
     # oauth keys
     OAUTH = {
@@ -179,8 +175,7 @@ class TestingConfig(DefaultConfig):
 
     # hash quickly in testing
     WTF_CSRF_ENABLED = False
-    PASSLIB = DefaultConfig.PASSLIB
-    PASSLIB['schemes']['bcrypt'] = 4
+    PASSLIB_ALGO = 'md5_crypt'
     DATADOG_SEND = False
 
 
