@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, g
 from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
@@ -25,6 +25,7 @@ def users_feature(app):
 
     @login_manager.user_loader
     def load_user(id):
+        print('LOGGING VIA COOKIES')
         return user_service.get(id)
 
     # init OAuth

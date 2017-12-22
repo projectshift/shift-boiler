@@ -1,16 +1,18 @@
 from werkzeug import exceptions as e
-from flask import jsonify
+from flask import g, jsonify
 from flask_restful import Api
+from boiler.api.session_interface import ApiSessionInterface
 
 # create api service
 api = Api()
 
+
 def api_feature(app):
     """ Enables flask restful resources in views"""
-    # create api service
     api = Api()
     api.init_app(app)
     json_exceptions(app)
+    enable_api_login(app)
 
 
 def json_exceptions(app):
@@ -48,6 +50,30 @@ def json_exceptions(app):
     for code in e.default_exceptions.keys():
         app.register_error_handler(code, json_error)
 
+
+def enable_api_login(app):
+    """
+    Enables api login via request object
+    """
+    try:
+        from boiler.user.services import login_manager, user_service
+    except ImportError:
+        return
+
+    # turn on api logins if user feature enabled
+    @login_manager.request_loader
+    def load_user_from_request(request):
+        # token = request.headers.get('Bearer')
+        # if token == '123':
+        #     g.logged_via_request = True
+        #     return user_service.get(2)
+
+        user = user_service.get(2)
+        g.logged_via_request = True
+        return None
+
+    # no cookies for api logins,cookies for normal logins
+    app.session_interface = ApiSessionInterface()
 
 
 
