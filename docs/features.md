@@ -65,7 +65,6 @@ bootstrap.add_routing(app)
 
 This feature has no external dependencies.
 
-[Read about routing feature](features_routing.md)
 
 
 ## Logging
@@ -81,7 +80,6 @@ bootstrap.add_logging(app)
 
 This feature has no external dependencies.
 
-[Read about logging feature and handlers](features_logging.md)
 
 
 ## Error pages
@@ -96,7 +94,6 @@ bootstrap.add_error_pages(app)
 
 This feature has no external dependencies.
 
-[Read about error pages feature](features_errors.md)
 
 
 ## Mail
@@ -115,7 +112,6 @@ Install this feature dependencies:
 boiler dependencies mail
 ```
 
-[Read about mail feature](features_mail.md)
 
 
 ## Jinja Extensions
@@ -134,7 +130,6 @@ Install this feature dependencies:
 boiler dependencies jinja_extensions
 ```
 
-[Read about jinja extensions](features_jinja.md)
 
 ## API
 
@@ -153,7 +148,6 @@ Install this feature dependencies:
 boiler dependencies api
 ```
 
-[Read about API feature](features_api.md)
 
 ## ORM
 
@@ -179,14 +173,13 @@ from boiler.cli import db
 cli.add_command(db.cli, name='db')
 ```
 
-[Read about ORM feature](features_orm.md)
 
 
 
 
 ## Users
 
-There is a lot to users feature - it provide facilities to create and manage user profiles, authenticate with username, passwords and oauth, manage user profiles, reset passwords, confirm and activate accounts and a handy set of console commands for your cli to perform admin tasks.
+There is a lot to users feature - it provides facilities to create and manage user profiles, authenticate with username, passwords and oauth, manage user profiles, reset passwords, confirm and activate accounts and a handy set of console commands for your cli to perform admin tasks.
 
 
 Enable feature with:
@@ -214,7 +207,6 @@ from boiler.cli import user
 cli.add_command(user.cli, name='user')
 ```
 
-[Read about users feature](features_orm.md)
 
 
 
@@ -234,8 +226,6 @@ Install this feature dependencies:
 ```
 boiler dependencies localization
 ```
-
-[Read about localization feature](features_orm.md)
 
 
 
