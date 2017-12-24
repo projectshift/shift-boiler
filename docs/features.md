@@ -91,7 +91,7 @@ This feature will load a custom error template for each type of exception that h
 Enable feature with:
 
 ```python
-bootstrap.add_logging(app)
+bootstrap.add_error_pages(app)
 ```
 
 This feature has no external dependencies.
