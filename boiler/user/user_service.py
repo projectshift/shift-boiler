@@ -144,6 +144,24 @@ class UserService(AbstractService):
         return True
 
     # -------------------------------------------------------------------------
+    # JWT token authentication
+    # -------------------------------------------------------------------------
+
+    def get_user_by_token(self, token):
+        """
+        Get user by token
+        Accepts a JWT token, checks token signature, check it has not expired
+        and decode. Load user by id from the token and see if it it has the
+        same token on record (for token invalidation/force re-login). Return
+        user record on success.
+
+        :param token: string, jwt token
+        :return: boiler.user.models.User
+        """
+        pass
+
+
+    # -------------------------------------------------------------------------
     # Register and confirm
     # -------------------------------------------------------------------------
 
