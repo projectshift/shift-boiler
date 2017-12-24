@@ -1,7 +1,6 @@
 from werkzeug import exceptions as e
 from flask import g, jsonify
 from flask_restful import Api
-from boiler.api.session_interface import ApiSessionInterface
 
 # create api service
 api = Api()
@@ -26,7 +25,7 @@ def json_exceptions(app):
     still get json exceptions for 500s.
 
     Our own implementation here was later replaced
-    by more concise one, by Pavel Repin, as per flask snippets cookbook.
+    with more concise one, by Pavel Repin, as per flask snippets cookbook.
     @see: http://flask.pocoo.org/snippets/83/
     """
 
@@ -73,32 +72,3 @@ def enable_api_login(app):
         # user = user_service.get(2)
         # g.logged_via_request = True
         return None
-
-
-    """
-    A little problem here:
-    How can we use both request and session auth together? The ide was that
-    we first try to authenticate with session and then with request.
-    
-    But:
-    Since we want stateless api and don't want to send session cookie back we
-    need to somehow disable it. Currently we do it per global parameter called
-    [logged_via_request] - which is not great because:
-    
-    If user is NOT logged in, e.g. no authentication is required (public 
-    endpoint) we will not get this global set, and session cookie will be sent.
-    
-    Solution:
-    We need another way to disable sessions. It would be nice to have it based 
-    on logic and have both auth methods but it might nt be possible.  
-    """
-
-
-
-    # no cookies for api logins,cookies for normal logins
-    app.session_interface = ApiSessionInterface()
-
-
-
-
-

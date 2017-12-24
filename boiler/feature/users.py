@@ -3,9 +3,11 @@ from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
 
+from boiler.user.session_interface import BoilerSessionInterface
 from boiler.user.services import login_manager, oauth, principal
 from boiler.user.services import user_service
 from boiler.user.util.oauth_providers import OauthProviders
+
 
 
 def users_feature(app):
@@ -14,6 +16,9 @@ def users_feature(app):
     Allows to register users and assign groups, instantiates flask login, flask principal
     and oauth integration
     """
+
+    # use custom session interface
+    app.session_interface = BoilerSessionInterface()
 
     # init user service
     user_service.init(app)
@@ -25,7 +30,6 @@ def users_feature(app):
 
     @login_manager.user_loader
     def load_user(id):
-        print('LOGGING VIA COOKIES')
         return user_service.get(id)
 
     # init OAuth
