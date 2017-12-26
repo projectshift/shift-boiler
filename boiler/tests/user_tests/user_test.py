@@ -2,6 +2,7 @@ from unittest import mock
 from nose.plugins.attrib import attr
 from boiler.tests.base_testcase import BoilerTestCase
 
+import jwt
 from datetime import datetime, timedelta
 from boiler.user.models import User, Role
 from boiler.user import events, exceptions as x
@@ -244,7 +245,6 @@ class UserTests(BoilerTestCase):
         user.cancel_email_change()
         self.assertIsNotNone(user.email_link)  # nothing should change
 
-
     # -------------------------------------------------------------------------
     # Passwords
     # -------------------------------------------------------------------------
@@ -297,6 +297,17 @@ class UserTests(BoilerTestCase):
 
         user.password_link_expires = datetime.utcnow() - timedelta(days=2)
         self.assertTrue(user.password_link_expired())
+
+    # -------------------------------------------------------------------------
+    # JWT tokens
+    # -------------------------------------------------------------------------
+
+    @attr('jwt')
+    def test_create_jwt_token(self):
+        """ Creating a JWT token """
+        pass
+
+
 
     # -------------------------------------------------------------------------
     # Social

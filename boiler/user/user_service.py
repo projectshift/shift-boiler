@@ -147,6 +147,11 @@ class UserService(AbstractService):
     # JWT token authentication
     # -------------------------------------------------------------------------
 
+    # validate and decode the token
+    # check token validity
+    # load user
+    # check token matches
+    # return user
     def get_user_by_token(self, token):
         """
         Get user by token
@@ -158,7 +163,16 @@ class UserService(AbstractService):
         :param token: string, jwt token
         :return: boiler.user.models.User
         """
+
+        # validate and decode the token
+        # check token validity
+        # load user
+        # check token matches
+        # return user
+
+
         pass
+
 
 
     # -------------------------------------------------------------------------

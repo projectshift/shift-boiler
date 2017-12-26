@@ -352,6 +352,30 @@ class User(db.Model):
         return self.password_link_expires < now
 
     # -------------------------------------------------------------------------
+    # JWT Token
+    # -------------------------------------------------------------------------
+
+
+
+
+    # set token
+
+    # verify token
+
+    # refresh token (takes the same token and updates expiration)
+
+
+    """
+    How do we add data to token via userland code?
+    The data can be both static and dynamic.
+    We should for starters have a very basic implementation with just user id
+    What would be a perfect interface?
+    
+    """
+
+
+
+    # -------------------------------------------------------------------------
     # Social
     # -------------------------------------------------------------------------
 

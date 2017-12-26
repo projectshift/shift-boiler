@@ -141,6 +141,10 @@ class DefaultConfig(BaseConfig):
     )
 
     # users
+    USER_JWT_SECRET = None
+    USER_JWT_ALGO = 'HS256'
+    USER_JWT_LIFETIME_SECONDS = 60 * 60 * 24 * 1 # days
+
     USER_PUBLIC_PROFILES = True
     USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
     USER_SEND_WELCOME_MESSAGE = True

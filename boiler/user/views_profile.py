@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, url_for, abort, current_app
-from flask import request, session
+from flask import request
 from flask.views import View
 from flask_login import current_user, login_required
 
