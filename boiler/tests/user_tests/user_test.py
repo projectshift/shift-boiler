@@ -4,6 +4,8 @@ from boiler.tests.base_testcase import BoilerTestCase
 
 import jwt
 from datetime import datetime, timedelta
+from boiler.config.default_config import DefaultConfig
+from boiler import bootstrap
 from boiler.user.models import User, Role
 from boiler.user import events, exceptions as x
 from boiler.user.services import role_service
@@ -45,13 +47,6 @@ class UserTests(BoilerTestCase):
         hash = u.generate_hash(length)
         self.assertTrue(type(hash) is str)
         self.assertEqual(length, len(hash))
-
-    def test_generate_api_key(self):
-        """ Generating api key for new users """
-        u = User()
-        self.assertIsNotNone(u.api_key)
-        self.assertTrue(type(u.api_key) is str)
-        self.assertNotEqual(u.api_key, User().api_key)
 
     def test_gravatar(self):
         """ Getting gravatar url from email """
@@ -302,11 +297,75 @@ class UserTests(BoilerTestCase):
     # JWT tokens
     # -------------------------------------------------------------------------
 
-    @attr('jwt')
-    def test_create_jwt_token(self):
-        """ Creating a JWT token """
-        pass
+    def test_user_model_receives_config_options(self):
+        """ User model is initialised with JWT config options"""
+        class Cfg(DefaultConfig):
+            USER_JWT_SECRET='NOT A SECRET'
+            USER_JWT_ALGO = 'CHOCOPOPS'
+            USER_JWT_LIFETIME_SECONDS = -1
+        app = bootstrap.create_app('demo', config=Cfg())
+        bootstrap.add_users(app)
 
+        app.app_context().push()
+        user = User()
+        self.assertEquals(Cfg.USER_JWT_SECRET, user.jwt_secret)
+        self.assertEquals(Cfg.USER_JWT_ALGO, user.jwt_algo)
+        self.assertEquals(Cfg.USER_JWT_LIFETIME_SECONDS, user.jwt_lifetime)
+
+    def test_default_token_implementation(self):
+        """ Generating using default implementation"""
+        user_id = 123
+        user = User()
+        token = user.default_token_implementation(user_id)
+        self.assertEquals(str, type(token))
+        decoded = jwt.decode(
+            token,
+            user.jwt_secret,
+            algorithms=[user.jwt_algo]
+        )
+        self.assertEquals(user_id, decoded['user_id'])
+
+    def test_default_tokens_fail_if_tampeterd_with(self):
+        """ Default tokens fail if tampered with"""
+        user_id = 123
+        user = User()
+        token = user.default_token_implementation(user_id)
+        with self.assertRaises(jwt.exceptions.DecodeError):
+            jwt.decode(
+                token + 'x',
+                user.jwt_secret,
+                algorithms=[user.jwt_algo]
+            )
+
+    def test_default_tokens_fail_if_expired(self):
+        """ Default tokens will fail to decode upon expiration"""
+        user_id = 123
+        user = User()
+        user.jwt_lifetime = -1
+        token = user.default_token_implementation(user_id)
+        with self.assertRaises(jwt.exceptions.ExpiredSignatureError):
+            jwt.decode(token, user.jwt_secret, algorithms=[user.jwt_algo])
+
+
+
+
+    def test_default_tokens_expire_after_lifetime(self):
+        """ Default tokens expire after lifetime timeout"""
+        self.fail('Not implemented')
+
+
+    def test_use_default_jwt_implementation_if_no_custom(self):
+        """ Use default JWT implementation if not overridden"""
+        self.fail('Not implemented')
+
+    def test_can_register_custom_token_implementation(self):
+        """ Overriding custom JWT implementation via config"""
+        self.fail('Not implemented')
+
+
+    def test_generate_jwt_token_for_new_users(self):
+        """ New users receive fresh JWT token"""
+        self.fail('Not implemented')
 
 
     # -------------------------------------------------------------------------

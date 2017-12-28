@@ -8,7 +8,6 @@ from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
 
-
 class UserService(AbstractService):
     """
     User service

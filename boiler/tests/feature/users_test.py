@@ -48,9 +48,6 @@ class UserFeatureTests(BoilerTestCase):
 
 
 
-    def test_user_model_receives_config_options(self):
-        """ User model is initialised with JWT config options"""
-        pass
 
 
 

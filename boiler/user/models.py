@@ -1,6 +1,7 @@
-import datetime
+import datetime, jwt
 from hashlib import md5
 from sqlalchemy.ext.hybrid import hybrid_property
+from flask import current_app
 from boiler.user import exceptions as x
 
 from shiftschema.schema import Schema
@@ -95,6 +96,15 @@ class UpdateSchema(RegisterSchema):
 
 
 class User(db.Model):
+    """
+    User model
+    Represents a very basic user entity with the functionality to register,
+    via email and password or an OAuth provider, login, recover password and
+    be authorised and authenticated.
+
+    Please not this object must only be instantiated from flask app context
+    as it will try to pull config settings from current_app.config.
+    """
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     created = db.Column(db.DateTime)
@@ -114,7 +124,7 @@ class User(db.Model):
     _password = db.Column('password', db.String(256))
     password_link = db.Column(db.String(100), index=True, unique=True)
     password_link_expires = db.Column(db.DateTime)
-    api_key = db.Column(db.String(256), nullable=False)
+    jwt = db.Column(db.String(256), index=True, nullable=False)
 
     # facebook
     facebook_id = db.Column(db.String(50), unique=True, index=True)
@@ -157,9 +167,19 @@ class User(db.Model):
 
         super().__init__(*args, **kwargs)
         self.created = datetime.datetime.utcnow()
-        self.api_key = self.generate_hash(50)
         self.email_confirmed = False
         self.failed_logins = 0
+
+        # todo: below is a better way to get to config
+        # todo: can we use it for user services?
+
+        # jwt token settings
+        cfg = current_app.config
+        self.jwt_secret = cfg.get('USER_JWT_SECRET')
+        self.jwt_algo = cfg.get('USER_JWT_ALGO')
+        self.jwt_lifetime = cfg.get('USER_JWT_LIFETIME_SECONDS')
+        self.jwt_implementation = cfg.get('USER_JWT_IMPLEMENTATION')
+        self.create_token()
 
     def __repr__(self):
         """ Printable representation of user """
@@ -355,8 +375,42 @@ class User(db.Model):
     # JWT Token
     # -------------------------------------------------------------------------
 
+    def create_token(self):
+        """
+        Create token
+        Creates and sets JWT token for the user. If there was custom
+        implementation registered via config, uses that, otherwise falls back
+        to default implementation.
+        :return: string
+        """
+        print('CREATING USER TOKEN')
+        self.jwt = '123'
 
 
+
+    def default_token_implementation(self, user_id):
+        """
+        Default JWT token implementation
+        This is used by default for generating user tokens if custom
+        implementation was not configured. The token will contain user_id and
+        expiration date. If you need more information added to the token,
+        register custom implementation.
+        :param user_id: int, user id
+        :return: string
+        """
+        from_now = datetime.timedelta(seconds=self.jwt_lifetime)
+        expires = datetime.datetime.utcnow() + from_now
+        issued = datetime.datetime.utcnow()
+        not_before = datetime.datetime.utcnow()
+        data = dict(
+            exp=expires,
+            nbf=not_before,
+            iat=issued,
+            user_id=user_id
+        )
+        token = jwt.encode(data, self.jwt_secret, algorithm=self.jwt_algo)
+        string_token = token.decode('utf-8')
+        return string_token
 
     # set token
 
@@ -372,6 +426,7 @@ class User(db.Model):
     What would be a perfect interface?
     
     """
+
 
 
 
