@@ -18,11 +18,6 @@ def users_feature(app):
     and oauth integration
     """
 
-    if app.name == 'demo':
-        print('ADDING USERS TO DEMO APP')
-        # print(app.config)
-
-
     # check we have jwt secret configures
     if not app.config.get('USER_JWT_SECRET', None):
         raise x.JwtSecretMissing('Please set USER_JWT_SECRET in config')
