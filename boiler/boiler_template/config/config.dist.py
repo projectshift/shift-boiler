@@ -3,9 +3,9 @@ from project.backend import config
 class DefaultConfig(config.DefaultConfig):
     """ Local development config """
 
-    # set this for offline mode
     SERVER_NAME = None
     SECRET_KEY = None
+    USER_JWT_SECRET = None
 
 
 class DevConfig(config.DevConfig):

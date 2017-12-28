@@ -1,6 +1,7 @@
 from boiler.testing.testcase import FlaskTestCase, ViewTestCase
-from boiler.config.default_config import TestingConfig
 from boiler.testing.boiler_test_app.test_app import create_app
+
+from config.config import TestingConfig
 
 
 class BoilerTestCase(FlaskTestCase):

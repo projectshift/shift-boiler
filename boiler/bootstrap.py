@@ -9,7 +9,7 @@ from boiler.config.default_config import DefaultConfig
 from boiler.timer import restart_timer
 
 
-def create_middleware(config=None):
+def create_middleware(apps):
     """
     Create middleware
     Creates werkzeug middleware to dispatch apps on wsgi level and wrap it in
@@ -20,15 +20,10 @@ def create_middleware(config=None):
     :param config: object - configuration object
     :return: Flask - flask application instance
     """
-    try:
-        from config.apps import apps
-    except ImportError:
-        msg = 'Unable to import apps config. Check config/apps.py file.'
-        raise ImportError(msg)
-
     default_app = None
     mounts = {}
     for app_name, app_params in apps['apps'].items():
+        config = app_params['config']
         module = app_params['module'] + '.app'
         mod = import_module(module)
         app = mod.create_app(config=config)
@@ -57,6 +52,7 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
+
     # get flask parameters
     options = dict(import_name=name)
     if flask_params is not None:
@@ -74,7 +70,6 @@ def create_app(name, config=None, flask_params=None):
 
 def configure_app(app, config=None):
     """ Configure app with default config, then apply local if it exists """
-
     if config is None:
         config = DefaultConfig()
 
@@ -83,16 +78,6 @@ def configure_app(app, config=None):
 
     # configure
     app.config.from_object(config)
-    config_name = config.__class__.__name__
-
-    # load local config
-    local_path = path.join(app.config['CONFIG_PATH'], 'config.py')
-    loader = SourceFileLoader('local_config', local_path)
-    local = loader.load_module()
-    local_config = getattr(local, config_name, None)
-    if local_config:
-        local_config.LOCAL_CONFIG_APPLIED = True
-        app.config.from_object(local_config())
 
 
 def add_debug_toolbar(app):

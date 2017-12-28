@@ -28,7 +28,6 @@ class UserToken:
         string_token = token.decode('utf-8')
         return string_token
 
-
     def get_token(self, user_id):
         """
         Generate token for a user
@@ -47,7 +46,6 @@ class UserToken:
         :return:
         """
         return jwt.decode(token, '123', 'HS256')
-
 
     @staticmethod
     def token_implementation(func):

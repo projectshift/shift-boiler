@@ -27,8 +27,13 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     from werkzeug.serving import run_simple
     from boiler.bootstrap import create_middleware
     from config.config import DevConfig
+    from config.apps import apps
 
-    app = create_middleware(config=DevConfig())
+    # use dev config for every app when run this way
+    for app_name in apps['apps'].keys():
+        apps['apps'][app_name]['config'] = DevConfig()
+
+    app = create_middleware(apps=apps)
     return run_simple(
         hostname=host,
         port=port,
@@ -45,9 +50,13 @@ def shell():
     from config.config import DevConfig
     from config.apps import apps
 
+    # use dev config for every app when run this way
+    for app_name in apps['apps'].keys():
+        apps['apps'][app_name]['config'] = DevConfig()
+
     # mount apps
     context = dict()
-    middleware = create_middleware(config=DevConfig())
+    middleware = create_middleware(apps=apps)
     context['middleware'] = middleware.wsgi_app
     default = apps['default_app']
     context['apps'] = dict()

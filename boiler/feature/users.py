@@ -3,6 +3,7 @@ from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
 
+from boiler.user import exceptions as x
 from boiler.user.session_interface import BoilerSessionInterface
 from boiler.user.services import login_manager, oauth, principal
 from boiler.user.services import user_service
@@ -16,6 +17,15 @@ def users_feature(app):
     Allows to register users and assign groups, instantiates flask login, flask principal
     and oauth integration
     """
+
+    if app.name == 'demo':
+        print('ADDING USERS TO DEMO APP')
+        # print(app.config)
+
+
+    # check we have jwt secret configures
+    if not app.config.get('USER_JWT_SECRET', None):
+        raise x.JwtSecretMissing('Please set USER_JWT_SECRET in config')
 
     # use custom session interface
     app.session_interface = BoilerSessionInterface()

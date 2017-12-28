@@ -3,6 +3,11 @@ class UserException(Exception):
     pass
 
 
+class JwtSecretMissing(UserException, RuntimeError):
+    """ Raised when initialising user feature without JWT secret """
+    pass
+
+
 class EmailLinkExpired(UserException, ValueError):
     """ Raised when expired email link is used to confirm account """
     pass
