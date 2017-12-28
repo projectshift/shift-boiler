@@ -80,6 +80,9 @@ class DefaultConfig(BaseConfig):
     MAIL_PASSWORD = None
     MAIL_DEFAULT_SENDER = ('Webapp Mailer', 'mygmail@gmail.com')
 
+    # logging
+    LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS = False
+
     # localization (babel)
     DEFAULT_LOCALE = 'en_GB'
     DEFAULT_TIMEZONE = 'UTC'
@@ -125,7 +128,6 @@ class DefaultConfig(BaseConfig):
     # recaptcha
     RECAPTCHA_PUBLIC_KEY = None
     RECAPTCHA_PRIVATE_KEY = None
-
 
     # v1
     RECAPTCHA_OPTIONS = dict(

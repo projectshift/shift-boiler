@@ -13,7 +13,8 @@ def logging_feature(app):
     app.logger.setLevel(logging.INFO)
 
     # enable loggers
-    if not app.debug and not app.testing:
+    email_exceptions = app.config.get('LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS')
+    if email_exceptions and not app.debug and not app.testing:
         # config.debug=False
         mail_handler = mail_logger(app)
         app.logger.addHandler(mail_handler)
