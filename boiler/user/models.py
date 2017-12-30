@@ -124,7 +124,6 @@ class User(db.Model):
     _password = db.Column('password', db.String(256))
     password_link = db.Column(db.String(100), index=True, unique=True)
     password_link_expires = db.Column(db.DateTime)
-    jwt = db.Column(db.String(256), index=True, nullable=False)
 
     # facebook
     facebook_id = db.Column(db.String(50), unique=True, index=True)
@@ -169,17 +168,6 @@ class User(db.Model):
         self.created = datetime.datetime.utcnow()
         self.email_confirmed = False
         self.failed_logins = 0
-
-        # todo: below is a better way to get to config
-        # todo: can we use it for user services?
-
-        # jwt token settings
-        cfg = current_app.config
-        self.jwt_secret = cfg.get('USER_JWT_SECRET')
-        self.jwt_algo = cfg.get('USER_JWT_ALGO')
-        self.jwt_lifetime = cfg.get('USER_JWT_LIFETIME_SECONDS')
-        self.jwt_implementation = cfg.get('USER_JWT_IMPLEMENTATION')
-        self.create_token()
 
     def __repr__(self):
         """ Printable representation of user """
@@ -383,34 +371,13 @@ class User(db.Model):
         to default implementation.
         :return: string
         """
-        print('CREATING USER TOKEN')
-        self.jwt = '123'
+        if not self.jwt_implementation:
+            return self.default_token_implementation(self.id)
 
 
 
-    def default_token_implementation(self, user_id):
-        """
-        Default JWT token implementation
-        This is used by default for generating user tokens if custom
-        implementation was not configured. The token will contain user_id and
-        expiration date. If you need more information added to the token,
-        register custom implementation.
-        :param user_id: int, user id
-        :return: string
-        """
-        from_now = datetime.timedelta(seconds=self.jwt_lifetime)
-        expires = datetime.datetime.utcnow() + from_now
-        issued = datetime.datetime.utcnow()
-        not_before = datetime.datetime.utcnow()
-        data = dict(
-            exp=expires,
-            nbf=not_before,
-            iat=issued,
-            user_id=user_id
-        )
-        token = jwt.encode(data, self.jwt_secret, algorithm=self.jwt_algo)
-        string_token = token.decode('utf-8')
-        return string_token
+
+
 
     # set token
 

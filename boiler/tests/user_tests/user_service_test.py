@@ -2,6 +2,7 @@ from unittest import mock
 from nose.plugins.attrib import attr
 from boiler.tests.base_testcase import BoilerTestCase
 
+import jwt
 from datetime import datetime, timedelta
 from flask import session
 from shiftschema.result import Result
@@ -12,6 +13,8 @@ from boiler.user import events, exceptions as x
 from boiler.user.events import events as user_events
 from boiler.user.models import User, Role
 from boiler.user.user_service import UserService
+from boiler.config.default_config import DefaultConfig
+from boiler import bootstrap
 
 
 @attr('user', 'service')
@@ -640,6 +643,125 @@ class UserServiceTests(BoilerTestCase):
             user_service.remove_role_from_user(user, role)
             spy.assert_called_with(user, role=role)
 
+    # -------------------------------------------------------------------------
+    # JWT tokens
+    # -------------------------------------------------------------------------
+
+    def test_user_service_receives_jwt_options(self):
+        """ Initializing user service with config options """
+        class CustomConfig(DefaultConfig):
+            USER_JWT_SECRET='SuperSecret'
+            USER_JWT_ALGO='FAKE526'
+            USER_JWT_LIFETIME_SECONDS=-1
+            USER_JWT_IMPLEMENTATION=None
+
+        cfg = CustomConfig()
+        app = bootstrap.create_app('demo', config=cfg)
+        bootstrap.add_users(app)
+
+        self.assertEquals(
+            cfg.get('USER_JWT_SECRET'),
+            user_service.jwt_secret
+        )
+        self.assertEquals(
+            cfg.get('USER_JWT_ALGO'),
+            user_service.jwt_algo
+        )
+        self.assertEquals(
+            cfg.get('USER_JWT_LIFETIME_SECONDS'),
+            user_service.jwt_lifetime
+        )
+        self.assertEquals(
+            cfg.get('USER_JWT_IMPLEMENTATION'),
+            user_service.jwt_implementation
+        )
+
+    def test_default_token_implementation(self):
+        """ Generating token using default implementation"""
+        user_id = 123
+        token = user_service.default_token_implementation(user_id)
+        self.assertEquals(str, type(token))
+        decoded = jwt.decode(
+            token,
+            user_service.jwt_secret,
+            algorithms=[user_service.jwt_algo]
+        )
+        self.assertEquals(user_id, decoded['user_id'])
+
+    def test_default_tokens_fail_if_tampered_with(self):
+        """ Default tokens fail if tampered with"""
+        user_id = 123
+        token = user_service.default_token_implementation(user_id)
+        with self.assertRaises(jwt.exceptions.DecodeError):
+            jwt.decode(
+                token + 'x',
+                user_service.jwt_secret,
+                algorithms=[user_service.jwt_algo]
+            )
+
+    @attr('zzz')
+    def test_default_tokens_fail_if_expired(self):
+        """ Default tokens will fail to decode upon expiration"""
+        user_id = 123
+        user_service.jwt_lifetime = -1
+        token = user_service.default_token_implementation(user_id)
+        with self.assertRaises(jwt.exceptions.ExpiredSignatureError):
+            jwt.decode(
+                token,
+                user_service.jwt_secret,
+                algorithms=[user_service.jwt_algo]
+            )
+
+    def test_default_token_user_loader_fails_if_tampered_with(self):
+        """ Default token user loader fails if tampered with """
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+            token = user_service.default_token_implementation(user.id)
+            token = 'xxx' + token
+            with self.assertRaises(x.JwtDecodeError):
+                user_service.default_token_user_loader(token)
+
+    def test_default_token_user_loader_fails_if_expired(self):
+        """ Default token user loader fails if expired """
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+            user_service.jwt_lifetime = -1
+            token = user_service.default_token_implementation(user.id)
+            with self.assertRaises(x.JwtExpired):
+                user_service.default_token_user_loader(token)
+
+    def test_default_token_user_loader_fails_if_no_user(self):
+        """ Default token user loader fails if user not found """
+        with user_events.disconnect_receivers():
+            token = user_service.default_token_implementation(444)
+            with self.assertRaises(x.JwtNoUser):
+                user_service.default_token_user_loader(token)
+
+    def test_default_token_user_loader_fails_if_account_locked(self):
+        """ Default token user loader fails if account locked """
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+            user.lock_account(minutes=1)
+            user_service.save(user)
+            token = user_service.default_token_implementation(user.id)
+            with self.assertRaises(x.AccountLocked):
+                user_service.default_token_user_loader(token)
+
+    def test_default_token_loader_fails_if_email_not_confirmed(self):
+        """ Default token user loader fails if email unconfirmed"""
+        with user_events.disconnect_receivers():
+            user = self.create_user(confirm_email=False)
+            token = user_service.default_token_implementation(user.id)
+            with self.assertRaises(x.EmailNotConfirmed):
+                user_service.default_token_user_loader(token)
+
+    def test_default_token_user_loader_can_load_user(self):
+        """ Load user by token using default loader"""
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+            token = user_service.default_token_implementation(user.id)
+            loaded = user_service.default_token_user_loader(token)
+            self.assertEquals(loaded, user)
 
 
 

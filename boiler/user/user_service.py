@@ -1,12 +1,14 @@
 from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
+import datetime, jwt
 from boiler.feature.orm import db
 from boiler.feature.mail import mail
 
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
+
 
 class UserService(AbstractService):
     """
@@ -28,6 +30,11 @@ class UserService(AbstractService):
         self.require_confirmation = True
         self.email_subjects = dict()
 
+        self.jwt_secret = None
+        self.jwt_algo = 'HS256'
+        self.jwt_lifetime = 60 * 60 * 24 * 1 # days
+        self.jwt_implementation = None
+
         # initialise from flask app
         if app: self.init(app)
 
@@ -46,6 +53,11 @@ class UserService(AbstractService):
 
         subjects = cfg.get('USER_EMAIL_SUBJECTS')
         self.email_subjects = subjects if subjects else dict()
+
+        self.jwt_secret = cfg.get('USER_JWT_SECRET')
+        self.jwt_algo = cfg.get('USER_JWT_ALGO')
+        self.jwt_lifetime = cfg.get('USER_JWT_LIFETIME_SECONDS')
+        self.jwt_implementation = cfg.get('USER_JWT_IMPLEMENTATION')
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -143,8 +155,75 @@ class UserService(AbstractService):
         return True
 
     # -------------------------------------------------------------------------
-    # JWT token authentication
+    # JWT tokens
     # -------------------------------------------------------------------------
+
+    def default_token_implementation(self, user_id):
+        """
+        Default JWT token implementation
+        This is used by default for generating user tokens if custom
+        implementation was not configured. The token will contain user_id and
+        expiration date. If you need more information added to the token,
+        register your custom implementation.
+
+        :param user_id: int, user id
+        :return: string
+        """
+        from_now = datetime.timedelta(seconds=self.jwt_lifetime)
+        expires = datetime.datetime.utcnow() + from_now
+        issued = datetime.datetime.utcnow()
+        not_before = datetime.datetime.utcnow()
+        data = dict(
+            exp=expires,
+            nbf=not_before,
+            iat=issued,
+            user_id=user_id
+        )
+        token = jwt.encode(data, self.jwt_secret, algorithm=self.jwt_algo)
+        string_token = token.decode('utf-8')
+        return string_token
+
+    def default_token_user_loader(self, token):
+        """
+        Default token user loader
+        Accepts a token and decodes it checking signature and expiration. Then
+        loads user by id from the token to see if account is not locked. If
+        all is good, returns user record, otherwise throws an exception.
+
+        :param token: str, token string
+        :return: boiler.user.models.User
+        """
+        try:
+            data = jwt.decode(
+                token,
+                self.jwt_secret,
+                algorithms=[self.jwt_algo]
+            )
+        except jwt.exceptions.DecodeError as e:
+            raise x.JwtDecodeError(str(e))
+        except jwt.ExpiredSignatureError as e:
+            raise x.JwtExpired(str(e))
+
+        user = self.get(data['user_id'])
+        if not user:
+            msg = 'No user with such id [{}]'
+            raise x.JwtNoUser(msg.format(data['user_id']))
+
+        if user.is_locked():
+            msg = 'This account is locked'
+            raise x.AccountLocked(msg, locked_until=user.locked_until)
+
+        if self.require_confirmation and not user.email_confirmed:
+            msg = 'Please confirm your email address [{}]'
+            raise x.EmailNotConfirmed(
+                msg.format(user.email_secure),
+                email=user.email
+            )
+
+        # return on success
+        return user
+
+
 
     # validate and decode the token
     # check token validity
@@ -155,9 +234,7 @@ class UserService(AbstractService):
         """
         Get user by token
         Accepts a JWT token, checks token signature, check it has not expired
-        and decode. Load user by id from the token and see if it it has the
-        same token on record (for token invalidation/force re-login). Return
-        user record on success.
+        and decodes. Loads user by id from the token
 
         :param token: string, jwt token
         :return: boiler.user.models.User
