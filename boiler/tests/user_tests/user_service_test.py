@@ -654,6 +654,7 @@ class UserServiceTests(BoilerTestCase):
             USER_JWT_ALGO='FAKE526'
             USER_JWT_LIFETIME_SECONDS=-1
             USER_JWT_IMPLEMENTATION=None
+            USER_JWT_LOADER_IMPLEMENTATION=None
 
         cfg = CustomConfig()
         app = bootstrap.create_app('demo', config=cfg)
@@ -674,6 +675,10 @@ class UserServiceTests(BoilerTestCase):
         self.assertEquals(
             cfg.get('USER_JWT_IMPLEMENTATION'),
             user_service.jwt_implementation
+        )
+        self.assertEquals(
+            cfg.get('USER_JWT_LOADER_IMPLEMENTATION'),
+            user_service.jwt_loader_implementation
         )
 
     def test_default_token_implementation(self):
@@ -763,6 +768,44 @@ class UserServiceTests(BoilerTestCase):
             loaded = user_service.default_token_user_loader(token)
             self.assertEquals(loaded, user)
 
+    def test_fall_back_to_default_token_implementation_if_no_custom(self):
+        """ Fall back to default token implementation if no custom """
+        user_id = 444
+        token = user_service.generate_token(user_id)
+        decoded = user_service.decode_token(token)
+        self.assertEquals(user_id, decoded['user_id'])
+        for claim in ['exp', 'nbf', 'iat', 'user_id']:
+            self.assertTrue(claim in decoded.keys())
+        self.assertEquals(4, len(decoded.keys()))
+
+    def test_fall_back_to_default_token_loader_if_no_custom(self):
+        """ Fall back to default token user loader if no custom"""
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+            token = user_service.generate_token(user.id)
+            loaded = user_service.get_user_by_token(token)
+            self.assertEquals(loaded, user)
+
+    @attr('zzz')
+    def test_raise_when_failing_to_import_custom_token_implementation(self):
+        """ Raising exception if custom token implementation fails to import"""
+        pass
+
+    @attr('zzz')
+    def test_raise_when_failing_to_import_custom_token_loader(self):
+        """ Raising exception if custom token loader fails to import"""
+        pass
+
+    @attr('zzz')
+    def test_can_use_custom_token_implementation(self):
+        """ Can register and use custom token implementation"""
+        pass
+
+
+    @attr('zzz')
+    def test_can_use_custom_token_loader(self):
+        """ Can register and use custom token user loader"""
+        pass
 
 
 

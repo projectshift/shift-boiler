@@ -58,6 +58,9 @@ class UserService(AbstractService):
         self.jwt_algo = cfg.get('USER_JWT_ALGO')
         self.jwt_lifetime = cfg.get('USER_JWT_LIFETIME_SECONDS')
         self.jwt_implementation = cfg.get('USER_JWT_IMPLEMENTATION')
+        self.jwt_loader_implementation = cfg.get(
+            'USER_JWT_LOADER_IMPLEMENTATION'
+        )
 
     def save(self, user, commit=True):
         """ Persist user and emit event """
@@ -158,6 +161,47 @@ class UserService(AbstractService):
     # JWT tokens
     # -------------------------------------------------------------------------
 
+    def decode_token(self, token):
+        """
+        Decode token
+        A shorthand method to decode JWT token. Will return the payload as a
+        dictionary
+        :return: str, token
+        :return: dict
+        """
+        return jwt.decode(
+            token,
+            self.jwt_secret,
+            algorithms=[self.jwt_algo]
+        )
+
+    def generate_token(self, user_id):
+        """
+        Generate token
+        Checks if a custom token implementation is registered and uses that.
+        Otherwise falls back to default token implementation. Returns a string
+        token on success.
+
+        :param user_id: int, user id
+        :return: str
+        """
+        if not self.jwt_implementation:
+            return self.default_token_implementation(user_id)
+
+    def get_user_by_token(self, token):
+        """
+        Get user by token
+        Using for logging in. Check to see if a custom token user loader was
+        registered and uses that. Otherwise falls back to default loader
+        implementation. You should be fine with default implementation as long
+        as your token has user_id claim in it.
+
+        :param token: str, user token
+        :return: boiler.user.models.User
+        """
+        if not self.jwt_implementation:
+            return self.default_token_user_loader(token)
+
     def default_token_implementation(self, user_id):
         """
         Default JWT token implementation
@@ -194,11 +238,7 @@ class UserService(AbstractService):
         :return: boiler.user.models.User
         """
         try:
-            data = jwt.decode(
-                token,
-                self.jwt_secret,
-                algorithms=[self.jwt_algo]
-            )
+            data = self.decode_token(token)
         except jwt.exceptions.DecodeError as e:
             raise x.JwtDecodeError(str(e))
         except jwt.ExpiredSignatureError as e:
@@ -222,34 +262,6 @@ class UserService(AbstractService):
 
         # return on success
         return user
-
-
-
-    # validate and decode the token
-    # check token validity
-    # load user
-    # check token matches
-    # return user
-    def get_user_by_token(self, token):
-        """
-        Get user by token
-        Accepts a JWT token, checks token signature, check it has not expired
-        and decodes. Loads user by id from the token
-
-        :param token: string, jwt token
-        :return: boiler.user.models.User
-        """
-
-        # validate and decode the token
-        # check token validity
-        # load user
-        # check token matches
-        # return user
-
-
-        pass
-
-
 
     # -------------------------------------------------------------------------
     # Register and confirm
