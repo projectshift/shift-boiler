@@ -1,5 +1,5 @@
 from werkzeug import exceptions as e
-from flask import jsonify
+from flask import jsonify, abort
 from flask_restful import Api
 import logging
 
@@ -62,7 +62,7 @@ def enable_api_login(app):
     except ImportError:
         return
 
-    # turn on api logins if user feature enabled
+    # turn on api login if user feature enabled
     @login_manager.request_loader
     def load_user_from_request(request):
         user = None
@@ -78,5 +78,6 @@ def enable_api_login(app):
                     msg=str(exception)
                 )
                 app.logger.log(msg=msg, level=logging.INFO)
+                abort(401, description=str(exception))
 
         return user
