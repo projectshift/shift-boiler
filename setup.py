@@ -22,12 +22,12 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.1.7'
+version='0.2.0'
 
 # development status
 # dev_status = '1 - Planning'
-dev_status = '2 - Pre-Alpha'
-# dev_status = '3 - Alpha'
+# dev_status = '2 - Pre-Alpha'
+dev_status = '3 - Alpha'
 # dev_status = '4 - Beta'
 # dev_status = '5 - Production/Stable'
 # dev_status = '6 - Mature'
