@@ -1,6 +1,7 @@
 from werkzeug import exceptions as e
-from flask import g, jsonify
+from flask import jsonify
 from flask_restful import Api
+import logging
 
 # create api service
 api = Api()
@@ -54,21 +55,28 @@ def enable_api_login(app):
     """
     Enables api login via request object
     """
+    from boiler.user.services import login_manager, user_service
     try:
         from boiler.user.services import login_manager, user_service
+        from boiler.user import exceptions as x
     except ImportError:
         return
 
     # turn on api logins if user feature enabled
     @login_manager.request_loader
     def load_user_from_request(request):
-        # token = request.headers.get('Bearer')
-        # if token == '123':
-        #     g.logged_via_request = True
-        #     return user_service.get(2)
+        user = None
+        auth = request.headers.get('Authorization')
+        if auth and auth.startswith('Bearer'):
+            try:
+                token = auth[7:]
+                user = user_service.get_user_by_token(token)
+            except x.UserException as exception:
+                msg = 'JWT token login failed for [{ip}] with message: [{msg}]'
+                msg = msg.format(
+                    ip=request.environ['REMOTE_ADDR'],
+                    msg=str(exception)
+                )
+                app.logger.log(msg=msg, level=logging.INFO)
 
-        print('LOGGING IN VIA REQUEST')
-
-        # user = user_service.get(2)
-        # g.logged_via_request = True
-        return None
+        return user
