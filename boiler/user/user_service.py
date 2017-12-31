@@ -199,10 +199,6 @@ class UserService(AbstractService):
         # return custom token
         return implementation(user_id)
 
-
-
-
-
     def get_user_by_token(self, token):
         """
         Get user by token
@@ -214,8 +210,20 @@ class UserService(AbstractService):
         :param token: str, user token
         :return: boiler.user.models.User
         """
-        if not self.jwt_implementation:
+        if not self.jwt_loader_implementation:
             return self.default_token_user_loader(token)
+
+        try:
+            implementation = import_string(self.jwt_loader_implementation)
+        except ImportError:
+            msg = 'Failed to import custom JWT user loader implementation. '
+            msg += 'Check that configured module exists [{}]'
+            raise x.ConfigurationException(
+                msg.format(self.jwt_loader_implementation)
+            )
+
+        # return user from custom loader
+        return implementation(token)
 
 
 
