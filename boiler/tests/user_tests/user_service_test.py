@@ -37,6 +37,17 @@ class UserServiceTests(BoilerTestCase):
 
         return user
 
+    @staticmethod
+    def custom_token_implementation(user_id):
+        """ Custom JWT implementation """
+        return 'CUSTOM TOKEN FOR [{}]'.format(user_id)
+
+    @staticmethod
+    def custom_token_loader(token):
+        """ Custom JWT token user loader implementation """
+        return 'LOADED USER FROM TOKEN [{}]'.format(token)
+
+
     # ------------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------------
@@ -643,6 +654,9 @@ class UserServiceTests(BoilerTestCase):
             user_service.remove_role_from_user(user, role)
             spy.assert_called_with(user, role=role)
 
+
+
+
     # -------------------------------------------------------------------------
     # JWT tokens
     # -------------------------------------------------------------------------
@@ -704,7 +718,6 @@ class UserServiceTests(BoilerTestCase):
                 algorithms=[user_service.jwt_algo]
             )
 
-    @attr('zzz')
     def test_default_tokens_fail_if_expired(self):
         """ Default tokens will fail to decode upon expiration"""
         user_id = 123
@@ -789,23 +802,66 @@ class UserServiceTests(BoilerTestCase):
     @attr('zzz')
     def test_raise_when_failing_to_import_custom_token_implementation(self):
         """ Raising exception if custom token implementation fails to import"""
-        pass
+        class CustomConfig(DefaultConfig):
+            USER_JWT_SECRET='SuperSecret'
+            USER_JWT_IMPLEMENTATION='nonexistent.nonexistent'
 
-    @attr('zzz')
-    def test_raise_when_failing_to_import_custom_token_loader(self):
-        """ Raising exception if custom token loader fails to import"""
-        pass
+        cfg = CustomConfig()
+        app = bootstrap.create_app('demo', config=cfg)
+        bootstrap.add_users(app)
+        with self.assertRaises(x.ConfigurationException):
+            user_service.generate_token(123)
 
     @attr('zzz')
     def test_can_use_custom_token_implementation(self):
         """ Can register and use custom token implementation"""
-        pass
+        this = 'boiler.tests.user_tests.user_service_test.UserServiceTests'
+        token = this + '.custom_token_implementation'
+        class CustomConfig(DefaultConfig):
+            USER_JWT_SECRET='SuperSecret'
+            USER_JWT_LIFETIME_SECONDS=10
+            USER_JWT_IMPLEMENTATION=token
 
+        cfg = CustomConfig()
+        app = bootstrap.create_app('demo', config=cfg)
+        bootstrap.add_users(app)
+        user_id = 123
+        token = user_service.generate_token(user_id)
+        expected = self.custom_token_implementation(user_id)
+        self.assertEquals(expected, token)
+
+    @attr('zzz')
+    def test_raise_when_failing_to_import_custom_token_loader(self):
+        """ Raising exception if custom token loader fails to import"""
+
+        this = 'boiler.tests.user_tests.user_service_test.UserServiceTests'
+        token = this + '.custom_token_implementation'
+        loader = this + '.custom_token_loader'
+
+
+        class CustomConfig(DefaultConfig):
+            USER_JWT_SECRET='SuperSecret'
+            USER_JWT_ALGO='FAKE526'
+            USER_JWT_LIFETIME_SECONDS=-1
+            USER_JWT_IMPLEMENTATION=token
+            USER_JWT_LOADER_IMPLEMENTATION=None
+
+        cfg = CustomConfig()
+        app = bootstrap.create_app('demo', config=cfg)
+        bootstrap.add_users(app)
+        user_service.generate_token(123)
+
+    @attr('zzz')
+    def test_raise_when_custom_token_loader_is_not_callable(self):
+        """ Raising exception if custom token loader is not callable """
+        pass
 
     @attr('zzz')
     def test_can_use_custom_token_loader(self):
         """ Can register and use custom token user loader"""
         pass
+
+
 
 
 

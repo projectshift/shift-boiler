@@ -2,6 +2,12 @@ class UserException(Exception):
     """ Generic user exception marker """
     pass
 
+
+class ConfigurationException(UserException, ValueError):
+    """ Raised when there is something wrong with config options """
+    pass
+
+
 class EmailLinkExpired(UserException, ValueError):
     """ Raised when expired email link is used to confirm account """
     pass
@@ -43,4 +49,8 @@ class JwtExpired(UserException, RuntimeError):
 
 class JwtNoUser(UserException, RuntimeError):
     """ Raised when JWT decoded but user does not exist"""
+    pass
+
+class JwtImplementationError(UserException, RuntimeError):
+    """ Raised when custom JWT or loader is not a function"""
     pass

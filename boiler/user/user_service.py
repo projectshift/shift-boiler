@@ -2,6 +2,7 @@ from flask import current_app, render_template, has_request_context
 from flask_mail import Message
 
 import datetime, jwt
+from werkzeug.utils import import_string
 from boiler.feature.orm import db
 from boiler.feature.mail import mail
 
@@ -188,6 +189,20 @@ class UserService(AbstractService):
         if not self.jwt_implementation:
             return self.default_token_implementation(user_id)
 
+        try:
+            implementation = import_string(self.jwt_implementation)
+        except ImportError:
+            msg = 'Failed to import custom JWT implementation. '
+            msg += 'Check that configured module exists [{}]'
+            raise x.ConfigurationException(msg.format(self.jwt_implementation))
+
+        # return custom token
+        return implementation(user_id)
+
+
+
+
+
     def get_user_by_token(self, token):
         """
         Get user by token
@@ -201,6 +216,8 @@ class UserService(AbstractService):
         """
         if not self.jwt_implementation:
             return self.default_token_user_loader(token)
+
+
 
     def default_token_implementation(self, user_id):
         """

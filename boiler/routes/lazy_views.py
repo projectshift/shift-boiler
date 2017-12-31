@@ -19,7 +19,7 @@ class LazyView:
         """ Import and create instance of view """
 
         # important issue ahead
-        # see: https://github.com/projectshift/shift-boiler/issues/11
+        # @see: https://github.com/projectshift/shift-boiler/issues/11
         try:
             result = self.view(*args, **kwargs)
             return result
