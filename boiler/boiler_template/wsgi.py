@@ -1,4 +1,4 @@
 from boiler import bootstrap
-from config.config import DefaultConfig
-app = bootstrap.create_middleware(config=DefaultConfig())
+from config.apps import apps
+app = bootstrap.create_middleware(apps=apps)
 
