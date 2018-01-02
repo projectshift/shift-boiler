@@ -1,21 +1,10 @@
 import click
-from config.config import DefaultConfig
+from config.apps import apps
 from boiler.cli.colors import *
+from boiler.cli import get_app
 from boiler.bootstrap import create_middleware
 from boiler.user.models import User, Role
 from boiler.user.services import user_service, role_service
-
-def get_app():
-    """
-    Get app
-    Creates and returns flask application to be used as context
-    for the commands below. Why? basically because all the extensions used,
-    like ORM or logging or others a tied to an app and require one to run.
-    """
-    middleware = create_middleware(config=DefaultConfig())
-    default_app = middleware.wsgi_app.app
-    return default_app
-
 
 def print_validation_errors(result):
     """ Accepts validation result object and prints report (in red)"""
