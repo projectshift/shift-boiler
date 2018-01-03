@@ -224,6 +224,9 @@ class ViewTestCase(FlaskTestCase):
 
     def assertMethodNotAllowed(self, response):
         return self.assertStatusCode(response, 405)
+    
+    def assertConflict(self, response):
+        return self.assertStatusCode(response, 409)    
 
     def assertInternalServerError(self, response):
         return self.assertStatusCode(response, 500)
