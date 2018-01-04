@@ -58,7 +58,7 @@ def logout_event(user):
 
 def register_event(user):
     """ Handle registration event """
-    confirm = current_app.di.get_parameter('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
+    confirm = current_app.config.get('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
     base_url = url_for('user.confirm.email.request', _external=True) if confirm else ''
     user_service.send_welcome_message(user, base_url=base_url)
     msg = 'User ({}){} registered'.format(user.id, user.email)
