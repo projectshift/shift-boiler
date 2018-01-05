@@ -22,16 +22,22 @@ def cli():
 @click.option('--port', '-p', default=5000, help='Listen on port')
 @click.option('--reload/--no-reload', default=True, help='Reload on change?')
 @click.option('--debug/--no-debug', default=True, help='Use debugger?')
-def run(host='0.0.0.0', port=5000, reload=True, debug=True):
+@click.option('--environment', '-e', default='dev', help='Environment to use)')
+def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler.bootstrap import create_middleware
-    from config.config import DevConfig
+    from config.config import DevConfig, TestingConfig, DefaultConfig
     from config.apps import apps
+
+    # get config
+    if environment == 'prod': config = DefaultConfig()
+    elif environment == 'test': config = TestingConfig()
+    else: config = DevConfig()
 
     # use dev config for every app when run this way
     for app_name in apps['apps'].keys():
-        apps['apps'][app_name]['config'] = DevConfig()
+        apps['apps'][app_name]['config'] = config
 
     app = create_middleware(apps=apps)
     return run_simple(

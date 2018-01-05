@@ -1,13 +1,11 @@
 from werkzeug import exceptions as e
-
+from flask import render_template
 
 def error_pages_feature(app):
     """
     Error pages feature
     Adds custom error pages to flask app
     """
-    from flask import render_template
-
     # create generic exception handler
     def error_page(exception):
         http_exception = isinstance(exception, e.HTTPException)
