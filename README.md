@@ -43,6 +43,14 @@ boiler dependencies flask
 
 That was quickstart for robots. We also have a [quickstart for humans](docs/quickstart.md), with some further exaplanations.
 
+## Versioning
+
+We loosely follow [semver](https://semver.org/) except we did not have a major
+release yet to indicate the fact that the is still not entirely production ready.
+We however did successfully used it in production on multiple occasions for
+webapps and apis. Just remember to freeze your boiler version in requirements
+file and expect minor versions to introduce breaking changes.
+
 
 ## Documentation
 
