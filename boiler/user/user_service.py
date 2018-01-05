@@ -176,9 +176,20 @@ class UserService(AbstractService):
             algorithms=[self.jwt_algo]
         )
 
-    def generate_token(self, user_id):
+    def revoke_user_token(self, user_id):
         """
-        Generate token
+        Revoke user token
+        Erases user token on file forcing them to re-login and obtain a new one.
+        :param user_id: int
+        :return:
+        """
+        user = self.get(user_id)
+        user.token = None
+        self.save(user)
+
+    def get_token(self, user_id):
+        """
+        Get user token
         Checks if a custom token implementation is registered and uses that.
         Otherwise falls back to default token implementation. Returns a string
         token on success.
@@ -233,9 +244,27 @@ class UserService(AbstractService):
         expiration date. If you need more information added to the token,
         register your custom implementation.
 
+        It will load a user to see if token is already on file. If it is, the
+        existing token will be checked for expiration and returned if valid.
+        Otherwise a new token will be generated and persisted. This can be used
+        to perform token revocation.
+
         :param user_id: int, user id
         :return: string
         """
+        user = self.get(user_id)
+        if not user:
+            msg = 'No user with such id [{}]'
+            raise x.JwtNoUser(msg.format(user_id))
+
+        # return token if exists and valid
+        if user.token:
+            try:
+                self.decode_token(user.token)
+                return user.token
+            except jwt.exceptions.ExpiredSignatureError:
+                pass
+
         from_now = datetime.timedelta(seconds=self.jwt_lifetime)
         expires = datetime.datetime.utcnow() + from_now
         issued = datetime.datetime.utcnow()
@@ -248,6 +277,8 @@ class UserService(AbstractService):
         )
         token = jwt.encode(data, self.jwt_secret, algorithm=self.jwt_algo)
         string_token = token.decode('utf-8')
+        user.token = string_token
+        self.save(user)
         return string_token
 
     def default_token_user_loader(self, token):
@@ -282,6 +313,10 @@ class UserService(AbstractService):
                 msg.format(user.email_secure),
                 email=user.email
             )
+
+        # test token matches the one on file
+        if not token == user.token:
+            raise x.JwtTokenMismatch('The token does not match our records')
 
         # return on success
         return user
@@ -349,7 +384,7 @@ class UserService(AbstractService):
         if self.require_confirmation:
             html = render_template('user/mail/account-confirm.html', **data)
             txt = render_template('user/mail/account-confirm.txt', **data)
-        if not self.require_confirmation:
+        else:
             html = render_template('user/mail/welcome.html', **data)
             txt = render_template('user/mail/welcome.txt', **data)
 

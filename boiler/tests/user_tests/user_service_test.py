@@ -326,7 +326,6 @@ class UserServiceTests(BoilerTestCase):
     # Register and welcome message
     # -------------------------------------------------------------------------
 
-    @attr('zzz')
     def test_register_returns_validation_errors(self):
         """ Registering returns validation error on bad data """
         with user_events.disconnect_receivers():
@@ -341,7 +340,6 @@ class UserServiceTests(BoilerTestCase):
             self.assertIsInstance(result, Result)
             self.assertFalse(result)
 
-    @attr('zzz')
     def test_register(self):
         """ Can register new user """
         with user_events.disconnect_receivers():
@@ -694,9 +692,6 @@ class UserServiceTests(BoilerTestCase):
             user_service.remove_role_from_user(user, role)
             spy.assert_called_with(user, role=role)
 
-
-
-
     # -------------------------------------------------------------------------
     # JWT tokens
     # -------------------------------------------------------------------------
@@ -737,20 +732,60 @@ class UserServiceTests(BoilerTestCase):
 
     def test_default_token_implementation(self):
         """ Generating token using default implementation"""
-        user_id = 123
-        token = user_service.default_token_implementation(user_id)
+        user = self.create_user(confirm_email=True)
+        token = user_service.default_token_implementation(user.id)
         self.assertEquals(str, type(token))
         decoded = jwt.decode(
             token,
             user_service.jwt_secret,
             algorithms=[user_service.jwt_algo]
         )
-        self.assertEquals(user_id, decoded['user_id'])
+        self.assertEquals(user.id, decoded['user_id'])
+
+    def test_default_implementation_fails_if_user_not_found(self):
+        """ Fail to generate token if user not found """
+        with self.assertRaises(x.JwtNoUser):
+            user_service.get_token(111)
+
+    def test_default_implemntation_returns_token_on_file_if_got_one(self):
+        """ Return token from user model if it's still valid"""
+        with user_events.disconnect_receivers():
+            user = self.create_user(confirm_email=True)
+        from_now = timedelta(seconds=user_service.jwt_lifetime)
+        expires = datetime.utcnow() + from_now
+        data = dict(exp=expires, user_id=user.id)
+        token = jwt.encode(
+            data,
+            user_service.jwt_secret,
+            algorithm=user_service.jwt_algo
+        )
+        user.token = token
+        user_service.save(user)
+        token = user_service.get_token(user.id)
+        self.assertEquals(user.token, token)
+
+    def test_default_implementation_regenerates_token_if_expired(self):
+        """ Regenerate user token if the one on file expired"""
+        with user_events.disconnect_receivers():
+            user = self.create_user(confirm_email=True)
+        from_now = timedelta(seconds=-20)
+        expires = datetime.utcnow() + from_now
+        data = dict(exp=expires, user_id=user.id)
+        token = jwt.encode(
+            data,
+            user_service.jwt_secret,
+            algorithm=user_service.jwt_algo
+        )
+        user.token = token
+        user_service.save(user)
+        token = user_service.get_token(user.id)
+        self.assertEquals(token, user.token)
 
     def test_default_tokens_fail_if_tampered_with(self):
         """ Default tokens fail if tampered with"""
-        user_id = 123
-        token = user_service.default_token_implementation(user_id)
+        with user_events.disconnect_receivers():
+            user = self.create_user(confirm_email=True)
+        token = user_service.default_token_implementation(user.id)
         with self.assertRaises(jwt.exceptions.DecodeError):
             jwt.decode(
                 token + 'x',
@@ -760,9 +795,10 @@ class UserServiceTests(BoilerTestCase):
 
     def test_default_tokens_fail_if_expired(self):
         """ Default tokens will fail to decode upon expiration"""
-        user_id = 123
+        with user_events.disconnect_receivers():
+            user = self.create_user(confirm_email=True)
         user_service.jwt_lifetime = -1
-        token = user_service.default_token_implementation(user_id)
+        token = user_service.default_token_implementation(user.id)
         with self.assertRaises(jwt.exceptions.ExpiredSignatureError):
             jwt.decode(
                 token,
@@ -791,7 +827,9 @@ class UserServiceTests(BoilerTestCase):
     def test_default_token_user_loader_fails_if_no_user(self):
         """ Default token user loader fails if user not found """
         with user_events.disconnect_receivers():
-            token = user_service.default_token_implementation(444)
+            user = self.create_user(confirm_email=True)
+            token = user_service.default_token_implementation(user.id)
+            user_service.delete(user)
             with self.assertRaises(x.JwtNoUser):
                 user_service.default_token_user_loader(token)
 
@@ -809,9 +847,18 @@ class UserServiceTests(BoilerTestCase):
         """ Default token user loader fails if email unconfirmed"""
         with user_events.disconnect_receivers():
             user = self.create_user(confirm_email=False)
-            token = user_service.default_token_implementation(user.id)
-            with self.assertRaises(x.EmailNotConfirmed):
-                user_service.default_token_user_loader(token)
+        token = user_service.default_token_implementation(user.id)
+        with self.assertRaises(x.EmailNotConfirmed):
+            user_service.default_token_user_loader(token)
+
+    def test_default_token_loader_fails_if_tokens_mismatch(self):
+        """ Fail to load user if token doesn't match the one on file"""
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+        token = user_service.default_token_implementation(user.id)
+        user_service.revoke_user_token(user.id)
+        with self.assertRaises(x.JwtTokenMismatch):
+            user_service.default_token_user_loader(token)
 
     def test_default_token_user_loader_can_load_user(self):
         """ Load user by token using default loader"""
@@ -823,10 +870,11 @@ class UserServiceTests(BoilerTestCase):
 
     def test_fall_back_to_default_token_implementation_if_no_custom(self):
         """ Fall back to default token implementation if no custom """
-        user_id = 444
-        token = user_service.generate_token(user_id)
+        with user_events.disconnect_receivers():
+            user = self.create_user()
+        token = user_service.get_token(user.id)
         decoded = user_service.decode_token(token)
-        self.assertEquals(user_id, decoded['user_id'])
+        self.assertEquals(user.id, decoded['user_id'])
         for claim in ['exp', 'nbf', 'iat', 'user_id']:
             self.assertTrue(claim in decoded.keys())
         self.assertEquals(4, len(decoded.keys()))
@@ -835,7 +883,7 @@ class UserServiceTests(BoilerTestCase):
         """ Fall back to default token user loader if no custom"""
         with user_events.disconnect_receivers():
             user = self.create_user()
-            token = user_service.generate_token(user.id)
+            token = user_service.get_token(user.id)
             loaded = user_service.get_user_by_token(token)
             self.assertEquals(loaded, user)
 
@@ -849,7 +897,7 @@ class UserServiceTests(BoilerTestCase):
         app = bootstrap.create_app('demo', config=cfg)
         bootstrap.add_users(app)
         with self.assertRaises(x.ConfigurationException):
-            user_service.generate_token(123)
+            user_service.get_token(123)
 
     def test_can_use_custom_token_implementation(self):
         """ Can register and use custom token implementation"""
@@ -864,7 +912,7 @@ class UserServiceTests(BoilerTestCase):
         app = bootstrap.create_app('demo', config=cfg)
         bootstrap.add_users(app)
         user_id = 123
-        token = user_service.generate_token(user_id)
+        token = user_service.get_token(user_id)
         expected = self.custom_token_implementation(user_id)
         self.assertEquals(expected, token)
 

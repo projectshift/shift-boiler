@@ -54,3 +54,7 @@ class JwtNoUser(UserException, RuntimeError):
 class JwtImplementationError(UserException, RuntimeError):
     """ Raised when custom JWT or loader is not a function"""
     pass
+
+class JwtTokenMismatch(UserException, RuntimeError):
+    """ Raised when token is valid but does not match the one on file """
+    pass

@@ -125,6 +125,9 @@ class User(db.Model):
     password_link = db.Column(db.String(100), index=True, unique=True)
     password_link_expires = db.Column(db.DateTime)
 
+    # token
+    token = db.Column(db.Text())
+
     # facebook
     facebook_id = db.Column(db.String(50), unique=True, index=True)
     facebook_token = db.Column(db.String(250), unique=True)
