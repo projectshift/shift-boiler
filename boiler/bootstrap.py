@@ -1,8 +1,8 @@
 from os import path
-from importlib.machinery import SourceFileLoader
 from importlib import import_module
 
 from flask import Flask
+from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.wsgi import DispatcherMiddleware
 
 from boiler.config.default_config import DefaultConfig
@@ -64,20 +64,21 @@ def create_app(name, config=None, flask_params=None):
 
     # create an app
     app = Flask(**options)
-    configure_app(app, config)
-    return app
 
-
-def configure_app(app, config=None):
-    """ Configure app with default config, then apply local if it exists """
+    # configure app
     if config is None:
         config = DefaultConfig()
-
     if config.__class__ is type:
         raise Exception('Config must be an object, got class instead.')
-
-    # configure
     app.config.from_object(config)
+
+    # use kernel templates
+    kernel_templates_path = path.realpath(path.dirname(__file__)+'/templates')
+    fallback_loader = FileSystemLoader([kernel_templates_path])
+    custom_loader = ChoiceLoader([app.jinja_loader, fallback_loader])
+    app.jinja_loader = custom_loader
+
+    return app
 
 
 def add_debug_toolbar(app):

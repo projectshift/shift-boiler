@@ -161,9 +161,6 @@ class DefaultConfig(BaseConfig):
         'password_change': 'Change your password here.',
     }
 
-    # templating
-    TEMPLATES_FALLBACK_TO_KERNEL = True
-
 
 class DevConfig(DefaultConfig):
     """ Default development config """
