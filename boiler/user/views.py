@@ -272,7 +272,7 @@ class ConfirmEmailResendAlreadyConfirmed(Template):
 class ConfirmEmailExpired(View):
     """ Displays email link expired message with an option to regenerate """
     template = 'user/confirm-email/expired.j2'
-    resend_endpoint = 'user.confirm.email.resend'
+    resend_endpoint = 'user.confirm.email.request'
 
     def dispatch_request(self, id=None):
         resend = url_for(self.resend_endpoint, id=id)

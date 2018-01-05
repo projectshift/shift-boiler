@@ -11,13 +11,7 @@
                 <h2>Link expired</h2>
                 <p class="user-result-message">Your confirmation link has expired.</p>
                 <div class="controls">
-                    <a href="{{ resend }}" class="btn btn-lg btn-primary btn-block">
-                        {% if current_user.is_authenticated %}
-                            Resend message
-                        {% else %}
-                            Login to resend
-                        {% endif %}
-                    </a>
+                    <a href="{{ resend }}" class="btn btn-lg btn-primary btn-block">Get new link</a>
                 </div>
             </div>
 
