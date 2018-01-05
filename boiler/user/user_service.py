@@ -9,7 +9,7 @@ from boiler.feature.mail import mail
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
-
+from boiler.user import event_handlers # required to connect handlers
 
 class UserService(AbstractService):
     """
