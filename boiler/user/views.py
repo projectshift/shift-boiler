@@ -320,14 +320,20 @@ class RecoverPasswordRequest(View):
     def dispatch_request(self):
         form = self.form()
         if form.validate_on_submit():
+
+            # get base url
+            base_url = current_app.config.get('USER_BASE_PASSWORD_CHANGE_URL')
+            if not base_url:
+                base_url = url_for(
+                    'user.recover.password.request',
+                    _external=True
+                )
+
             user = user_service.first(email=form.email.data)
             if not user:
                 if self.flash: flash(self.not_found_message, 'danger')
             else:
-                params = dict()
-                params.update(self.confirm_endpoint_params)
-                url = url_for(self.confirm_endpoint, _external=True, **params)
-                user_service.request_password_reset(user, url)
+                user_service.request_password_reset(user, base_url)
                 url = url_for(self.ok_redirect, **self.ok_redirect_params)
                 return redirect(url)
         elif form.is_submitted():

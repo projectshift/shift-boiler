@@ -1,4 +1,4 @@
-from flask import current_app, url_for, has_request_context
+from flask import current_app
 from boiler.user import events
 
 """
@@ -65,15 +65,6 @@ def email_update_requested_event(user):
     """ Handle email updated request event """
     msg = 'User ({}){} requested email update'.format(user.id, user.email)
     current_app.logger.info(msg)
-    # doggy.increment('user.email_update_requested')
-    #
-    # if has_request_context():
-    #     base_url = url_for('user.confirm.email.request', _external=True)
-    #     user_service.send_email_changed_message(user, base_url=base_url)
-    # else:
-    #     msg = 'Update message is not sent, because executed '
-    #     msg += 'outside of request context'
-    #     current_app.logger.info(msg)
 
 
 def email_confirmed_event(user):
