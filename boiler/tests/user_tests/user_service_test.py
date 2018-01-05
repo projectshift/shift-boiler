@@ -353,7 +353,6 @@ class UserServiceTests(BoilerTestCase):
             self.assertIsInstance(user, User)
             self.assertEqual(1, user.id)
 
-    @attr('zzz')
     def test_register_password_can_be_verified(self):
         """ REGRESSION: Password provided at registration can be verified """
         user_data = dict(email='tester@test.com', password='111111')
@@ -372,7 +371,6 @@ class UserServiceTests(BoilerTestCase):
         verified = user.verify_password(password)
         self.assertTrue(verified)
 
-    @attr('zzz')
     def test_register_emits_event(self):
         """ Registration emits event """
         event = events.register_event
@@ -386,7 +384,6 @@ class UserServiceTests(BoilerTestCase):
             )
             spy.assert_called_with(user)
 
-    @attr('xxx')
     def test_register_send_welcome_message(self):
         """ Registration sends welcome message"""
         user_data = dict(email='test@test.com', password='123')
@@ -395,7 +392,6 @@ class UserServiceTests(BoilerTestCase):
         self.assertEquals(1, len(out))
 
 
-    @attr('zzz')
     def test_account_confirmation_message_send(self):
         """ Account confirmation message can be sent """
         user = User(email='test@test.com', password='123')
@@ -410,7 +406,6 @@ class UserServiceTests(BoilerTestCase):
             self.assertTrue(user.email_link in msg.html)
             self.assertTrue(user.email_link in msg.body)
 
-    @attr('zzz')
     def test_account_confirmation_message_resend(self):
         """ Account confirmation message can be resent """
         user_data = dict(email='tester@test.com', password='123456')
@@ -482,7 +477,11 @@ class UserServiceTests(BoilerTestCase):
         """ Change email returns validation errors on bad data """
         u = User(email='ok@ok.com', password='123')
         with events.events.disconnect_receivers():
-            res = user_service.change_email(u, 'not-an-email')
+            res = user_service.change_email(
+                u,
+                'not-an-email',
+                send_message=False
+            )
             self.assertIsInstance(res, Result)
 
     def test_change_email_possible(self):
@@ -493,7 +492,11 @@ class UserServiceTests(BoilerTestCase):
                 user_service.force_login(u)
                 self.assertTrue('user_id' in session)
 
-                res = user_service.change_email(u, 'new@email.com')
+                res = user_service.change_email(
+                    u,
+                    'new@email.com',
+                    send_message=False
+                )
                 self.assertIsInstance(res, User)
                 self.assertEqual('new@email.com', u.email_new)
                 self.assertIsNotNone(u.email_link)
@@ -508,8 +511,26 @@ class UserServiceTests(BoilerTestCase):
                 u = self.create_user()
                 spy = mock.Mock()
                 events.email_update_requested_event.connect(spy, weak=False)
-                user_service.change_email(u, 'new@email.com')
+                user_service.change_email(
+                    u,
+                    'new@email.com',
+                    send_message=False
+                )
                 spy.assert_called_with(u)
+
+    def test_changing_email_sends_email(self):
+        """ Send email message with confirmation link when changing email"""
+        with events.events.disconnect_receivers():
+            with mail.record_messages() as out:
+                with self.app.test_request_context():
+                    u = self.create_user()
+                    user_service.force_login(u)
+                    self.assertTrue('user_id' in session)
+                    res = user_service.change_email(u, 'new@email.com')
+                    self.assertIsInstance(res, User)
+                    self.assertEqual('new@email.com', u.email_new)
+                    self.assertIsNotNone(u.email_link)
+                    self.assertEquals(1, len(out))
 
     def test_change_email_message_send(self):
         """ Email change confirmation message can be sent"""

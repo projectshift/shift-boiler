@@ -398,8 +398,19 @@ class UserService(AbstractService):
     # Change email
     # -------------------------------------------------------------------------
 
-    def change_email(self, user, new_email):
-        """ Set new email and send email confirmation message """
+    def change_email(
+        self, user, new_email, base_confirm_url='', send_message=True):
+        """
+        Change email
+        Saves new email and sends confirmation before doing the switch.
+        Can optionally skip sending out message for testing purposes.
+
+        :param user: boiler.user.models.User
+        :param new_email: str, new email
+        :param base_confirm_url: str, base url for confirmation links
+        :param send_message: bool, send email or skip
+        :return: None
+        """
         from boiler.user.models import UpdateSchema
         schema = UpdateSchema()
         user.email = new_email
@@ -409,6 +420,11 @@ class UserService(AbstractService):
 
         db.session.add(user)
         db.session.commit()
+
+        # send confirmation link
+        if send_message:
+            self.send_email_changed_message(user, base_confirm_url)
+
         events.email_update_requested_event.send(user)
         return user
 

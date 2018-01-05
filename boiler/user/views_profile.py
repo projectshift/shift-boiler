@@ -130,6 +130,7 @@ class ProfileEmailChange(Profile):
     ok_message = 'Email update confirmation sent. Please check inbox.'
     navigation_callback = Profile.init_navigation
     cancel_message = 'Request to change email was cancelled'
+    flash = True
 
     def dispatch_request(self, id=None):
         self.navigation_callback(id=id)
@@ -145,9 +146,21 @@ class ProfileEmailChange(Profile):
             if self.flash: flash(self.cancel_message)
             return render_template(self.template, **params)
 
-        # otherwise execute form
+        # otherwise change
+        cfg = current_app.config
+        base_confirm_url = cfg.get('USER_BASE_EMAIL_CONFIRM_URL')
+        if not base_confirm_url:
+            base_confirm_url = url_for(
+                'user.confirm.email.request',
+                _external=True
+            )
+
         if form.validate_on_submit():
-            ok = user_service.change_email(user, form.email.data)
+            ok = user_service.change_email(
+                user=user,
+                new_email=form.email.data,
+                base_confirm_url=base_confirm_url
+            )
             if ok:
                 if self.flash: flash(self.ok_message, 'success')
                 return render_template(self.template, **params)
@@ -173,6 +186,7 @@ class ProfilePasswordChange(Profile):
     ok_redirect= 'user.login'
     exception_message = 'Password change failed.'
     navigation_callback = Profile.init_navigation
+    flash = True
 
     def dispatch_request(self, id=None):
         user = user_service.get_or_404(id)
@@ -204,6 +218,7 @@ class ProfileSocial(Profile):
     disabled_message = 'Disabled social network'
     handle_endpoint = 'user.social.connect.{}'
     handle_endpoint_params = {}
+    flash = True
 
     def authorize(self, provider):
         params = dict()

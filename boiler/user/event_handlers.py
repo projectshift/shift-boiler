@@ -56,10 +56,6 @@ def logout_event(user):
 
 def register_event(user):
     """ Handle registration event """
-    # confirm = current_app.config.get('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
-    # base_url = url_for('user.confirm.email.request', _external=True) if confirm else ''
-    # user_service.send_welcome_message(user, base_url=base_url)
-
     msg = 'User ({}){} registered'.format(user.id, user.email)
     current_app.logger.info(msg)
     # doggy.increment('user.registered')
@@ -70,14 +66,14 @@ def email_update_requested_event(user):
     msg = 'User ({}){} requested email update'.format(user.id, user.email)
     current_app.logger.info(msg)
     # doggy.increment('user.email_update_requested')
-
-    if has_request_context():
-        base_url = url_for('user.confirm.email.request', _external=True)
-        user_service.send_email_changed_message(user, base_url=base_url)
-    else:
-        msg = 'Update message is not sent, because executed '
-        msg += 'outside of request context'
-        current_app.logger.info(msg)
+    #
+    # if has_request_context():
+    #     base_url = url_for('user.confirm.email.request', _external=True)
+    #     user_service.send_email_changed_message(user, base_url=base_url)
+    # else:
+    #     msg = 'Update message is not sent, because executed '
+    #     msg += 'outside of request context'
+    #     current_app.logger.info(msg)
 
 
 def email_confirmed_event(user):
