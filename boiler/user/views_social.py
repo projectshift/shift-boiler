@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask.views import View
 from flask import render_template, request, url_for, flash, redirect, session
-from flask import abort
+from flask import abort, current_app
 from flask_login import current_user
 
 from boiler.user import exceptions as x
@@ -180,10 +180,25 @@ class FinalizeSocial(View):
         if not form.is_submitted():
             form.email.data = email
 
+        # get config
+        cfg = current_app.config
+        send_welcome = cfg.get('USER_SEND_WELCOME_MESSAGE')
+        base_confirm_url = cfg.get('USER_BASE_EMAIL_CONFIRM_URL')
+        if not base_confirm_url:
+            base_confirm_url = url_for(
+                'user.confirm.email.request',
+                _external=True
+            )
+
         # register and add social tokens
         if form.validate_on_submit():
             data.update(email=form.email.data)
-            user = user_service.register(**data)
+            user = user_service.register(
+                user_data=data,
+                send_welcome=send_welcome,
+                base_confirm_url=base_confirm_url
+            )
+
             session.pop('social_data')  # cleanup
             if user_service.require_confirmation:
                 return redirect(url_for(self.ok_endpoint, **self.ok_params))
@@ -352,9 +367,6 @@ class TwitterHandle(BaseHandle):
     def get_profile_data(self, auth_response):
         """ Retrieve profile data from provider """
         res = auth_response
-
-        print(res)
-
         data = dict(
             provider=self.provider,
             id=res.get('user_id'),

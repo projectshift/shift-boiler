@@ -1,7 +1,5 @@
-from flask import current_app, url_for
+from flask import current_app, url_for, has_request_context
 from boiler.user import events
-from flask import has_request_context, current_app
-from boiler.user.services import user_service
 
 """
 Event handlers
@@ -58,9 +56,10 @@ def logout_event(user):
 
 def register_event(user):
     """ Handle registration event """
-    confirm = current_app.config.get('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
-    base_url = url_for('user.confirm.email.request', _external=True) if confirm else ''
-    user_service.send_welcome_message(user, base_url=base_url)
+    # confirm = current_app.config.get('USER_ACCOUNTS_REQUIRE_CONFIRMATION')
+    # base_url = url_for('user.confirm.email.request', _external=True) if confirm else ''
+    # user_service.send_welcome_message(user, base_url=base_url)
+
     msg = 'User ({}){} registered'.format(user.id, user.email)
     current_app.logger.info(msg)
     # doggy.increment('user.registered')

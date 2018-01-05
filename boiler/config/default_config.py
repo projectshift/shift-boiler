@@ -149,9 +149,11 @@ class DefaultConfig(BaseConfig):
     USER_JWT_IMPLEMENTATION = None # string module name
     USER_JWT_LOADER_IMPLEMENTATION = None # string module name
 
-    USER_PUBLIC_PROFILES = True
+    USER_PUBLIC_PROFILES = False
     USER_ACCOUNTS_REQUIRE_CONFIRMATION = True
     USER_SEND_WELCOME_MESSAGE = True
+    USER_BASE_EMAIL_CONFIRM_URL = None
+    USER_BASE_PASSWORD_CHANGE_URL = None
     USER_EMAIL_SUBJECTS = {
         'welcome': 'Welcome to our site!',
         'welcome_confirm': 'Welcome,  please activate your account!',

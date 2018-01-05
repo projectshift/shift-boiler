@@ -225,8 +225,6 @@ class UserService(AbstractService):
         # return user from custom loader
         return implementation(token)
 
-
-
     def default_token_implementation(self, user_id):
         """
         Default JWT token implementation
@@ -292,9 +290,18 @@ class UserService(AbstractService):
     # Register and confirm
     # -------------------------------------------------------------------------
 
-    def register(self, **data):
-        """ Register user and emit event """
-        user = User(**data)
+    def register(self, user_data, base_confirm_url='', send_welcome=True):
+        """
+        Register user
+        Accepts user data, validates it and performs registration. Will send
+        a welcome message with a confirmation link on success.
+
+        :param user_data: dic, populate user with data
+        :param send_welcome: bool, whether to send welcome or skip it (testing)
+        :param base_confirm_url: str, base confirmation link url
+        :return: boiler.user.models.User
+        """
+        user = User(**user_data)
         schema = RegisterSchema()
         valid = schema.process(user)
         if not valid:
@@ -302,11 +309,15 @@ class UserService(AbstractService):
 
         db.session.add(user)
         db.session.commit()
-        if user.id:
-            events.register_event.send(user)
-            return user
+        if not user.id:
+            return False
 
-        return False
+        # send welcome message
+        if send_welcome:
+            self.send_welcome_message(user, base_confirm_url)
+
+        events.register_event.send(user)
+        return user
 
     def send_welcome_message(self, user, base_url):
         """ Send welcome mail with email confirmation link """
@@ -317,7 +328,7 @@ class UserService(AbstractService):
         subject = ''
         subjects = self.email_subjects
         if self.require_confirmation:
-            subject = 'Welcome,  please activate your account!'
+            subject = 'Welcome, please activate your account!'
             if 'welcome_confirm' in subjects.keys():
                 subject = subjects['welcome_confirm']
         if not self.require_confirmation:
@@ -353,8 +364,9 @@ class UserService(AbstractService):
 
     def resend_welcome_message(self, user, base_url):
         """ Regenerate email link and resend welcome """
-        user.require_email_confirmation()
-        self.save(user)
+        if self.require_confirmation:
+            user.require_email_confirmation()
+            self.save(user)
         self.send_welcome_message(user, base_url)
 
     # -------------------------------------------------------------------------
@@ -433,6 +445,14 @@ class UserService(AbstractService):
     # Change password
     # -------------------------------------------------------------------------
 
+    def request_password_reset(self, user, base_url):
+        """ Regenerate password link and send message """
+        user.generate_password_link()
+        db.session.add(user)
+        db.session.commit()
+        events.password_change_requested_event.send(user)
+        self.send_password_change_message(user, base_url)
+
     def change_password(self, user, new_password):
         """ Change user password and logout """
         from boiler.user.models import UpdateSchema
@@ -480,14 +500,6 @@ class UserService(AbstractService):
             html=html,
             sender=sender
         ))
-
-    def request_password_reset(self, user, base_url):
-        """ Regenerate password link and send message """
-        user.generate_password_link()
-        db.session.add(user)
-        db.session.commit()
-        events.password_change_requested_event.send(user)
-        self.send_password_change_message(user, base_url)
 
     # -------------------------------------------------------------------------
     # Roles

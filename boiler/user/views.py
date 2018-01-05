@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from flask.views import View
 from flask import flash, redirect, render_template, url_for, abort, request
+from flask import current_app
 from flask import session
 from flask_login import current_user, login_required
 
@@ -137,12 +138,26 @@ class Register(View):
         if current_user.is_authenticated:
             return redirect('/')
 
+        cfg = current_app.config
+        send_welcome = cfg.get('USER_SEND_WELCOME_MESSAGE')
+        base_confirm_url = cfg.get('USER_BASE_EMAIL_CONFIRM_URL')
+        if not base_confirm_url:
+            base_confirm_url = url_for(
+                'user.confirm.email.request',
+                _external=True
+            )
+
         form = self.form(schema=self.schema())
         if form.validate_on_submit():
             data = {}
             for field in self.data_fields:
                 data[field] = getattr(form, field).data
-            user = user_service.register(**data)
+            user = user_service.register(
+                user_data=data,
+                send_welcome=send_welcome,
+                base_confirm_url=base_confirm_url
+            )
+
             if not user:
                 redirect(url_for(self.redirect_fail_endpoint))
             elif user and user_service.require_confirmation:

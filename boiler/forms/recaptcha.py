@@ -129,7 +129,7 @@ class RecaptchaValidator():
             return False
 
         rv = [l.decode('utf8').strip() for l in response.readlines()]
-        for l in rv: print(l)
+        # for l in rv: print(l)
 
         if rv and rv[0] == 'true':
             return True

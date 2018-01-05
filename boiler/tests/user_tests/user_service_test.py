@@ -47,7 +47,6 @@ class UserServiceTests(BoilerTestCase):
         """ Custom JWT token user loader implementation """
         return 'LOADED USER FROM TOKEN [{}]'.format(token)
 
-
     # ------------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------------
@@ -57,7 +56,7 @@ class UserServiceTests(BoilerTestCase):
         service = UserService()
         self.assertIsInstance(service, UserService)
 
-    def test_can_initialise_froom_a_flask_app(self):
+    def test_can_initialise_from_a_flask_app(self):
         """ Initialising user service from a flask app """
         service = UserService()
         self.assertEquals(0, len(service.email_subjects.keys()))
@@ -327,37 +326,44 @@ class UserServiceTests(BoilerTestCase):
     # Register and welcome message
     # -------------------------------------------------------------------------
 
+    @attr('zzz')
     def test_register_returns_validation_errors(self):
         """ Registering returns validation error on bad data """
         with user_events.disconnect_receivers():
-            result = user_service.register(
+            user_data = dict(
                 email='not.email',
                 password='123'
+            )
+            result = user_service.register(
+                user_data=user_data,
+                send_welcome=False
             )
             self.assertIsInstance(result, Result)
             self.assertFalse(result)
 
+    @attr('zzz')
     def test_register(self):
         """ Can register new user """
         with user_events.disconnect_receivers():
+            user_data = dict(email='test@test.com', password='123')
             user = user_service.register(
-                email='test@test.com',
-                password='123'
+                user_data=user_data,
+                send_welcome=False
             )
             self.assertIsInstance(user, User)
             self.assertEqual(1, user.id)
 
+    @attr('zzz')
     def test_register_password_can_be_verified(self):
         """ REGRESSION: Password provided at registration can be verified """
-        data = dict(
-            email = 'tester@test.com',
-            password = '111111',
-        )
-
+        user_data = dict(email='tester@test.com', password='111111')
         with user_events.disconnect_receivers():
-            user = user_service.register(**data)
+            user = user_service.register(
+                user_data=user_data,
+                send_welcome = False
+            )
 
-        verified = user.verify_password(data['password'])
+        verified = user.verify_password(user_data['password'])
         self.assertTrue(verified)
 
         password = 222222
@@ -366,18 +372,30 @@ class UserServiceTests(BoilerTestCase):
         verified = user.verify_password(password)
         self.assertTrue(verified)
 
+    @attr('zzz')
     def test_register_emits_event(self):
         """ Registration emits event """
         event = events.register_event
+        user_data = dict(email='test@test.com', password='123')
         with user_events.disconnect_receivers():
             spy = mock.Mock()
             event.connect(spy, weak=False)
             user = user_service.register(
-                email='test@test.com',
-                password='123'
+                user_data=user_data,
+                send_welcome=False
             )
             spy.assert_called_with(user)
 
+    @attr('xxx')
+    def test_register_send_welcome_message(self):
+        """ Registration sends welcome message"""
+        user_data = dict(email='test@test.com', password='123')
+        with mail.record_messages() as out:
+            user_service.register(user_data=user_data)
+        self.assertEquals(1, len(out))
+
+
+    @attr('zzz')
     def test_account_confirmation_message_send(self):
         """ Account confirmation message can be sent """
         user = User(email='test@test.com', password='123')
@@ -392,16 +410,17 @@ class UserServiceTests(BoilerTestCase):
             self.assertTrue(user.email_link in msg.html)
             self.assertTrue(user.email_link in msg.body)
 
+    @attr('zzz')
     def test_account_confirmation_message_resend(self):
         """ Account confirmation message can be resent """
+        user_data = dict(email='tester@test.com', password='123456')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
                 u = user_service.register(
-                    email='tester@test.com',
-                    password='123456'
+                    user_data=user_data,
+                    send_welcome=False
                 )
                 initial_link = u.email_link
-
                 with mail.record_messages() as out:
                     url = 'http://my.confirm.url/'
                     user_service.resend_welcome_message(u, url)
