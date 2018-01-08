@@ -336,7 +336,7 @@ class UserService(AbstractService):
         :param base_confirm_url: str, base confirmation link url
         :return: boiler.user.models.User
         """
-        user = User(**user_data)
+        user = self.__model__(**user_data)
         schema = RegisterSchema()
         valid = schema.process(user)
         if not valid:
