@@ -399,9 +399,8 @@ class UserService(AbstractService):
 
     def resend_welcome_message(self, user, base_url):
         """ Regenerate email link and resend welcome """
-        if self.require_confirmation:
-            user.require_email_confirmation()
-            self.save(user)
+        user.require_email_confirmation()
+        self.save(user)
         self.send_welcome_message(user, base_url)
 
     # -------------------------------------------------------------------------
