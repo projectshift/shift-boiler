@@ -44,7 +44,7 @@
                             {% if user.email_new and not user.email_confirmed %}
                                 <div class="change-warning">
                                     <i class="fa fa-warning"></i>
-                                    <div class="message">You already requested your email change to <b>{{ user.email_new }}</b> but haven't confirmed address. You can
+                                    <div class="message">You already requested your email change to <b>{{ user.email_new }}</b> but haven't confirmed the address. You can
                                         <a href="{{ url_for('user.confirm.email.request') }}">Resend confirmation email</a> or <a href="?cancel_change">Cancel email change</a></div>
                                 </div>
 
