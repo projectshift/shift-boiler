@@ -440,6 +440,9 @@ class UserService(AbstractService):
         Saves new email and sends confirmation before doing the switch.
         Can optionally skip sending out message for testing purposes.
 
+        The email will be sent to the new email address to verify the user has
+        access to it. Important: please be sure to password-protect this.
+
         :param user: boiler.user.models.User
         :param new_email: str, new email
         :param base_confirm_url: str, base url for confirmation links
@@ -469,7 +472,8 @@ class UserService(AbstractService):
         if 'email_change' in self.email_subjects.keys():
             subject = self.email_subjects['email_change']
         sender = current_app.config['MAIL_DEFAULT_SENDER']
-        recipient = user.email
+        recipient = user.email_new
+
         link = '{url}/{link}/'.format(
             url=base_url.rstrip('/'),
             link=user.email_link

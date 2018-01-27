@@ -468,7 +468,7 @@ class UserServiceTests(BoilerTestCase):
             spy.assert_called_with(user)
 
     # -------------------------------------------------------------------------
-    # Change email an confirmation
+    # Change email and confirmation
     # -------------------------------------------------------------------------
 
     def test_change_email_returns_validation_errors(self):
@@ -516,6 +516,7 @@ class UserServiceTests(BoilerTestCase):
                 )
                 spy.assert_called_with(u)
 
+    @attr('zzz')
     def test_changing_email_sends_email(self):
         """ Send email message with confirmation link when changing email"""
         with events.events.disconnect_receivers():
@@ -529,6 +530,10 @@ class UserServiceTests(BoilerTestCase):
                     self.assertEqual('new@email.com', u.email_new)
                     self.assertIsNotNone(u.email_link)
                     self.assertEquals(1, len(out))
+
+            # regression: ensure email sent to **new** email not the current one
+            self.assertEquals(1, len(out[0].recipients))
+            self.assertIn(u.email_new, out[0].recipients)
 
     def test_change_email_message_send(self):
         """ Email change confirmation message can be sent"""
