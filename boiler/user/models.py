@@ -126,7 +126,7 @@ class User(db.Model):
     password_link_expires = db.Column(db.DateTime)
 
     # token
-    token = db.Column(db.Text())
+    _token = db.Column('token', db.Text())
 
     # facebook
     facebook_id = db.Column(db.String(50), unique=True, index=True)
@@ -361,44 +361,6 @@ class User(db.Model):
         """ Check if password link expired """
         if not now: now = datetime.datetime.utcnow()
         return self.password_link_expires < now
-
-    # -------------------------------------------------------------------------
-    # JWT Token
-    # -------------------------------------------------------------------------
-
-    def create_token(self):
-        """
-        Create token
-        Creates and sets JWT token for the user. If there was custom
-        implementation registered via config, uses that, otherwise falls back
-        to default implementation.
-        :return: string
-        """
-        if not self.jwt_implementation:
-            return self.default_token_implementation(self.id)
-
-
-
-
-
-
-    # set token
-
-    # verify token
-
-    # refresh token (takes the same token and updates expiration)
-
-
-    """
-    How do we add data to token via userland code?
-    The data can be both static and dynamic.
-    We should for starters have a very basic implementation with just user id
-    What would be a perfect interface?
-    
-    """
-
-
-
 
     # -------------------------------------------------------------------------
     # Social

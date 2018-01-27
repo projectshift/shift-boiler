@@ -11,6 +11,7 @@ from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
 from boiler.user import event_handlers # required to connect handlers
 
+
 class UserService(AbstractService):
     """
     User service
@@ -184,7 +185,7 @@ class UserService(AbstractService):
         :return:
         """
         user = self.get(user_id)
-        user.token = None
+        user._token = None
         self.save(user)
 
     def get_token(self, user_id):
@@ -258,10 +259,10 @@ class UserService(AbstractService):
             raise x.JwtNoUser(msg.format(user_id))
 
         # return token if exists and valid
-        if user.token:
+        if user._token:
             try:
-                self.decode_token(user.token)
-                return user.token
+                self.decode_token(user._token)
+                return user._token
             except jwt.exceptions.ExpiredSignatureError:
                 pass
 
@@ -277,7 +278,7 @@ class UserService(AbstractService):
         )
         token = jwt.encode(data, self.jwt_secret, algorithm=self.jwt_algo)
         string_token = token.decode('utf-8')
-        user.token = string_token
+        user._token = string_token
         self.save(user)
         return string_token
 
@@ -315,7 +316,7 @@ class UserService(AbstractService):
             )
 
         # test token matches the one on file
-        if not token == user.token:
+        if not token == user._token:
             raise x.JwtTokenMismatch('The token does not match our records')
 
         # return on success

@@ -747,7 +747,7 @@ class UserServiceTests(BoilerTestCase):
         with self.assertRaises(x.JwtNoUser):
             user_service.get_token(111)
 
-    def test_default_implemntation_returns_token_on_file_if_got_one(self):
+    def test_default_implemnetation_returns_token_on_file_if_got_one(self):
         """ Return token from user model if it's still valid"""
         with user_events.disconnect_receivers():
             user = self.create_user(confirm_email=True)
@@ -759,10 +759,10 @@ class UserServiceTests(BoilerTestCase):
             user_service.jwt_secret,
             algorithm=user_service.jwt_algo
         )
-        user.token = token
+        user._token = token
         user_service.save(user)
         token = user_service.get_token(user.id)
-        self.assertEquals(user.token, token)
+        self.assertEquals(user._token, token)
 
     def test_default_implementation_regenerates_token_if_expired(self):
         """ Regenerate user token if the one on file expired"""
@@ -776,10 +776,10 @@ class UserServiceTests(BoilerTestCase):
             user_service.jwt_secret,
             algorithm=user_service.jwt_algo
         )
-        user.token = token
+        user._token = token
         user_service.save(user)
         token = user_service.get_token(user.id)
-        self.assertEquals(token, user.token)
+        self.assertEquals(token, user._token)
 
     def test_default_tokens_fail_if_tampered_with(self):
         """ Default tokens fail if tampered with"""
