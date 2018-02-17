@@ -1,7 +1,11 @@
 from werkzeug import exceptions as e
 from flask import render_template
 
-def error_pages_feature(app):
+
+
+
+
+def errors_feature(app):
     """
     Error pages feature
     Adds custom error pages to flask app
