@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>501 Not Implemented</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>501 Not Implemented</h1>
+
+{% if not error.description %}
+    <p>The server does not support the action requested by the browser.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

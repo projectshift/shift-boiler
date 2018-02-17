@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>505 HTTP Version Not Supported</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>505 HTTP Version Not Supported</h1>
+
+{% if not error.description %}
+    <p>The server does not support the HTTP protocol version used in the request.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

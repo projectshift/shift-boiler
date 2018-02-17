@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>412 Precondition Failed</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>412 Precondition Failed</h1>
+
+{% if not error.description %}
+    <p>The precondition on the request for the URL failed positive evaluation.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>403 Forbidden</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>403 Forbidden</h1>
+
+{% if not error.description %}
+    <p>You don't have the permission to access the requested resource. It is either read-protected or not readable by the server.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

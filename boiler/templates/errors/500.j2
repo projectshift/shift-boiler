@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Internal Server Error</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>500 Internal Server Error</h1>
+
+{% if not error.description %}
+    <p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

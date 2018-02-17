@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>409 Conflict</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>409 Conflict</h1>
+
+{% if not error.description %}
+    <p>A conflict happened while processing the request. The resource might have been modified while the request was being processed.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

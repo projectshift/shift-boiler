@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>401 Unauthorized</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>401 Unauthorized</h1>
+
+{% if not error.description %}
+    <p>The server could not verify that you are authorized to access the URL requested. You either supplied the wrong credentials (e.g. a bad password), or your client doesn't understand how to supply the credentials required.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

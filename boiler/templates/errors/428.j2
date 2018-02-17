@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>428 Precondition Required</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>428 Precondition Required</h1>
+
+{% if not error.description %}
+    <p>This request is required to be conditional; try using "If-Match" or "If-Unmodified-Since".</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

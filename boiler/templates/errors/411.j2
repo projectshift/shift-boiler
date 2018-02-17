@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>411 Length Required</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>411 Length Required</h1>
+
+{% if not error.description %}
+    <p>A request with this method requires a valid <code>Content-Length</code> header.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>502 Bad Gateway</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>502 Bad Gateway</h1>
+
+{% if not error.description %}
+    <p>The proxy server received an invalid response from an upstream server.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

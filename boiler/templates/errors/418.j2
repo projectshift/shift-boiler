@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>418 I'm a teapot</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>418 I'm a teapot</h1>
+
+{% if not error.description %}
+    <p>This server is a teapot, not a coffee machine</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

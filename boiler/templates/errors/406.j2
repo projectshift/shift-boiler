@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>406 Not Acceptable</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>406 Not Acceptable</h1>
+
+{% if not error.description %}
+    <p>The resource identified by the request is only capable of generating response entities which have content characteristics not acceptable according to the accept headers sent in the request.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

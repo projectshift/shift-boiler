@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>429 Too Many Requests</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>429 Too Many Requests</h1>
+
+{% if not error.description %}
+    <p>This user has exceeded an allotted request count. Try again later.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

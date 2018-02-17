@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>416 Requested Range Not Satisfiable</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>416 Requested Range Not Satisfiable</h1>
+
+{% if not error.description %}
+    <p>The server cannot provide the requested range.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

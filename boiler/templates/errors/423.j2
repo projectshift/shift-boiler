@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>423 Locked</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>423 Locked</h1>
+
+{% if not error.description %}
+    <p>The resource that is being accessed is locked.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

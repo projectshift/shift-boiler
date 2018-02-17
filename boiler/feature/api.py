@@ -46,6 +46,14 @@ def json_exceptions(app):
         response.status_code = code
         return response
 
+    def route_json_error(exception):
+        pass
+
+    def accept_json_error(exception):
+        pass
+
+    return
+
     # attach handler to every exception
     for code in e.default_exceptions.keys():
         app.register_error_handler(code, json_error)

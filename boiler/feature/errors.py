@@ -11,10 +11,13 @@ def errors_feature(app):
     Adds custom error pages to flask app
     """
     # create generic exception handler
+
+    # return
+
     def error_page(exception):
         http_exception = isinstance(exception, e.HTTPException)
         code = exception.code if http_exception else 500
-        template = 'errors/{}.html'.format(code)
+        template = 'errors/{}.j2'.format(code)
 
         # log exceptions only (app debug should be off)
         if code == 500:
@@ -24,6 +27,7 @@ def errors_feature(app):
 
     # attach handler to every exception
     for code in e.default_exceptions.keys():
+        # print(code, e.default_exceptions[code])
         app.register_error_handler(code, error_page)
 
 

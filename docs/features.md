@@ -81,21 +81,6 @@ bootstrap.add_logging(app)
 This feature has no external dependencies.
 
 
-
-## Error pages
-
-This feature will load a custom error template for each type of exception that happends within your application. Error templates will be loaded from your application's `templates/errors` directory. This way you can create `404.j2`, `500.j2` to display special pages for specific errors.
-
-Enable feature with:
-
-```python
-bootstrap.add_error_pages(app)
-```
-
-This feature has no external dependencies.
-
-
-
 ## Mail
 
 Mail feature will configure and initialize [Flask-Mail](https://pythonhosted.org/Flask-Mail/) extension with values from your current config file. You will need a working SMTP server account to send out mails.

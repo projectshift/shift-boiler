@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>415 Unsupported Media Type</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>415 Unsupported Media Type</h1>
+
+{% if not error.description %}
+    <p>The server does not support the media type transmitted in the request.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>

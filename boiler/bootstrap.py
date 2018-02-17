@@ -99,10 +99,10 @@ def add_jinja_extensions(app):
     jinja_extensions_feature(app)
 
 
-def add_error_pages(app):
-    """ Add custom error pages """
-    from boiler.feature.error_pages import error_pages_feature
-    error_pages_feature(app)
+def add_errors(app):
+    """ Add custom error handlers """
+    from boiler.feature.errors import errors_feature
+    errors_feature(app)
 
 
 def add_mail(app):

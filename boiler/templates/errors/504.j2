@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>504 Gateway Timeout</title>
+    {% include 'errors/styles.j2' %}
+
+</head>
+<body>
+
+<h1>504 Gateway Timeout</h1>
+
+{% if not error.description %}
+    <p>The connection to an upstream server timed out.</p>
+{% else %}
+    <p>{{error.description}}</p>
+{% endif %}
+
+</body>
+</html>
