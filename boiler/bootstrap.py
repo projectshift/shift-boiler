@@ -7,6 +7,7 @@ from werkzeug.wsgi import DispatcherMiddleware
 
 from boiler.config.default_config import DefaultConfig
 from boiler.timer import restart_timer
+from boiler.errors import register_error_handler
 
 
 def create_middleware(apps):
@@ -72,6 +73,9 @@ def create_app(name, config=None, flask_params=None):
         raise Exception('Config must be an object, got class instead.')
     app.config.from_object(config)
 
+    # register error handler
+    register_error_handler(app)
+
     # use kernel templates
     kernel_templates_path = path.realpath(path.dirname(__file__)+'/templates')
     fallback_loader = FileSystemLoader([kernel_templates_path])
@@ -97,13 +101,6 @@ def add_jinja_extensions(app):
     """ Activate custom jinja extensions """
     from boiler.feature.jinja_extensions import jinja_extensions_feature
     jinja_extensions_feature(app)
-
-
-def add_errors(app):
-    """ Add custom error handlers """
-    from boiler.feature.errors import errors_feature
-    errors_feature(app)
-
 
 def add_mail(app):
     """ Add mailing functionality """

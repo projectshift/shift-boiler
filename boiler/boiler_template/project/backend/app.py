@@ -15,7 +15,6 @@ def create_app(*args, **kwargs):
     # bootstrap.add_logging(app)
     # bootstrap.add_mail(app)
     # bootstrap.add_jinja_extensions(app)
-    # bootstrap.add_errors(app)
     # bootstrap.add_navigation(app)
     # bootstrap.add_debug_toolbar(app)
     #
