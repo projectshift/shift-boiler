@@ -30,7 +30,8 @@
 
                         {# recaptcha #}
                         <div class="form-group">
-                            {% include 'recaptcha/v1.j2' %}
+                            {{ form.recaptcha() }}
+                            <div class="errors">{% for error in form.errors.recaptcha %}<span>{{ error }}</span><br>{% endfor %}</div>
                         </div>
 
 

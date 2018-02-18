@@ -1,8 +1,7 @@
 from shiftschema.ext.flask_wtf import Form
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, EqualTo
-from boiler.forms.recaptcha import RecaptchaField as Recaptcha1Field
-from flask_wtf import RecaptchaField as Recaptcha2Field
+from flask_wtf import RecaptchaField as RecaptchaField
 
 """
 User forms
@@ -22,7 +21,7 @@ class LoginForm(Form):
 
 
 class RegisterForm(Form):
-    recaptcha = Recaptcha1Field()
+    recaptcha = RecaptchaField()
     email = StringField('email')
 
     password = PasswordField('password', validators=[
@@ -37,7 +36,7 @@ class RegisterForm(Form):
 
 class ResendEmailConfirmationForm(Form):
     """ Allows user to resend confirmation email """
-    recaptcha = Recaptcha1Field()
+    recaptcha = RecaptchaField()
     email = StringField('email', validators=[
         DataRequired(),
     ])
@@ -72,7 +71,7 @@ class ChangePasswordForm(Form):
 
 
 class RecoverPasswordRequestForm(Form):
-    recaptcha = Recaptcha1Field()
+    recaptcha = RecaptchaField()
     email = StringField('email', validators=[
         DataRequired(),
     ])
