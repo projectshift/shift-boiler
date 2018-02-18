@@ -1,6 +1,5 @@
 import click, os, sys, shutil
 from boiler.cli.colors import *
-from click import echo
 
 
 # -----------------------------------------------------------------------------
@@ -26,20 +25,19 @@ def cli():
 def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     """ Run development server """
     from werkzeug.serving import run_simple
-    from boiler.bootstrap import create_middleware
+    from boiler.bootstrap import init
     from config.config import DevConfig, TestingConfig, DefaultConfig
-    from config.apps import apps
+    from config.app import app as app_init
 
     # get config
-    if environment == 'prod': config = DefaultConfig()
-    elif environment == 'test': config = TestingConfig()
-    else: config = DevConfig()
+    if environment == 'prod':
+        app_init['config'] = DefaultConfig()
+    elif environment == 'test':
+        app_init['config'] = TestingConfig()
+    else:
+        app_init['config'] = DevConfig()
 
-    # use dev config for every app when run this way
-    for app_name in apps['apps'].keys():
-        apps['apps'][app_name]['config'] = config
-
-    app = create_middleware(apps=apps)
+    app = init(app_init['module'], app_init['config'])
     return run_simple(
         hostname=host,
         port=port,
@@ -50,32 +48,28 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
 
 
 @cli.command(name='shell')
-def shell():
+@click.option('--environment', '-e', default='dev', help='Environment to use)')
+def shell(environment='dev'):
     """ Start application-aware shell """
-    from boiler.bootstrap import create_middleware
+    from boiler.bootstrap import init
     from config.config import DevConfig
-    from config.apps import apps
+    from config.app import app as app_init
+    from config.config import DevConfig, TestingConfig, DefaultConfig
 
-    # use dev config for every app when run this way
-    for app_name in apps['apps'].keys():
-        apps['apps'][app_name]['config'] = DevConfig()
+    # get config
+    if environment == 'prod':
+        app_init['config'] = DefaultConfig()
+    elif environment == 'test':
+        app_init['config'] = TestingConfig()
+    else:
+        app_init['config'] = DevConfig()
 
-    # mount apps
-    context = dict()
-    middleware = create_middleware(apps=apps)
-    context['middleware'] = middleware.wsgi_app
-    default = apps['default_app']
-    context['apps'] = dict()
-    context['apps'][default] = middleware.wsgi_app.app
-
-    # for app in middleware.wsgi_app.mounts:
-    for mount, app in middleware.wsgi_app.mounts.items():
-        for name, cfg in apps['apps'].items():
-            if mount == cfg['base_url']:
-                context['apps'][name] = app
+    # create app
+    app = init(app_init['module'], app_init['config'])
+    context = dict(app=app)
 
     # and push app context
-    app_context = middleware.app_context()
+    app_context = app.app_context()
     app_context.push()
 
     # and run

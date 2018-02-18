@@ -10,37 +10,20 @@ from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
 
 
-def create_middleware(apps):
+def init(module_name, config):
     """
-    Create middleware
-    Creates werkzeug middleware to dispatch apps on wsgi level and wrap it in
-    a dummy middleware app. This is required to return a Flask app object rather
-    than a DispatcherMiddleware, as the latter can not be run like a normal
-    app by uwsgi.
+    Initialize
+    Reads your config/app.py to understand where your app is, then imports it
+    and instantiates it with config you defined. After that will call
+    create_app() method on your app to apply app-specific configurations.
 
-    :param config: object - configuration object
-    :return: Flask - flask application instance
+    :param module_name: string
+    :param config: config object
+    :return: flask.Flask
     """
-    default_app = None
-    mounts = {}
-    for app_name, app_params in apps['apps'].items():
-        config = app_params['config']
-        module = app_params['module'] + '.app'
-        mod = import_module(module)
-        app = mod.create_app(config=config)
-        if app_name == apps['default_app']: default_app = app
-        else:
-            base_url = app_params['base_url'].rstrip('/') # no trailing slash!
-            mounts[base_url] = app
-
-    wrapper = Flask('middleware_app')
-    wrapper.wsgi_app = DispatcherMiddleware(default_app, mounts)
-
-    # time restarts?
-    if default_app.config.get('TIME_RESTARTS'):
-        restart_timer.time_restarts(default_app.config.get('DATA')['data'])
-
-    return wrapper
+    module = import_module(module_name + '.app')
+    app = module.create_app(config=config)
+    return app
 
 
 def create_app(name, config=None, flask_params=None):
@@ -81,6 +64,10 @@ def create_app(name, config=None, flask_params=None):
     fallback_loader = FileSystemLoader([kernel_templates_path])
     custom_loader = ChoiceLoader([app.jinja_loader, fallback_loader])
     app.jinja_loader = custom_loader
+
+    # time restarts?
+    if app.config.get('TIME_RESTARTS'):
+        restart_timer.time_restarts(app.config.get('DATA')['data'])
 
     return app
 

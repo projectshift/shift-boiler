@@ -34,7 +34,7 @@ class FlaskTestCase(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.pprinter = PrettyPrinter(indent=2)
 
-    def setUp(self, app):
+    def setUp(self, app=None):
         """
         Setup before each test
         Set up will need an app for testing. You can pass one in, or it will
