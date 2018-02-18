@@ -52,7 +52,6 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
 def shell(environment='dev'):
     """ Start application-aware shell """
     from boiler.bootstrap import init
-    from config.config import DevConfig
     from config.app import app as app_init
     from config.config import DevConfig, TestingConfig, DefaultConfig
 
