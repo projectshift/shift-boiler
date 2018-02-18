@@ -10,10 +10,10 @@ Here are some main features all of which are pluggable and optional:
   * Web app scaffolding
   * API app scaffolding and [Restfulness](https://flask-restful.readthedocs.io/)
   * ORM with [SQLAlchemy](http://www.sqlalchemy.org/)
-  * Database migrations with [Alembic](https://pypi.python.org/pypi/Flask-Alembic)
+  * Database migrations with [Alembic](https://bitbucket.org/zzzeek/alembic)
   * Entity/model validation framework with [shift-schema](https://github.com/projectshift/shift-schema)
   * Localization and translations with [Babel](https://pythonhosted.org/Flask-Babel/)
-  * Web forms with [WTForms](https://wtforms.readthedocs.io/en/latest/) and support for recaptcha v1 and v2
+  * Web forms with [WTForms](https://wtforms.readthedocs.io/en/latest/) and support for recaptcha
   * User registration and [authentication](https://flask-login.readthedocs.io/en/latest/) including [OAuth](https://pythonhosted.org/Flask-OAuth/) support for facebook, google, twitter and vk
   * RBAC and access control with [Principal](http://pythonhosted.org/Flask-Principal/)
   * Routing with lazy-views and on-demand view import
