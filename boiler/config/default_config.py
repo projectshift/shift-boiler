@@ -48,9 +48,9 @@ class DefaultConfig(BaseConfig):
     DATA = dict(
         logs=os.path.join(VAR, 'logs'),
         uploads=os.path.join(VAR, 'uploads'),
-        data = os.path.join(VAR, 'data'),
-        tmp = os.path.join(VAR, 'data', 'tmp'),
-        tests = os.path.join(VAR, 'data', 'tests'),
+        data=os.path.join(VAR, 'data'),
+        tmp=os.path.join(VAR, 'data', 'tmp'),
+        tests=os.path.join(VAR, 'data', 'tests'),
     )
 
     # do not expose our urls on 404s
@@ -128,19 +128,6 @@ class DefaultConfig(BaseConfig):
     # recaptcha
     RECAPTCHA_PUBLIC_KEY = None
     RECAPTCHA_PRIVATE_KEY = None
-
-    # v1
-    RECAPTCHA_OPTIONS = dict(
-        theme='custom',
-        custom_theme_widget='recaptcha_widget'
-    )
-    # v2
-    # RECAPTCHA_PARAMETERS = dict(
-    #     render='explicit'
-    # )
-    RECAPTCHA_DATA_ATTRS = dict(
-        theme='light'
-    )
 
     # users
     USER_JWT_SECRET = None
