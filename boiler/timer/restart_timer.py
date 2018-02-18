@@ -16,7 +16,7 @@ def time_restarts(data_path):
         os.utime(path, None)
 
     now = os.stat(path).st_mtime
-    dif = now - last_modified
-    last_restart = datetime.fromtimestamp(now)
+    dif = round(now - last_modified, 2)
+    last_restart = datetime.fromtimestamp(now).strftime('%H:%M:%S')
     result = 'LAST RESTART WAS {} SECONDS AGO at {}'.format(dif, last_restart)
     print(style(fg='green', bg='red', text=result))
