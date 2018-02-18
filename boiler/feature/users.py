@@ -1,14 +1,14 @@
-from flask import session, g
+from flask import session, g, current_app, abort
 from flask_login import current_user
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_principal import Identity, AnonymousIdentity
+import logging
 
 from boiler.user import exceptions as x
 from boiler.user.session_interface import BoilerSessionInterface
 from boiler.user.services import login_manager, oauth, principal
 from boiler.user.services import user_service
 from boiler.user.util.oauth_providers import OauthProviders
-
 
 
 def users_feature(app):
@@ -69,6 +69,30 @@ def users_feature(app):
             identity.provides.add(RoleNeed(role.handle))
 
 
+def enable_request_loader():
+    """
+    Enable request loader
+    Optional user loader based on incomin request object. This is useful to
+    enable on top of default user loader if you want to authenticate API
+    requests via bearer token header.
+    :return:
+    """
+    @login_manager.request_loader
+    def load_user_from_request(request):
+        user = None
+        auth = request.headers.get('Authorization')
+        if auth and auth.startswith('Bearer'):
+            try:
+                token = auth[7:]
+                user = user_service.get_user_by_token(token)
+            except x.UserException as exception:
+                msg = 'JWT token login failed for [{ip}] with message: [{msg}]'
+                msg = msg.format(
+                    ip=request.environ['REMOTE_ADDR'],
+                    msg=str(exception)
+                )
+                current_app.logger.log(msg=msg, level=logging.INFO)
+                abort(401, description=str(exception))
 
-
+        return user
 

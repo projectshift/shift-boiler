@@ -120,12 +120,6 @@ def add_navigation(app):
     navigation_feature(app)
 
 
-def add_api(app):
-    """ Add restful api functionality """
-    from boiler.feature.api import api_feature
-    api_feature(app)
-
-
 def add_logging(app):
     """ Add logging functionality """
     from boiler.feature.logging import logging_feature

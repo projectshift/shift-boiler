@@ -8,7 +8,6 @@ def create_app(*args, **kwargs):
     # enable features
     bootstrap.add_routing(app)
     
-    # bootstrap.add_api(app)
     # bootstrap.add_localization(app)
     # bootstrap.add_routing(app)
     # bootstrap.add_orm(app)

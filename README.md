@@ -7,9 +7,8 @@ Boiler is a best-practices setup of [flask framework](http://flask.pocoo.org/) i
 Here are some main features all of which are pluggable and optional:
 
   * [Click](http://click.pocoo.org/) integration for CLI apps
-  * [Multi-app](http://flask.pocoo.org/docs/0.11/patterns/appdispatch/) Flask setup can run several apps side by side
   * Web app scaffolding
-  * API app scaffolding and [Restfulness](http://flask-restful-cn.readthedocs.io/en/0.3.4/)
+  * API app scaffolding and [Restfulness](https://flask-restful.readthedocs.io/)
   * ORM with [SQLAlchemy](http://www.sqlalchemy.org/)
   * Database migrations with [Alembic](https://pypi.python.org/pypi/Flask-Alembic)
   * Entity/model validation framework with [shift-schema](https://github.com/projectshift/shift-schema)
@@ -17,7 +16,7 @@ Here are some main features all of which are pluggable and optional:
   * Web forms with [WTForms](https://wtforms.readthedocs.io/en/latest/) and support for recaptcha v1 and v2
   * User registration and [authentication](https://flask-login.readthedocs.io/en/latest/) including [OAuth](https://pythonhosted.org/Flask-OAuth/) support for facebook, google, twitter and vk
   * RBAC and access control with [Principal](http://pythonhosted.org/Flask-Principal/)
-  * Routng with lazy-views and on-demand view import
+  * Routing with lazy-views and on-demand view import
   * Set of useful Jinja additions and filters including support for versioned static assets.
   * All of the features are pluggable and optional. Use whatever you need.
 

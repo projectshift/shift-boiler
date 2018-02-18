@@ -116,24 +116,6 @@ boiler dependencies jinja_extensions
 ```
 
 
-## API
-
-API feature is used in api-centric applications. Usually you will create a deicated app for your api (see [multiapp setup](multiapp.md)) and enable this feature. It will enable usage of restful resources and output all application errors and exceptions as proper json responses.
-
-
-Enable feature with:
-
-```python
-bootstrap.add_routing(app)
-```
-
-Install this feature dependencies:
-
-```
-boiler dependencies api
-```
-
-
 ## ORM
 
 This feature will setup integration with SQLAlchemy to provide database functionality and Alembic to handle database migrations. there is also a set of CLI commands to manage your database.
