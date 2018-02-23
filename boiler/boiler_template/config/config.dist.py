@@ -2,10 +2,7 @@ from project.backend import config
 
 class DefaultConfig(config.DefaultConfig):
     """ Local development config """
-
-    SERVER_NAME = None
-    SECRET_KEY = None
-    USER_JWT_SECRET = None
+    pass
 
 
 class DevConfig(config.DevConfig):
