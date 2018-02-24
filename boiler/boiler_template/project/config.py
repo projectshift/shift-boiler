@@ -18,6 +18,9 @@ class DefaultConfig(config.DefaultConfig):
     ASSETS_PATH = '/'
     FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
 
+    # users
+    USER_JWT_SECRET = None
+
 
 class DevConfig(DefaultConfig, config.DevConfig):
     """ Local development config """

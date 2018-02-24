@@ -82,6 +82,9 @@ def sign_python():
 def init(destination, force=False, skip=True):
     """ Initialise new project """
     import os
+    from uuid import uuid1
+    import fileinput
+
     ignores = ['.DS_Store', '__pycache__', ]
 
     echo(green('\nInitialise project:'))
@@ -159,6 +162,23 @@ def init(destination, force=False, skip=True):
             else:
                 print('CREATING: ' + dst)
                 shutil.copy(src, dst)
+
+    # create secret keys
+    path = os.path.join(os.getcwd(), 'project', 'config.py')
+    secrets = ['USER_JWT_SECRET', 'SECRET_KEY']
+    for line in fileinput.input(path, inplace=True):
+        line = line.strip('\n')
+        found = False
+        for secret in secrets:
+            if secret in line:
+                found = True
+                break
+
+        if not found:
+            print(line)
+        else:
+            print(line.replace('None', '\'' + str(uuid1()) + '\''))
+
 
     echo()
     return
