@@ -11,8 +11,6 @@
 
                 <h2>Login with password <span class="login-alternative">/ <a href="{{ url_for('user.social_login') }}">Social login</a></span></h2>
 
-                    <form action="" method="post" name="login">
-                        {{ form.hidden_tag() }}
 
                         {# display flash messages #}
                         {% include 'partials/flash-messages.j2' %}
