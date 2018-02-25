@@ -252,7 +252,7 @@ def install_dependencies(feature=None):
 
     msg = 'Now installing dependencies for "{}" feature...'.format(feature)
     echo(yellow(msg))
-    # pip.main(['install', '-r', feature_reqs])
+    pip.main(['install', '-r', feature_reqs])
 
     # update requirements file with dependencies
     existing = []
