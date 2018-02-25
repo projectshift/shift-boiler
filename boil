@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+from boiler.cli import boiler
+boiler.cli()

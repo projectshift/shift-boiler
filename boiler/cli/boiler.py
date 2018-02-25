@@ -199,6 +199,11 @@ def init(destination, force=False, skip=True):
         else:
             print(line.replace('None', '\'' + str(uuid1()) + '\''))
 
+    # rename gitignore
+    ignore_src = os.path.join(os.getcwd(), 'dist.gitignore')
+    ignore_dst = os.path.join(os.getcwd(), '.gitignore')
+    if os.path.isfile(ignore_src) and not os.path.exists(ignore_dst):
+        shutil.move(ignore_src, ignore_dst)
 
     echo()
     return
