@@ -3,7 +3,6 @@ from importlib import import_module
 
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
-from werkzeug.wsgi import DispatcherMiddleware
 
 from boiler.config.default_config import DefaultConfig
 from boiler.timer import restart_timer
@@ -88,6 +87,7 @@ def add_jinja_extensions(app):
     """ Activate custom jinja extensions """
     from boiler.feature.jinja_extensions import jinja_extensions_feature
     jinja_extensions_feature(app)
+
 
 def add_mail(app):
     """ Add mailing functionality """
