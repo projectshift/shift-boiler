@@ -252,7 +252,37 @@ def install_dependencies(feature=None):
 
     msg = 'Now installing dependencies for "{}" feature...'.format(feature)
     echo(yellow(msg))
-    pip.main(['install', '-r', feature_reqs])
+    # pip.main(['install', '-r', feature_reqs])
+
+    # update requirements file with dependencies
+    existing = []
+    reqs = os.path.join(os.getcwd(), 'requirements.txt')
+    if os.path.exists(reqs):
+        with open(reqs) as file:
+            existing = [x.strip().split('==')[0] for x in file.readlines() if x]
+
+        lines = []
+        with open(feature_reqs) as file:
+            incoming = file.readlines()
+            for line in incoming:
+                if not(len(line)) or line.startswith('#'):
+                    lines.append(line)
+                    continue
+
+                package = line.strip().split('==')[0]
+                if package not in existing:
+                    lines.append(line)
+
+        with open(reqs, 'a') as file:
+            file.writelines(lines)
+
+
+
+
+
+
+
+
     echo(green('DONE\n'))
 
 
