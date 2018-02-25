@@ -54,7 +54,6 @@ file and expect minor versions to introduce breaking changes.
 ## Documentation
 
   * [Quickstart for humans](docs/quickstart.md)
-  * Creating more apps
   * Full configuration example
   * [Boiler features](docs/features.md)
   * Testing: helpers and environment

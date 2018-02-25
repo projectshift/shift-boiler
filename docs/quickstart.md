@@ -31,22 +31,23 @@ This will create a basic project structure that looks like this:
 
 ```
 config
-    apps.py
+    app.py
     config.py
+    config.dist.py    
 project
-    frontend
-        templates
-            home.j2
-            layout.j2
-        app.py
-        urls.py
-        views.py
+    templates
+        home.j2
+        layout.j2
+    app.py
+    urls.py
+    views.py
     README.md
 var
     data
     logs
 cli
-dist.gitignore
+.gitignore
+requirements.txt
 nose.ini
 uwsgi.ini
 uwsgi.py
@@ -60,17 +61,15 @@ This is your main project cli with some pre-installed commands. You can pick wha
 ### config
 This is your application configuration directory and it has two files:
 
-  * `apps.py` is were you define the apps you run. For now we only have one, but you can have more.
+  * `app.py` is were you define the app you run. This is so that `./cli run` command knows how to run your application and wsgi entrypoint knows what config to use.
 
-  * `config.py` is your main config. It is a standard flask class-based configuration file, that has three environments for development, testing and production. You can of course create more, for example a staging one.
+  * `config.py` is your main config. It is a standard flask class-based configuration file, that has three environments for development, testing and production. You can of course create more, for example a staging one. This should be ignored from git and be environment-specific. This file usually extends from your `project/config.py` that usually holds environment-independent settings.
 
 
 ### project
-You can run severall cli or web applications side by side. All your apps should go into `project` directory, but that is merely a suggestion. For example, if you will have only one app, you can get rid of project directory entirely and put your app in root.
+This is where your project files should go. The name of the module is merely a suggestion so you can rename it so it makes more sense. On initial install our project will contain one a app layout.
 
-
-On initial install our project will contain one demo app for frontend.
-Its a simple single view app with one route and a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as enable features. Boiler provides several common features such as routing, orm, api, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
+Its a simple single view app with one route and a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as enable features. Boiler provides several common features such as routing, orm, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
 
 
 Boiler uses somewhat unusual approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which essentially means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup times and testing speed. You define urls in `urls.py` file like this:
@@ -80,8 +79,7 @@ urls = dict()
 urls['/'] = route('project.frontend.views.function_based', 'name')
 urls['/'] = route('project.frontend.views.ClassBased', 'another_name')
 ```
-You can use both function-based and class-based views this way, as well as restfull resources (see api feature).
-
+You can use both function-based and class-based views this way, as well as restfull resources.
 
 The `views.py` file will contain your views. Initially it is prety straightforward and just defines one view that renders a hello-world template. This view is mounted to the root of our app in `urls.py`
 
