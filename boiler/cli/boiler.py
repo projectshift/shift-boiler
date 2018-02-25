@@ -14,6 +14,26 @@ def cli():
 
 
 # -----------------------------------------------------------------------------
+# Show version number
+# -----------------------------------------------------------------------------
+
+@cli.command(name='version', help='Display current boiler version')
+def version():
+    """
+    Version
+    Imports and displays current boiler version.
+    :return:
+    """
+    from boiler.version import version as boiler_version
+    echo(green('\nshift-boiler:'))
+    echo(green('-' * 40))
+    echo(yellow('Version: ') + '{}'.format(boiler_version))
+    echo(yellow('GitHub: ') + 'https://github.com/projectshift/shift-boiler')
+    echo(yellow('PyPi: ') + 'https://pypi.org/project/shiftboiler/')
+    echo()
+
+
+# -----------------------------------------------------------------------------
 # Sign python
 # -----------------------------------------------------------------------------
 
@@ -212,6 +232,8 @@ def install_dependencies(feature=None):
     # install if got feature name
     feature_file = feature.lower() + '.txt'
     feature_reqs = os.path.join(req_path, feature_file)
+
+    print(feature_file)
 
     # check existence
     if not os.path.isfile(feature_reqs):

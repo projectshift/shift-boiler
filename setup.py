@@ -22,7 +22,8 @@ from setuptools import setup, find_packages
 # ----------------------------------------------------------------------------
 
 # project version
-version='0.3.3'
+from boiler.version import version as boiler_version
+version = boiler_version
 
 # development status
 # dev_status = '1 - Planning'
