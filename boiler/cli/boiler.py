@@ -1,7 +1,7 @@
 import click, os, sys, shutil
 from boiler.cli.colors import *
 from click import echo
-
+from boiler.version import version as boiler_version
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -24,7 +24,6 @@ def version():
     Imports and displays current boiler version.
     :return:
     """
-    from boiler.version import version as boiler_version
     echo(green('\nshift-boiler:'))
     echo(green('-' * 40))
     echo(yellow('Version: ') + '{}'.format(boiler_version))
@@ -97,7 +96,7 @@ def sign_python():
 @click.option('--skip', '-s',
     default=False,
     is_flag=True,
-    help='Skip existing objects in dstination'
+    help='Skip existing objects in destination'
 )
 def init(destination, force=False, skip=True):
     """ Initialise new project """
@@ -139,7 +138,7 @@ def init(destination, force=False, skip=True):
         echo(red('Use either --force or --skip option \n'))
 
         for index,path in enumerate(exist_in_dst):
-            print(yellow('{}. {}'.format(index, path)))
+            echo(yellow('{}. {}'.format(index, path)))
 
         echo()
         return
@@ -154,14 +153,14 @@ def init(destination, force=False, skip=True):
                 continue
 
             if dst in exist_in_dst and force:
-                print(red('OVERWRITING: ' + dst))
+                echo(red('OVERWRITING: ' + dst))
                 if os.path.exists(dst):
                     shutil.rmtree(dst, ignore_errors=True)
                 os.makedirs(dst)
             elif dst in exist_in_dst and skip:
-                print(yellow('SKIPPING: ' + dst))
+                echo(yellow('SKIPPING: ' + dst))
             else:
-                print('CREATING: ' + dst)
+                echo('CREATING: ' + dst)
                 os.makedirs(dst)
 
         for file in files:
@@ -173,14 +172,14 @@ def init(destination, force=False, skip=True):
                 continue
 
             if dst in exist_in_dst and force:
-                print(red('OVERWRITING: ' + dst))
+                echo(red('OVERWRITING: ' + dst))
                 if os.path.exists(dst):
                     os.remove(dst)
                 shutil.copy(src, dst)
             elif dst in exist_in_dst and skip:
-                print(yellow('SKIPPING: ' + dst))
+                echo(yellow('SKIPPING: ' + dst))
             else:
-                print('CREATING: ' + dst)
+                echo('CREATING: ' + dst)
                 shutil.copy(src, dst)
 
     # create secret keys
@@ -195,15 +194,22 @@ def init(destination, force=False, skip=True):
                 break
 
         if not found:
-            print(line)
+            echo(line)
         else:
-            print(line.replace('None', '\'' + str(uuid1()) + '\''))
+            echo(line.replace('None', '\'' + str(uuid1()) + '\''))
 
     # rename gitignore
     ignore_src = os.path.join(os.getcwd(), 'dist.gitignore')
     ignore_dst = os.path.join(os.getcwd(), '.gitignore')
     if os.path.isfile(ignore_src) and not os.path.exists(ignore_dst):
         shutil.move(ignore_src, ignore_dst)
+
+    # create requirements file
+    reqs = os.path.join(os.getcwd(), 'requirements.txt')
+    if not os.path.exists(reqs):
+        with open(reqs, 'a') as file:
+            file.write('shiftboiler=={}\n'.format(boiler_version))
+
 
     echo()
     return
@@ -237,8 +243,6 @@ def install_dependencies(feature=None):
     # install if got feature name
     feature_file = feature.lower() + '.txt'
     feature_reqs = os.path.join(req_path, feature_file)
-
-    print(feature_file)
 
     # check existence
     if not os.path.isfile(feature_reqs):
