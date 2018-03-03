@@ -28,7 +28,7 @@ npm-debug.log
 /.coverage
 /config/*
 !/config/config.dist.py
-!/config/apps.py
+!/config/app.py
 /var/data/*
 !/var/data/.gitkeep
 /var/logs/*

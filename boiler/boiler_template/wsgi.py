@@ -1,4 +1,5 @@
 from boiler import bootstrap
-from config.apps import apps
-app = bootstrap.create_middleware(apps=apps)
+from config.app import app
+app = bootstrap.init(module_name=app['module'], config=app['config'])
+
 
