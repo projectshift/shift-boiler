@@ -1,7 +1,7 @@
 from boiler.routes.lazy_views import LazyView
 
 
-def route(view, endpoint=None, methods=None):
+def route(view, endpoint=None, methods=None, defaults=None, **options):
     """
     Route: a shorthand for route declaration
     Import and use it in your app.urls file by calling:
@@ -11,7 +11,13 @@ def route(view, endpoint=None, methods=None):
         endpoint = view
     if not methods:
         methods = ['GET']
-    return dict(view=LazyView(view), endpoint=endpoint, methods=methods)
+    return dict(
+        view_func=LazyView(view),
+        endpoint=endpoint,
+        methods=methods,
+        defaults=defaults,
+        **options
+    )
 
 
 

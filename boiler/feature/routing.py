@@ -26,11 +26,7 @@ def routing_feature(app):
     # add routes now
     for route in urls.keys():
         route_options = urls[route]
-        app.add_url_rule(
-            rule=route,
-            endpoint=route_options['endpoint'],
-            view_func=route_options['view'],
-            methods=route_options['methods']
-        )
+        route_options['rule'] = route
+        app.add_url_rule(**route_options)
 
 
