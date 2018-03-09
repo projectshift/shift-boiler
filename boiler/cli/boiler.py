@@ -264,6 +264,10 @@ def install_dependencies(feature=None):
         lines = []
         with open(feature_reqs) as file:
             incoming = file.readlines()
+
+            if len(existing) and existing[-1] != '\n':  # add newline
+                incoming.insert(0, '\n')
+
             for line in incoming:
                 if not(len(line)) or line.startswith('#'):
                     lines.append(line)
@@ -275,13 +279,6 @@ def install_dependencies(feature=None):
 
         with open(reqs, 'a') as file:
             file.writelines(lines)
-
-
-
-
-
-
-
 
     echo(green('DONE\n'))
 
