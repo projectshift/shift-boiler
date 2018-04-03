@@ -28,8 +28,8 @@ version = boiler_version
 # development status
 # dev_status = '1 - Planning'
 # dev_status = '2 - Pre-Alpha'
-dev_status = '3 - Alpha'
-# dev_status = '4 - Beta'
+# dev_status = '3 - Alpha'
+dev_status = '4 - Beta'
 # dev_status = '5 - Production/Stable'
 # dev_status = '6 - Mature'
 # dev_status = '7 - Inactive'
@@ -38,8 +38,9 @@ dev_status = '3 - Alpha'
 repo = 'https://github.com/projectshift/shift-boiler'
 license_type = 'MIT License'
 
-# monkey patch os for vagrant hardlinks
-del os.link
+# readme description
+with open('README.md') as f:
+    long_description = f.read()
 
 # run setup
 setup(**dict(
@@ -54,6 +55,8 @@ setup(**dict(
     url=repo,
     download_url=repo + '/archive/v' + version + '.tar.gz',
     description='Boilerplate setup for webapps, apis and cli applications with flask',
+    long_description=long_description,
+    long_description_content_type='text/markdown',  # This is important!
     keywords=[
         'python3',
         'flask',
