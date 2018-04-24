@@ -1,10 +1,8 @@
 import click
-from config.apps import apps
 from boiler.cli.colors import *
-from boiler.cli import get_app
-from boiler.bootstrap import create_middleware
 from boiler.user.models import User, Role
 from boiler.user.services import user_service, role_service
+from boiler.cli import get_app
 
 def print_validation_errors(result):
     """ Accepts validation result object and prints report (in red)"""
@@ -29,7 +27,6 @@ def find_user(search_params):
     if 'id' in params or 'email' in params:
         user = user_service.first(**params)
     return user
-
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -75,6 +72,7 @@ def find(*_, **kwargs):
 
     if not user:
         click.echo(red('Not found\n'))
+        return
 
     click.echo(str(user) + '\n')
     return
