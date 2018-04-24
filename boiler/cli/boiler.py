@@ -223,7 +223,7 @@ def init(destination, force=False, skip=True):
 @click.argument('feature', default=None, required=False)
 def install_dependencies(feature=None):
     """ Install dependencies for a feature """
-    import pip, os
+    import subprocess
 
     echo(green('\nInstall dependencies:'))
     echo(green('-' * 40))
@@ -252,7 +252,10 @@ def install_dependencies(feature=None):
 
     msg = 'Now installing dependencies for "{}" feature...'.format(feature)
     echo(yellow(msg))
-    pip.main(['install', '-r', feature_reqs])
+
+    subprocess.check_call([
+        sys.executable, '-m', 'pip', 'install', '-r', feature_reqs]
+    )
 
     # update requirements file with dependencies
     existing = []
