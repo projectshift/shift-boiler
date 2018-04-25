@@ -1,16 +1,17 @@
 from project import config
 
+
 class DefaultConfig(config.DefaultConfig):
     """ Local development config """
     pass
 
 
-class DevConfig(config.DevConfig):
+class DevConfig(DefaultConfig, config.DevConfig):
     """ Local development config """
     pass
 
 
-class TestingConfig(config.TestingConfig):
+class TestingConfig(DefaultConfig, config.TestingConfig):
     """ Local testing config """
     pass
 
