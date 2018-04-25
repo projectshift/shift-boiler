@@ -39,7 +39,7 @@ repo = 'https://github.com/projectshift/shift-boiler'
 license_type = 'MIT License'
 
 # readme description
-with open('README.md') as f:
+with open('READMY-PyPi.md') as f:
     long_description = f.read()
 
 # run setup
