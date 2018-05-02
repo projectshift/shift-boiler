@@ -25,6 +25,7 @@ node_modules
 npm-debug.log
 .sass-cache
 .tmp
+/.env
 /.coverage
 /config/*
 !/config/config.dist.py
