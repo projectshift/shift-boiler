@@ -21,7 +21,12 @@ def cli():
 @click.option('--port', '-p', default=5000, help='Listen on port')
 @click.option('--reload/--no-reload', default=True, help='Reload on change?')
 @click.option('--debug/--no-debug', default=True, help='Use debugger?')
-@click.option('--environment', '-e', default='dev', help='Environment to use)')
+@click.option(
+    '--environment',
+    '-e',
+    default='development',
+    help='Environment to use'
+)
 def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     """ Run development server """
     from werkzeug.serving import run_simple
@@ -30,9 +35,9 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     from config.app import app as app_init
 
     # get config
-    if environment == 'prod':
+    if environment == 'production':
         app_init['config'] = DefaultConfig()
-    elif environment == 'test':
+    elif environment == 'testing':
         app_init['config'] = TestingConfig()
     else:
         app_init['config'] = DevConfig()
@@ -48,7 +53,12 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
 
 
 @cli.command(name='shell')
-@click.option('--environment', '-e', default='dev', help='Environment to use)')
+@click.option(
+    '--environment',
+    '-e',
+    default='development',
+    help='Environment to use'
+)
 def shell(environment='dev'):
     """ Start application-aware shell """
     from boiler.bootstrap import init
@@ -56,9 +66,9 @@ def shell(environment='dev'):
     from config.config import DevConfig, TestingConfig, DefaultConfig
 
     # get config
-    if environment == 'prod':
+    if environment == 'production':
         app_init['config'] = DefaultConfig()
-    elif environment == 'test':
+    elif environment == 'testing':
         app_init['config'] = TestingConfig()
     else:
         app_init['config'] = DevConfig()
