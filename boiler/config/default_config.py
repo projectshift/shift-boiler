@@ -23,14 +23,16 @@ class DefaultConfig(BaseConfig):
     Sets up defaults used and/or overridden in environments and deployments
     """
 
+    ENV = 'production'
+
     SERVER_NAME = None
 
     TIME_RESTARTS = False
     TESTING = False
     DEBUG = False
-    DEBUG_TB_ENABLED=False
-    DEBUG_TB_PROFILER_ENABLED=False
-    DEBUG_TB_INTERCEPT_REDIRECTS=False
+    DEBUG_TB_ENABLED = False
+    DEBUG_TB_PROFILER_ENABLED = False
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     # config path
     CONFIG_PATH = os.path.join(os.getcwd(), 'config')
@@ -41,7 +43,7 @@ class DefaultConfig(BaseConfig):
 
     # asset helper settings (server must be capable of serving these files)
     ASSETS_VERSION = None
-    ASSETS_PATH = None # None falls back to url_for('static')
+    ASSETS_PATH = None  # None falls back to url_for('static')
 
     # data path
     VAR = os.path.join(os.getcwd(), 'var')
@@ -151,6 +153,7 @@ class DefaultConfig(BaseConfig):
 
 class DevConfig(DefaultConfig):
     """ Default development config """
+    ENV = 'development'
     TIME_RESTARTS = True
     DEBUG = True
     DEBUG_TB_ENABLED=True
@@ -160,6 +163,7 @@ class DevConfig(DefaultConfig):
 
 class TestingConfig(DefaultConfig):
     """ Default testing config """
+    ENV = 'testing'
     TESTING = True
     MAIL_DEBUG = True
 
