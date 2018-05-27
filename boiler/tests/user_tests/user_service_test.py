@@ -516,7 +516,6 @@ class UserServiceTests(BoilerTestCase):
                 )
                 spy.assert_called_with(u)
 
-    @attr('zzz')
     def test_changing_email_sends_email(self):
         """ Send email message with confirmation link when changing email"""
         with events.events.disconnect_receivers():

@@ -23,11 +23,13 @@ UserRoles = db.Table('user_roles',
 class RoleSchema(Schema):
     def schema(self):
         self.add_property('handle')
-        self.handle.required = True
         self.handle.add_filter(filters.Strip())
         self.handle.add_filter(filters.Lowercase())
         self.handle.add_validator(validators.Length(min=3, max=200))
         self.handle.add_validator(user_validators.UniqueRoleHandle())
+        self.handle.add_validator(validators.Required(
+            message='Role requires a handle'
+        ))
 
         self.add_property('title')
         self.title.add_filter(filters.Strip())
@@ -76,12 +78,14 @@ class RegisterSchema(Schema):
     """ Register new user account """
     def schema(self):
         self.add_property('email')
-        self.email.required = True
         self.email.add_filter(filters.Strip())
         self.email.add_filter(filters.Lowercase())
         self.email.add_validator(validators.Length(min=3, max=200))
         self.email.add_validator(validators.Email())
         self.email.add_validator(user_validators.UniqueEmail())
+        self.email.add_validator(validators.Required(
+            message='User needs an email address'
+        ))
 
 
 class UpdateSchema(RegisterSchema):
