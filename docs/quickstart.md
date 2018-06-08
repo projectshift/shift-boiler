@@ -25,7 +25,7 @@ After installation initialise the project:
 boiler init .
 ```
 
-Initialiser will detect if there are files in target directory that might be overwritten, and if found, will ask you what you want to do, skip these files or overwrite them.
+Initialiser will detect if there are files in target directory that will be overwritten, and if found, will ask you what you want to do, skip these files or overwrite them.
 
 This will create a basic project structure that looks like this:
 
