@@ -15,6 +15,7 @@ This will get you the following packages:
   * [nose](https://pypi.org/project/nose/) to ron your tests
   * [rednose](https://pypi.org/project/rednose/) for nice coloured output
   * [faker](https://pypi.org/project/Faker/) for generating dummy test data
+  * [coverage](https://pypi.org/project/coverage/) for code coverage reports
 
 When initialized, boiler created a `nose.ini` file in the root of your project. This is where you can tweak different nose settings like verbosity, coverage generation etc. You can use all [nose command line options](http://nose.readthedocs.io/en/latest/man.html) in this config. However the defaults work quite well out of the box both for staging and production.
 
