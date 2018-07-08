@@ -25,7 +25,7 @@ After installation initialise the project:
 boiler init .
 ```
 
-Initialiser will detect if there are files in target directory that might be overwritten, and if found, will ask you what you want to do, skip these files or overwrite them.
+Initializer will detect if there are files in target directory that might be overwritten, and if found, will ask you what you want to do, skip these files or overwrite them.
 
 This will create a basic project structure that looks like this:
 
@@ -33,7 +33,7 @@ This will create a basic project structure that looks like this:
 config
     app.py
     config.py
-    config.dist.py    
+    config.dist.py
 project
     templates
         home.j2
@@ -72,7 +72,7 @@ This is where your project files should go. The name of the module is merely a s
 Its a simple single view app with one route and a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as enable features. Boiler provides several common features such as routing, orm, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
 
 
-Boiler uses somewhat unusual approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which essentially means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup times and testing speed. You define urls in `urls.py` file like this:
+Boiler uses an approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which essentially means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup and reload times and testing speed. You define urls in `urls.py` file like this:
 
 ```
 urls = dict()
