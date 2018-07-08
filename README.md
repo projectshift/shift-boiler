@@ -2,7 +2,8 @@
 
 ![boiler](https://s3-eu-west-1.amazonaws.com/public-stuff-cdn/boiler.png)
 
-Boiler is a best-practices setup of [flask framework](http://flask.pocoo.org/) integrated with a number of libraries to quickly bootstrap app development. You can do console applications, web apps or apis with boiler. It is also a good example of how to set up flask framework for large projects.
+Boiler is a best-practices setup of [flask framework](http://flask.pocoo.org/) integrated with a number of libraries to quickly bootstrap app development. You can do console applications, web apps or apis with boiler. It is also a good example of how to set up flask framework for large projects or scale from micro- to relatively big system by adding features and extensioned as the project grows.
+
 
 Here are some main features all of which are pluggable and optional:
 
@@ -40,7 +41,7 @@ boiler dependencies flask
 ./cli run
 ```
 
-That was quickstart for robots. We also have a [quickstart for humans](docs/quickstart.md), with some further exaplanations.
+This was quickstart for robots. We also have a [quickstart for humans](docs/quickstart.md), with some further exaplanations.
 
 ## Versioning
 
@@ -56,7 +57,7 @@ file and expect minor versions to introduce breaking changes.
   * [Quickstart for humans](docs/quickstart.md)
   * Full configuration example
   * [Boiler features](docs/features.md)
-  * Testing: helpers and environment
+  * [Testing: helpers and environment](docs/testing.md)
   * Working with collections
   * Working with forms: entity validation and recaptcha
   * [MacOS: signing python interpreter](docs/sign_python.md)
