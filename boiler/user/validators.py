@@ -1,11 +1,12 @@
 from shiftschema.validators import AbstractValidator
 from shiftschema.result import Error
 
+
 class UniqueUserProperty(AbstractValidator):
     error = 'Set proper error message'
     property = None
 
-    def validate(self, value, context=None):
+    def validate(self, value, model=None, context=None):
         """ Perform validation """
         from boiler.user.services import user_service
 
@@ -33,7 +34,7 @@ class UniqueRoleHandle(AbstractValidator):
     """ Role handle must be unique """
     error = 'Role handle already in use'
 
-    def validate(self, value, context=None):
+    def validate(self, value, model=None, context=None):
         """ Perform validation """
         from boiler.user.services import role_service
 

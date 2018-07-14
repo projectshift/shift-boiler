@@ -68,7 +68,7 @@ class UniqueEmailTest(BoilerTestCase):
         """ Email from entity being validated (context) are allowed """
         user = self.create_user()
         validator = validators.UniqueEmail()
-        error = validator.validate(user.email, user)
+        error = validator.validate(user.email, None, user)
         self.assertFalse(error)
 
 
