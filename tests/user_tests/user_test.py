@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.tests.base_testcase import BoilerTestCase
+from tests.base_testcase import BoilerTestCase
 
 import jwt
 from datetime import datetime, timedelta

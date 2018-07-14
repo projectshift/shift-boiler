@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.tests.base_testcase import BoilerTestCase
+from tests.base_testcase import BoilerTestCase
 
 from boiler import bootstrap
 from boiler.config.default_config import DefaultConfig

@@ -1,6 +1,6 @@
 from unittest import mock
 from nose.plugins.attrib import attr
-from boiler.tests.base_testcase import BoilerTestCase
+from tests.base_testcase import BoilerTestCase
 from shiftschema.result import Result
 
 from boiler.user.role_service import RoleService

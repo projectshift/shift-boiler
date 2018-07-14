@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from boiler.tests.base_testcase import BoilerTestCase
+from tests.base_testcase import BoilerTestCase
 
 from boiler.user import validators, events
 from boiler.user.models import User, Role

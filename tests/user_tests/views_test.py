@@ -1,5 +1,5 @@
 from nose.plugins.attrib import attr
-from boiler.tests.base_testcase import BoilerViewTestCase
+from tests.base_testcase import BoilerViewTestCase
 
 from flask import url_for
 from boiler.user import events
