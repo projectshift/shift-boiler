@@ -415,9 +415,6 @@ class User(db.Model):
         """
         schema = RoleSchema()
         ok = schema.process(role)
-
-        print(ok)
-
         if not ok or not role.id:
             err = 'Role must be valid and saved before adding to user'
             raise x.UserException(err)

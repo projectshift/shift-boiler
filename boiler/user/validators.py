@@ -11,14 +11,16 @@ class UniqueUserProperty(AbstractValidator):
         from boiler.user.services import user_service
 
         self_id = None
-        if context:
-            if isinstance(context, dict): self_id = context.get('id')
-            else: self_id = getattr(context, 'id')
+        if model:
+            if isinstance(model, dict):
+                self_id = model.get('id')
+            else:
+                self_id = getattr(model, 'id')
 
         params = dict()
         params[self.property] = value
         found = user_service.first(**params)
-        if not found or (context and self_id == found.id):
+        if not found or (model and self_id == found.id):
             return Error()
 
         return Error(self.error)
@@ -39,12 +41,14 @@ class UniqueRoleHandle(AbstractValidator):
         from boiler.user.services import role_service
 
         self_id = None
-        if context:
-            if isinstance(context, dict): self_id = context.get('id')
-            else: self_id = getattr(context, 'id')
+        if model:
+            if isinstance(model, dict):
+                self_id = model.get('id')
+            else:
+                self_id = getattr(model, 'id')
 
         found = role_service.first(handle=value)
-        if not found or (context and self_id == found.id):
+        if not found or (model and self_id == found.id):
             return Error()
 
         return Error(self.error)

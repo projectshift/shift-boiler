@@ -383,7 +383,6 @@ class UserTests(BoilerTestCase):
         self.assertTrue(user.has_role(role1))
         self.assertFalse(user.has_role(role2))
 
-    @attr('zzz')
     def test_can_remove_role(self):
         """ Removing role from user """
         role = Role(handle='demo', title='Demo role')

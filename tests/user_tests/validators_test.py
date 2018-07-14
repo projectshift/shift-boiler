@@ -64,11 +64,11 @@ class UniqueEmailTest(BoilerTestCase):
         error = validator.validate('nonexistent@email.com')
         self.assertFalse(error)
 
-    def test_email_from_context_passes(self):
-        """ Email from entity being validated (context) are allowed """
+    def test_email_from_model_passes(self):
+        """ Emails from entity being validated (model) are allowed """
         user = self.create_user()
         validator = validators.UniqueEmail()
-        error = validator.validate(user.email, None, user)
+        error = validator.validate(user.email, user)
         self.assertFalse(error)
 
 

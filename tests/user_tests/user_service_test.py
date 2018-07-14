@@ -905,7 +905,7 @@ class UserServiceTests(BoilerTestCase):
 
     def test_can_use_custom_token_implementation(self):
         """ Can register and use custom token implementation"""
-        this = 'boiler.tests.user_tests.user_service_test.UserServiceTests'
+        this = 'tests.user_tests.user_service_test.UserServiceTests'
         token = this + '.custom_token_implementation'
         class CustomConfig(DefaultConfig):
             USER_JWT_SECRET='SuperSecret'
@@ -934,7 +934,7 @@ class UserServiceTests(BoilerTestCase):
 
     def test_can_use_custom_token_loader(self):
         """ Can register and use custom token user loader"""
-        this = 'boiler.tests.user_tests.user_service_test.UserServiceTests'
+        this = 'tests.user_tests.user_service_test.UserServiceTests'
         loader = this + '.custom_token_loader'
         class CustomConfig(DefaultConfig):
             USER_JWT_SECRET='SuperSecret'
