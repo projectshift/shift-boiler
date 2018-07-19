@@ -25,18 +25,18 @@ def cli():
     '--environment',
     '-e',
     default='development',
-    help='Environment to use'
+    help='Environment to use (production/test/dev)'
 )
 def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler.bootstrap import init
-    from config.config import DevConfig, TestingConfig, DefaultConfig
+    from config.config import DevConfig, TestingConfig, ProductionConfig
     from config.app import app as app_init
 
     # get config
     if environment == 'production':
-        app_init['config'] = DefaultConfig()
+        app_init['config'] = ProductionConfig()
     elif environment == 'testing':
         app_init['config'] = TestingConfig()
     else:
@@ -57,17 +57,17 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     '--environment',
     '-e',
     default='development',
-    help='Environment to use'
+    help='Environment to use (production/test/dev)'
 )
 def shell(environment='dev'):
     """ Start application-aware shell """
     from boiler.bootstrap import init
     from config.app import app as app_init
-    from config.config import DevConfig, TestingConfig, DefaultConfig
+    from config.config import DevConfig, TestingConfig, ProductionConfig
 
     # get config
     if environment == 'production':
-        app_init['config'] = DefaultConfig()
+        app_init['config'] = ProductionConfig()
     elif environment == 'testing':
         app_init['config'] = TestingConfig()
     else:

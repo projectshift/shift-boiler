@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 
-from boiler.config.default_config import DefaultConfig
+from boiler.config import DefaultConfig
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
 
@@ -45,9 +45,9 @@ def create_app(name, config=None, flask_params=None):
     if flask_params is not None:
         options.update(flask_params)
     if config.get('FLASK_STATIC_URL') is not None:
-        options['static_url_path'] = config.FLASK_STATIC_URL
+        options['static_url_path'] = config.get('FLASK_STATIC_URL')
     if config.get('FLASK_STATIC_PATH') is not None:
-        options['static_folder'] = config.FLASK_STATIC_PATH
+        options['static_folder'] = config.get('FLASK_STATIC_PATH')
 
     # create an app
     app = Flask(**options)
@@ -79,7 +79,7 @@ def create_app(name, config=None, flask_params=None):
 
     # time restarts?
     if app.config.get('TIME_RESTARTS'):
-        restart_timer.time_restarts(app.config.get('DATA')['data'])
+        restart_timer.time_restarts(os.path.join(os.getcwd(), 'var', 'data'))
 
     return app
 

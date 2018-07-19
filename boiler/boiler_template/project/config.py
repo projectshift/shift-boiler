@@ -1,14 +1,9 @@
-from boiler.config import default_config as config
+from boiler import config
 import os
-"""
-Local config
-This file configures installation of this specific environment.
-It extends global application config and should not be committed to repository
-"""
 
 
-class DefaultConfig(config.DefaultConfig):
-    """ Local development config """
+class ProductionConfig(config.ProductionConfig):
+    """ Production config """
 
     # set this for offline mode
     SERVER_NAME = None
@@ -22,12 +17,12 @@ class DefaultConfig(config.DefaultConfig):
     USER_JWT_SECRET = None
 
 
-class DevConfig(DefaultConfig, config.DevConfig):
+class DevConfig(config.DevConfig):
     """ Local development config """
     pass
 
 
-class TestingConfig(DefaultConfig, config.TestingConfig):
+class TestingConfig(config.TestingConfig):
     """ Local testing config """
     pass
 
