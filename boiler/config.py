@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 
 
 class Config:
@@ -7,6 +8,23 @@ class Config:
     The purpose of this is to provide convenient property
     getter, just like a dictionary
     """
+    def __init__(self):
+        """
+        Init config
+        Will ingest dotenv files if not previously loaded. This spares us from
+        having to manually call dotenv loading from different run contexts:
+        the cli, the shell or wsgi entrypoint. Also the dotenvs are only really
+        used for configuration so it makes sense to put it here.
+        """
+        if not os.getenv('DOTENVS_LOADED'):
+            dotenvs = ['.env', '.flaskenv']
+            for dotenv in dotenvs:
+                path = os.path.join(os.getcwd(), dotenv)
+                if os.path.isfile(path):
+                    load_dotenv(dotenv)
+
+            os.environ['DOTENVS_LOADED'] = 'yes'
+
     def get(self, what, default=None):
         if hasattr(self, what):
             if not what.startswith('__'):

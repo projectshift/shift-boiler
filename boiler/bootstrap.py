@@ -1,7 +1,7 @@
 import os
 from os import path
 from importlib import import_module
-from dotenv import load_dotenv
+
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 
@@ -51,15 +51,6 @@ def create_app(name, config=None, flask_params=None):
 
     # create an app
     app = Flask(**options)
-
-    # load dotenv
-    dotenvs = [
-        os.path.join(os.getcwd(), '.env'),
-        os.path.join(os.getcwd(), '.flaskenv')
-    ]
-    for dotenv in dotenvs:
-        if os.path.isfile(dotenv):
-            load_dotenv(dotenv)
 
     # configure app
     if config.__class__ is type:

@@ -31,6 +31,7 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler.bootstrap import init
+
     from config.config import DevConfig, TestingConfig, ProductionConfig
     from config.app import app as app_init
 
@@ -62,8 +63,9 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
 def shell(environment='dev'):
     """ Start application-aware shell """
     from boiler.bootstrap import init
-    from config.app import app as app_init
-    from config.config import DevConfig, TestingConfig, ProductionConfig
+    from project.config import DevConfig, TestingConfig, ProductionConfig
+
+    app_init = {}
 
     # get config
     if environment == 'production':
@@ -73,7 +75,12 @@ def shell(environment='dev'):
     else:
         app_init['config'] = DevConfig()
 
+    print(app_init['config'].get('DOTENVS'))
+    return
+
     # create app
+    module = os.getenv('APP_MODULE')
+
     app = init(app_init['module'], app_init['config'])
     context = dict(app=app)
 
