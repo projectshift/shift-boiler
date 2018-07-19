@@ -5,7 +5,6 @@ from dotenv import load_dotenv as dotenvs
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 
-
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
 

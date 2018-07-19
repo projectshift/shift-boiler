@@ -1,4 +1,7 @@
-class UserException(Exception):
+from boiler.exceptions import BoilerException
+
+
+class UserException(BoilerException, Exception):
     """ Generic user exception marker """
     pass
 

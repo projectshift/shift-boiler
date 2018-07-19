@@ -1,5 +1,7 @@
-import click, os, sys, shutil
+import click, os
+from werkzeug.utils import import_string
 from boiler.cli.colors import *
+from boiler import exceptions as x
 
 
 # -----------------------------------------------------------------------------
@@ -16,6 +18,41 @@ def cli():
 # Commands
 # -----------------------------------------------------------------------------
 
+def get_config(environment='development'):
+    """
+    Imports config based on environment. This is quite handy if you want to
+    simulate running with production settings.
+
+    :param environment: str, production, testing or dev
+    :return:
+    """
+    app_module = os.getenv('APP_MODULE')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_MODULE is not defined'
+        raise x.BootstrapException(err)
+
+    if environment == 'production':
+        cfg = 'ProductionConfig'
+    elif environment == 'testing':
+        cfg = 'TestingConfig'
+    elif environment == 'development':
+        cfg = 'DevConfig'
+    else:
+        err = 'Unable to find config for the environment [{}]'
+        raise x.BootstrapException(err.format(environment))
+
+    cfg = '{}.config.{}'.format(app_module, cfg)
+    try:
+        config_class = import_string(cfg)
+    except ImportError:
+        err = 'Failed imported config file [{}] for the [{}] environment'
+        raise x.BootstrapException(err.format(cfg, environment))
+
+    # and return
+    config = config_class()
+    return config
+
+
 @cli.command(name='run')
 @click.option('--host', '-h', default='0.0.0.0', help='Bind to')
 @click.option('--port', '-p', default=5000, help='Listen on port')
@@ -27,23 +64,16 @@ def cli():
     default='development',
     help='Environment to use (production/test/dev)'
 )
-def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
+def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment=None):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler.bootstrap import init
 
-    from config.config import DevConfig, TestingConfig, ProductionConfig
-    from config.app import app as app_init
+    # create app
+    app_module = os.getenv('APP_MODULE')
+    config = get_config(environment)
+    app = init(app_module, config)
 
-    # get config
-    if environment == 'production':
-        app_init['config'] = ProductionConfig()
-    elif environment == 'testing':
-        app_init['config'] = TestingConfig()
-    else:
-        app_init['config'] = DevConfig()
-
-    app = init(app_init['module'], app_init['config'])
     return run_simple(
         hostname=host,
         port=port,
@@ -60,28 +90,14 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
     default='development',
     help='Environment to use (production/test/dev)'
 )
-def shell(environment='dev'):
+def shell(environment=None):
     """ Start application-aware shell """
     from boiler.bootstrap import init
-    from project.config import DevConfig, TestingConfig, ProductionConfig
-
-    app_init = {}
-
-    # get config
-    if environment == 'production':
-        app_init['config'] = ProductionConfig()
-    elif environment == 'testing':
-        app_init['config'] = TestingConfig()
-    else:
-        app_init['config'] = DevConfig()
-
-    print(app_init['config'].get('DOTENVS'))
-    return
 
     # create app
-    module = os.getenv('APP_MODULE')
-
-    app = init(app_init['module'], app_init['config'])
+    app_module = os.getenv('APP_MODULE')
+    config = get_config(environment)
+    app = init(app_module, config)
     context = dict(app=app)
 
     # and push app context
