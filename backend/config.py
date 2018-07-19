@@ -7,19 +7,18 @@ class ProductionConfig(config.ProductionConfig):
 
     # set this for offline mode
     SERVER_NAME = None
-    SECRET_KEY = 'b85897e6-8b50-11e8-acb3-38c9863edaea'
+    SECRET_KEY = '787e7b58-8b71-11e8-a66f-38c9863edaea'
 
     ASSETS_VERSION = 1
     ASSETS_PATH = '/'
     FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
 
     # users
-    USER_JWT_SECRET = 'b85ac798-8b50-11e8-a414-38c9863edaea'
+    USER_JWT_SECRET = '7882555a-8b71-11e8-a697-38c9863edaea'
 
 
 class DevConfig(config.DevConfig):
     """ Local development config """
-    DOTENVS = os.getenv('DOTENVS_LOADED', 'Default value for that')
     pass
 
 

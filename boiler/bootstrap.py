@@ -50,8 +50,8 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
+    from boiler.config import DefaultConfig
     if config is None:
-        from boiler.config import DefaultConfig
         config = DefaultConfig()
 
     # get flask parameters

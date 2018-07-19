@@ -183,7 +183,7 @@ def init(destination, force=False, skip=True):
                 shutil.copy(src, dst)
 
     # create secret keys
-    path = os.path.join(os.getcwd(), 'project', 'config.py')
+    path = os.path.join(os.getcwd(), 'backend', 'config.py')
     secrets = ['USER_JWT_SECRET', 'SECRET_KEY']
     for line in fileinput.input(path, inplace=True):
         line = line.strip('\n')
