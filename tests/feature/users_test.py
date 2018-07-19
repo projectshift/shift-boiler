@@ -3,7 +3,7 @@ from nose.plugins.attrib import attr
 from tests.base_testcase import BoilerTestCase
 
 from boiler import bootstrap
-from boiler.config.default_config import DefaultConfig
+from boiler.config import DefaultConfig
 from boiler.user import exceptions as x
 from boiler.user.services import user_service
 
@@ -18,6 +18,7 @@ class UserFeatureTests(BoilerTestCase):
     def test_fail_to_init_feature_if_jwt_secret_not_set(self):
         """ Fail to initialize users feature without JWT secret"""
         config = DefaultConfig()
+        config.USER_JWT_SECRET = None
         app = bootstrap.create_app('demo', config=config)
         with self.assertRaises(x.JwtSecretMissing):
             bootstrap.add_users(app)

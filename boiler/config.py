@@ -73,6 +73,9 @@ class DefaultConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(
         os.getcwd(), 'var', 'sqlite.db'
     ))
+    TEST_DB_PATH = os.path.join(
+        os.getcwd(), 'var', 'data' 'test-db', 'sqlite.db'
+    )
 
     # mail server settings
     ADMINS = ['you@domain']
@@ -128,14 +131,14 @@ class DefaultConfig(Config):
 
     # csrf protection
     WTF_CSRF_ENABLED = True
-    SECRET_KEY = None
+    SECRET_KEY = os.getenv('APP_SECRET_KEY')
 
     # recaptcha
     RECAPTCHA_PUBLIC_KEY = None
     RECAPTCHA_PRIVATE_KEY = None
 
     # users
-    USER_JWT_SECRET = None
+    USER_JWT_SECRET = os.getenv('APP_USER_JWT_SECRET')
     USER_JWT_ALGO = 'HS256'
     USER_JWT_LIFETIME_SECONDS = 60 * 60 * 24 * 1 # days
     USER_JWT_IMPLEMENTATION = None # string module name
@@ -171,9 +174,7 @@ class TestingConfig(Config):
     MAIL_DEBUG = True
 
     # use sqlite in testing
-    test_db = 'sqlite:///{}'.format(os.path.join(
-        os.getcwd(), 'var', 'data' 'test-db', 'sqlite.db'
-    ))
+    test_db = 'sqlite:///{}'.format(DefaultConfig.TEST_DB_PATH)
     SQLALCHEMY_DATABASE_URI = test_db
 
     # hash quickly in testing

@@ -87,7 +87,6 @@ class FlaskTestCase(unittest.TestCase):
             copyfile(backup, original)
             return
 
-
         # drop and recreate in force mode
         from shutil import rmtree
         rmtree(path)

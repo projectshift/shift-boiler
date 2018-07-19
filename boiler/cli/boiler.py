@@ -183,7 +183,7 @@ def init(destination, force=False, skip=True):
                 shutil.copy(src, dst)
 
     # create secret keys
-    path = os.path.join(os.getcwd(), 'backend', 'config.py')
+    path = os.path.join(os.getcwd(), 'dist.env')
     secrets = ['USER_JWT_SECRET', 'SECRET_KEY']
     for line in fileinput.input(path, inplace=True):
         line = line.strip('\n')
@@ -196,7 +196,7 @@ def init(destination, force=False, skip=True):
         if not found:
             echo(line)
         else:
-            echo(line.replace('None', '\'' + str(uuid1()) + '\''))
+            echo(line.replace('SET_ME', '\'' + str(uuid1()) + '\''))
 
     # rename gitignore
     ignore_src = os.path.join(os.getcwd(), 'dist.gitignore')
