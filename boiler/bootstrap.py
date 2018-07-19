@@ -1,13 +1,28 @@
 import os
 from os import path
 from importlib import import_module
-
+from dotenv import load_dotenv as dotenvs
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 
-from boiler.config import DefaultConfig
+
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
+
+
+def load_dotenvs():
+    """
+    Load dotenvs
+    Loads .env and .flaskenv files from project root directory.
+    :return:
+    """
+    if not os.getenv('DOTENVS_LOADED'):
+        envs = ['.env', '.flaskenv']
+        for env in envs:
+            path = os.path.join(os.getcwd(), env)
+            if os.path.isfile(path):
+                dotenvs(path)
+        os.environ['DOTENVS_LOADED'] = 'yes'
 
 
 def init(module_name, config):
@@ -36,8 +51,8 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
-
     if config is None:
+        from boiler.config import DefaultConfig
         config = DefaultConfig()
 
     # get flask parameters
