@@ -37,13 +37,16 @@ def create_app(name, config=None, flask_params=None):
     like project.api.app. This is how we fetch routing settings.
     """
 
+    if config is None:
+        config = DefaultConfig()
+
     # get flask parameters
     options = dict(import_name=name)
     if flask_params is not None:
         options.update(flask_params)
-    if config.FLASK_STATIC_URL is not None:
+    if config.get('FLASK_STATIC_URL') is not None:
         options['static_url_path'] = config.FLASK_STATIC_URL
-    if config.FLASK_STATIC_PATH is not None:
+    if config.get('FLASK_STATIC_PATH') is not None:
         options['static_folder'] = config.FLASK_STATIC_PATH
 
     # create an app
@@ -52,17 +55,17 @@ def create_app(name, config=None, flask_params=None):
     # load dotenv
     dotenvs = [
         os.path.join(os.getcwd(), '.env'),
-        os.path.join(os.getcwd(), 'flaskenv')
+        os.path.join(os.getcwd(), '.flaskenv')
     ]
     for dotenv in dotenvs:
         if os.path.isfile(dotenv):
             load_dotenv(dotenv)
 
     # configure app
-    if config is None:
-        config = DefaultConfig()
     if config.__class__ is type:
         raise Exception('Config must be an object, got class instead.')
+
+    app.config.from_object(DefaultConfig())
     app.config.from_object(config)
 
     # register error handler
