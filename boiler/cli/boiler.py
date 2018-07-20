@@ -201,6 +201,7 @@ def init(destination, force=False, skip=True):
     # create .env
     dotenv_dist = os.path.join(os.getcwd(), 'dist.env')
     dotenv = os.path.join(os.getcwd(), '.env')
+
     if not os.path.isfile(dotenv):
         shutil.copy(dotenv_dist, dotenv)
 
