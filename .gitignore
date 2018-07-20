@@ -41,6 +41,7 @@ www.esproj
 /cli
 /web
 /.env
+/dist.env
 
 
 
