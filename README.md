@@ -60,7 +60,7 @@ file and expect minor versions to introduce breaking changes.
   * [Testing: helpers and environment](docs/testing.md)
   * Working with collections
   * Working with forms: entity validation and recaptcha
-  * [Changelog](docs.changelog.md)
+  * [Changelog](docs/changelog.md)
 
 ### Troubleshooting
   
