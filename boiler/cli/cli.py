@@ -1,10 +1,6 @@
 import click, os
-from werkzeug.utils import import_string
 from boiler.cli.colors import *
-from boiler import exceptions as x
-from boiler.bootstrap import load_dotenvs
 
-load_dotenvs()
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -20,31 +16,6 @@ def cli():
 # Commands
 # -----------------------------------------------------------------------------
 
-def get_config():
-    """
-    Imports config based on environment.
-    :return:
-    """
-    app_module = os.getenv('APP_MODULE')
-    if not app_module:
-        err = 'Unable to bootstrap application APP_MODULE is not defined'
-        raise x.BootstrapException(err)
-
-    app_config = os.getenv('APP_CONFIG')
-    if not app_module:
-        err = 'Unable to bootstrap application APP_CONFIG is not defined'
-        raise x.BootstrapException(err)
-
-    try:
-        config_class = import_string(app_config)
-    except ImportError:
-        err = 'Failed imported config file [{}]'
-        raise x.BootstrapException(err.format(app_config))
-
-    # and return
-    config = config_class()
-    return config
-
 
 @cli.command(name='run')
 @click.option('--host', '-h', default='0.0.0.0', help='Bind to')
@@ -54,11 +25,11 @@ def get_config():
 def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     """ Run development server """
     from werkzeug.serving import run_simple
-    from boiler.bootstrap import init
+    from boiler.bootstrap import init, get_config
 
     # create app
-    app_module = os.getenv('APP_MODULE')
     config = get_config()
+    app_module = os.getenv('APP_MODULE')
     app = init(app_module, config)
 
     return run_simple(
@@ -73,11 +44,11 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
 @cli.command(name='shell')
 def shell():
     """ Start application-aware shell """
-    from boiler.bootstrap import init
+    from boiler.bootstrap import init, get_config
 
     # create app
-    app_module = os.getenv('APP_MODULE')
     config = get_config()
+    app_module = os.getenv('APP_MODULE')
     app = init(app_module, config)
     context = dict(app=app)
 

@@ -4,9 +4,11 @@ from importlib import import_module
 from dotenv import load_dotenv as dotenvs
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
+from werkzeug.utils import import_string
 
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
+from boiler import exceptions as x
 
 
 def load_dotenvs():
@@ -22,6 +24,34 @@ def load_dotenvs():
             if os.path.isfile(path):
                 dotenvs(path)
         os.environ['DOTENVS_LOADED'] = 'yes'
+
+
+def get_config():
+    """
+    Imports config based on environment.
+    :return:
+    """
+    load_dotenvs()
+
+    app_module = os.getenv('APP_MODULE')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_MODULE is not defined'
+        raise x.BootstrapException(err)
+
+    app_config = os.getenv('APP_CONFIG')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_CONFIG is not defined'
+        raise x.BootstrapException(err)
+
+    try:
+        config_class = import_string(app_config)
+    except ImportError:
+        err = 'Failed imported config file [{}]'
+        raise x.BootstrapException(err.format(app_config))
+
+    # and return
+    config = config_class()
+    return config
 
 
 def init(module_name, config):
