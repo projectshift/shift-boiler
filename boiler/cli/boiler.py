@@ -198,6 +198,12 @@ def init(destination, force=False, skip=True):
         else:
             echo(line.replace('SET_ME', '\'' + str(uuid1()) + '\''))
 
+    # create .env
+    dotenv_dist = os.path.join(os.getcwd(), 'dist.env')
+    dotenv = os.path.join(os.getcwd(), '.env')
+    if not os.path.isfile(dotenv):
+        shutil.copy(dotenv_dist, dotenv)
+
     # rename gitignore
     ignore_src = os.path.join(os.getcwd(), 'dist.gitignore')
     ignore_dst = os.path.join(os.getcwd(), '.gitignore')
