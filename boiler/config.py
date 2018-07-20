@@ -66,9 +66,7 @@ class DefaultConfig(Config):
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MIGRATIONS_PATH = os.path.join(os.getcwd(), 'migrations')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(
-        os.getcwd(), 'var', 'sqlite.db'
-    ))
+    SQLALCHEMY_DATABASE_URI = os.getenv('APP_DATABASE_URI')
     TEST_DB_PATH = os.path.join(
         os.getcwd(), 'var', 'data' 'test-db', 'sqlite.db'
     )
@@ -176,6 +174,5 @@ class TestingConfig(Config):
     # hash quickly in testing
     WTF_CSRF_ENABLED = False
     PASSLIB_ALGO = 'md5_crypt'
-    DATADOG_SEND = False
 
 
