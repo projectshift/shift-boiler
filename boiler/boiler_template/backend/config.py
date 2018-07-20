@@ -4,18 +4,15 @@ import os
 
 class ProductionConfig(config.ProductionConfig):
     """ Production config """
-
-    # set this for offline mode
-    SERVER_NAME = None
-
-    ASSETS_VERSION = 1
-    ASSETS_PATH = '/'
-    FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
+    pass
 
 
 class DevConfig(config.DevConfig):
     """ Local development config """
-    pass
+
+    # static assets
+    ASSETS_PATH = '/'
+    FLASK_STATIC_PATH = os.path.realpath(os.getcwd() + '/web')
 
 
 class TestingConfig(config.TestingConfig):
