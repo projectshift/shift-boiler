@@ -1,8 +1,4 @@
 import os
-from boiler.bootstrap import load_dotenvs
-
-# configs depend on envs
-load_dotenvs()
 
 
 class Config:

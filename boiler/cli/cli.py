@@ -2,7 +2,9 @@ import click, os
 from werkzeug.utils import import_string
 from boiler.cli.colors import *
 from boiler import exceptions as x
+from boiler.bootstrap import load_dotenvs
 
+load_dotenvs()
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -18,12 +20,9 @@ def cli():
 # Commands
 # -----------------------------------------------------------------------------
 
-def get_config(environment='development'):
+def get_config():
     """
-    Imports config based on environment. This is quite handy if you want to
-    simulate running with production settings.
-
-    :param environment: str, production, testing or dev
+    Imports config based on environment.
     :return:
     """
     app_module = os.getenv('APP_MODULE')
@@ -31,22 +30,16 @@ def get_config(environment='development'):
         err = 'Unable to bootstrap application APP_MODULE is not defined'
         raise x.BootstrapException(err)
 
-    if environment == 'production':
-        cfg = 'ProductionConfig'
-    elif environment == 'testing':
-        cfg = 'TestingConfig'
-    elif environment == 'development':
-        cfg = 'DevConfig'
-    else:
-        err = 'Unable to find config for the environment [{}]'
-        raise x.BootstrapException(err.format(environment))
+    app_config = os.getenv('APP_CONFIG')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_CONFIG is not defined'
+        raise x.BootstrapException(err)
 
-    cfg = '{}.config.{}'.format(app_module, cfg)
     try:
-        config_class = import_string(cfg)
+        config_class = import_string(app_config)
     except ImportError:
-        err = 'Failed imported config file [{}] for the [{}] environment'
-        raise x.BootstrapException(err.format(cfg, environment))
+        err = 'Failed imported config file [{}]'
+        raise x.BootstrapException(err.format(app_config))
 
     # and return
     config = config_class()
@@ -58,20 +51,14 @@ def get_config(environment='development'):
 @click.option('--port', '-p', default=5000, help='Listen on port')
 @click.option('--reload/--no-reload', default=True, help='Reload on change?')
 @click.option('--debug/--no-debug', default=True, help='Use debugger?')
-@click.option(
-    '--environment',
-    '-e',
-    default='development',
-    help='Environment to use (production/test/dev)'
-)
-def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment=None):
+def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler.bootstrap import init
 
     # create app
     app_module = os.getenv('APP_MODULE')
-    config = get_config(environment)
+    config = get_config()
     app = init(app_module, config)
 
     return run_simple(
@@ -84,19 +71,13 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment=None):
 
 
 @cli.command(name='shell')
-@click.option(
-    '--environment',
-    '-e',
-    default='development',
-    help='Environment to use (production/test/dev)'
-)
-def shell(environment=None):
+def shell():
     """ Start application-aware shell """
     from boiler.bootstrap import init
 
     # create app
     app_module = os.getenv('APP_MODULE')
-    config = get_config(environment)
+    config = get_config()
     app = init(app_module, config)
     context = dict(app=app)
 
