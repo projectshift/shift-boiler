@@ -258,18 +258,14 @@ def install_dependencies(feature=None):
     )
 
     # update requirements file with dependencies
-    existing = []
     reqs = os.path.join(os.getcwd(), 'requirements.txt')
     if os.path.exists(reqs):
         with open(reqs) as file:
             existing = [x.strip().split('==')[0] for x in file.readlines() if x]
 
-        lines = []
+        lines = ['\n']
         with open(feature_reqs) as file:
             incoming = file.readlines()
-
-            if len(existing) and existing[-1] != '\n':  # add newline
-                incoming.insert(0, '\n')
 
             for line in incoming:
                 if not(len(line)) or line.startswith('#'):
