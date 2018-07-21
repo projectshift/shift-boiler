@@ -245,7 +245,7 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 This section has all the debug functionality disabled by default, since we are running in production mode. Some of these settings should be overridden in development and testing mode which is exactly what default `DevConfig` in `TestingConfig` do.
 
-  * `TIME_RESTARTS`: will print time in seconds since last app restart/reload which is useful in dev mode to optimize pp load times.
+  * `TIME_RESTARTS`: will print time in seconds since last app restart/reload which is useful in dev mode to optimize app load times.
   * `TESTING`: will indicate your app is running in test mode
   * `DEBUG`: sets flask to debug mode
   * `DEBUG_TB_*` Controls different settings of [flask-debugtoolbar](http://flask-debugtoolbar.readthedocs.io/en/latest/). See debug toolbar documentation for a list of available settings.
@@ -300,10 +300,10 @@ TEST_DB_PATH = os.path.join(
 This section is used by ORM feature. If you use it, set these settings in your custom configs.
 
   * `SQLALCHEMY_ECHO`: whether to print generated SQl queries to console. It is sometimes useful to enable this in development mode
-  * `SQLALCHEMY_TRACK_MODIFICATIONS` Disables flask-sqlalchemy signalling support. Sinse then this setting became deprecated and will be set as default in fiture versions.
+  * `SQLALCHEMY_TRACK_MODIFICATIONS` Disables flask-sqlalchemy signalling support. Since then, this setting became deprecated and will be disabled by default in fiture versions.
   * `MIGRATIONS_PATH` Sets the path to where migrations environment and revisions will be stored (`/migrations`). There probably is no reason to change that unless you have a very specific use case.
-  * `SQLALCHEMY_DATABASE_URI` Database URI containing host and credentials. This will probably different for your environments, that's why this setting is moved to the `.env` file.
-  * `TEST_DB_PATH` As described in the [Testing section](testing.md) we use SQLite database when running the tests, and this controls where the test database will be created. there probably isn't a reason to change that.
+  * `SQLALCHEMY_DATABASE_URI` Database URI containing host and credentials. This will probably be different for your environments, that's why this setting is moved to the `.env` file.
+  * `TEST_DB_PATH` As described in the [Testing section](testing.md) we use SQLite database when running the tests, and this controls where the test database will be created. There probably isn't a reason to change that.
 
 Please see [flask-sqlalchemy configuration](http://flask-sqlalchemy.pocoo.org/2.1/config/) docs for the full list of all available options.
 
@@ -330,7 +330,7 @@ ADMINS = ['you@domain']
 LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS = False
 ```
 
-Controls whether the loggin feature, when enabled, sends exception tracebacks to admin emails listed in `ADMINS` setting. Override this in your concrete configs if you enabled the logging feature.
+Controls whether the logging feature, when enabled, sends exception tracebacks to admin emails listed in `ADMINS` setting. Override this in your concrete configs if you enabled the logging feature and want to receive exceptions by email.
 
 
 #### Localization
@@ -355,7 +355,7 @@ RECAPTCHA_PRIVATE_KEY = os.getenv('APP_RECAPTCHA_PRIVATE_KEY')
 
 This section configures CSRF protection and recaptcha integration.
 
-  * `WTF_CSRF_ENABLED` CSRF protection for the forms in always enabled by default. However you might want to disable this when running your tests. For that reason default `Testing` config has this disabled.
+  * `WTF_CSRF_ENABLED` CSRF protection for the forms in always enabled by default. However you might want to disable this when running your tests. For that reason default base `TestingConfig` has this disabled.
   * `RECAPTCHA_*` holds your google recatcha credentials used to render recaptcha form fields. These should be put in your `.env` files.
 
 
@@ -425,12 +425,12 @@ USER_EMAIL_SUBJECTS = {
 This section sets some sensible defaults for the users feature, which has to be separately enabled. These settings are fine to get you up and running in development but you probably will want to override some of these for a real life applications.
 
   * `OAUTH` sets your supported OAUTH providers. Put your social app credentials and scopes here
-  * `USER_JWT_SECRET` holds a secret key used for hashing user's JWT tokens that we use for API access authentication. This should be kept secret and for this reason was moved out to `.env` file
+  * `USER_JWT_SECRET` holds a secret key used for hashing user's JWT tokens that we use for API access authentication. This should be kept secret and for this reason was moved out to `.env` file. The default project skeleton provided by `./boiler init` command will initialize this for you with a random value.
   * `USER_JWT_IMPLEMENTATION` allows you to register a custom JWT token implementation
   * `USER_JWT_LOADER_IMPLEMENTATION` allows you to register custom JWT user loader implementation.
-  * `USER_PUBLIC_PROFILES` Controls whether user profile pages are made public. This is off by default and has to be explicitly enabled after careful consideration. you might want to specify this in your terms and conditions.
+  * `USER_PUBLIC_PROFILES` Controls whether user profile pages are made public. This is off by default and has to be explicitly enabled after careful consideration. You might want to mention this in your terms and conditions.
   * `USER_SEND_WELCOME_MESSAGE` Controls whether a welcome email is sent to newly registered users
-  * `USER_BASE_EMAIL_CONFIRM_URL` Sets base confirm URL for account confirmation with links. Most of the times this can be left blank, unless your confirmation endpoint resides on a different domain as your app, which sometimes is the case for APIs.
+  * `USER_BASE_EMAIL_CONFIRM_URL` Sets base confirm URL for account confirmation with links. Most of the times this can be left blank, unless your confirmation endpoint resides on a different domain as your app, which sometimes is the case for API apps, when you want to have confirmation page to be on the actual frontend URL.
   * `USER_BASE_PASSWORD_CHANGE_URL` Same for password recovery endpoints.
   * `USER_EMAIL_SUBJECTS` A dictionary of subjects for common user emails
 
