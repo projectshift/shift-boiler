@@ -243,7 +243,7 @@ DEBUG_TB_PROFILER_ENABLED = False
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 ```
 
-This section sets all the debug functionality disabled by default, since we are running in production mode. Some of these settings should be overridden in development and testing mode which is exactly what default `DevConfig` in `TestingConfig` do.
+This section has all the debug functionality disabled by default, since we are running in production mode. Some of these settings should be overridden in development and testing mode which is exactly what default `DevConfig` in `TestingConfig` do.
 
   * `TIME_RESTARTS`: will print time in seconds since last app restart/reload which is useful in dev mode to optimize pp load times.
   * `TESTING`: will indicate your app is running in test mode
