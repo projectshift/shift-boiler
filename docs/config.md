@@ -12,7 +12,7 @@ This is a great improvement that allows us to significantly simplify config inhe
   * First we apply default config
   * Then you custom config is applied on top of that
 
-In addition every config now follows a clear inheritance from the base configs provided by boiler. here is an example of minimal application config:
+In addition every config now follows a clear inheritance from the base configs provided by boiler. Here is an example of minimal application config:
 
 ```python
 class ProductionConfig(config.ProductionConfig):
