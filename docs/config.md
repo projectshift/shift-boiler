@@ -221,7 +221,7 @@ Production is the default environment our apps run in. These will be probably ov
 SERVER_NAME = None
 ```
 
-Most of the time you can leave it as none. Unless you need to run some functionality (e.g. `url_for()` url builder) using the request context in offline mode, when no request is is available, in which case it is advised to set this to URL of your app.
+Most of the time you can leave it as none. Unless you need to run some functionality that relies on request context in offline mode (e.g. `url_for()` url builder), when no request is is available (CLIs), in which case it is advised to set this to your app's URL.
 
 #### Secret key
 
@@ -229,7 +229,7 @@ Most of the time you can leave it as none. Unless you need to run some functiona
 SECRET_KEY = os.getenv('APP_SECRET_KEY')
 ```
 
-The secret key is used it various places including recaptcha, password hashing and sessions encryption. It should be kept secret and be environment specific. For that reason it was put in the `.env` file. The default project skeleton will initialize this for you with a random value.
+The secret key is used in various places including recaptcha, password hashing and sessions encryption. It should be kept secret and be environment specific. For that reason it was put in the `.env` file. The default project skeleton will initialize this for you with a random value.
 
 
 #### Testing/debug features disabled by default
