@@ -74,6 +74,11 @@ def shell():
 def test(nose_argsuments):
     """ Run application tests """
     from nose import run
+    from boiler import bootstrap
+
+    # load dotenvs first
+    bootstrap.load_dotenvs()
+
     params = ['__main__', '-c', 'nose.ini']
     params.extend(nose_argsuments)
     run(argv=params)
