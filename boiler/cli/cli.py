@@ -1,4 +1,4 @@
-import click, os, sys, shutil
+import click, os
 from boiler.cli.colors import *
 
 
@@ -16,33 +16,22 @@ def cli():
 # Commands
 # -----------------------------------------------------------------------------
 
+
 @cli.command(name='run')
 @click.option('--host', '-h', default='0.0.0.0', help='Bind to')
 @click.option('--port', '-p', default=5000, help='Listen on port')
 @click.option('--reload/--no-reload', default=True, help='Reload on change?')
 @click.option('--debug/--no-debug', default=True, help='Use debugger?')
-@click.option(
-    '--environment',
-    '-e',
-    default='development',
-    help='Environment to use'
-)
-def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
+def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     """ Run development server """
     from werkzeug.serving import run_simple
-    from boiler.bootstrap import init
-    from config.config import DevConfig, TestingConfig, DefaultConfig
-    from config.app import app as app_init
+    from boiler.bootstrap import init, get_config
 
-    # get config
-    if environment == 'production':
-        app_init['config'] = DefaultConfig()
-    elif environment == 'testing':
-        app_init['config'] = TestingConfig()
-    else:
-        app_init['config'] = DevConfig()
+    # create app
+    config = get_config()
+    app_module = os.getenv('APP_MODULE')
+    app = init(app_module, config)
 
-    app = init(app_init['module'], app_init['config'])
     return run_simple(
         hostname=host,
         port=port,
@@ -53,28 +42,14 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, environment='dev'):
 
 
 @cli.command(name='shell')
-@click.option(
-    '--environment',
-    '-e',
-    default='development',
-    help='Environment to use'
-)
-def shell(environment='dev'):
+def shell():
     """ Start application-aware shell """
-    from boiler.bootstrap import init
-    from config.app import app as app_init
-    from config.config import DevConfig, TestingConfig, DefaultConfig
-
-    # get config
-    if environment == 'production':
-        app_init['config'] = DefaultConfig()
-    elif environment == 'testing':
-        app_init['config'] = TestingConfig()
-    else:
-        app_init['config'] = DevConfig()
+    from boiler.bootstrap import init, get_config
 
     # create app
-    app = init(app_init['module'], app_init['config'])
+    config = get_config()
+    app_module = os.getenv('APP_MODULE')
+    app = init(app_module, config)
     context = dict(app=app)
 
     # and push app context
@@ -99,6 +74,11 @@ def shell(environment='dev'):
 def test(nose_argsuments):
     """ Run application tests """
     from nose import run
+    from boiler import bootstrap
+
+    # load dotenvs first
+    bootstrap.load_dotenvs()
+
     params = ['__main__', '-c', 'nose.ini']
     params.extend(nose_argsuments)
     run(argv=params)

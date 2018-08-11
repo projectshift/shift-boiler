@@ -13,7 +13,7 @@ from boiler.user import events, exceptions as x
 from boiler.user.events import events as user_events
 from boiler.user.models import User, Role
 from boiler.user.user_service import UserService
-from boiler.config.default_config import DefaultConfig
+from boiler.config import DefaultConfig
 from boiler import bootstrap
 
 

@@ -4,7 +4,7 @@ from tests.base_testcase import BoilerTestCase
 
 import jwt
 from datetime import datetime, timedelta
-from boiler.config.default_config import DefaultConfig
+from boiler.config import DefaultConfig
 from boiler import bootstrap
 from boiler.user.models import User, Role
 from boiler.user import events, exceptions as x

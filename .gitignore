@@ -40,6 +40,8 @@ www.esproj
 /wsgi.py
 /cli
 /web
+/.env
+/dist.env
 
 
 

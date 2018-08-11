@@ -56,7 +56,7 @@ class FirstTestEver(unittest.TestCase):
 
 ```
 
-And finally run in with `./cli run`
+And finally run in with `./cli test`
 
 
 ## Testing Flask Applications
@@ -67,17 +67,18 @@ You start off by creating a base test case for your project and extending your t
 
 ```python
 # /tests/base.py
+import os
 from boiler import testing
 from boiler import bootstrap
 from config.config import TestingConfig
-from config.app import app
 
 
 class BaseTest(testing.ViewTestCase):
     def setUp():
         """ Set up app for the base test case """
+        app_module = os.environ['APP_MODULE']
         config = TestingConfig()
-        app = bootstrap.init(module_name=app['module'], config=config)
+        app = bootstrap.init(module_name=app=os.environ['APP_MODULE'], config=config)
         super().setUp(app=app)
 ```
 

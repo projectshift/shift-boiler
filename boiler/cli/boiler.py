@@ -183,7 +183,7 @@ def init(destination, force=False, skip=True):
                 shutil.copy(src, dst)
 
     # create secret keys
-    path = os.path.join(os.getcwd(), 'project', 'config.py')
+    path = os.path.join(os.getcwd(), 'dist.env')
     secrets = ['USER_JWT_SECRET', 'SECRET_KEY']
     for line in fileinput.input(path, inplace=True):
         line = line.strip('\n')
@@ -196,7 +196,14 @@ def init(destination, force=False, skip=True):
         if not found:
             echo(line)
         else:
-            echo(line.replace('None', '\'' + str(uuid1()) + '\''))
+            echo(line.replace('SET_ME', '\'' + str(uuid1()) + '\''))
+
+    # create .env
+    dotenv_dist = os.path.join(os.getcwd(), 'dist.env')
+    dotenv = os.path.join(os.getcwd(), '.env')
+
+    if not os.path.isfile(dotenv):
+        shutil.copy(dotenv_dist, dotenv)
 
     # rename gitignore
     ignore_src = os.path.join(os.getcwd(), 'dist.gitignore')
@@ -258,18 +265,14 @@ def install_dependencies(feature=None):
     )
 
     # update requirements file with dependencies
-    existing = []
     reqs = os.path.join(os.getcwd(), 'requirements.txt')
     if os.path.exists(reqs):
         with open(reqs) as file:
             existing = [x.strip().split('==')[0] for x in file.readlines() if x]
 
-        lines = []
+        lines = ['\n']
         with open(feature_reqs) as file:
             incoming = file.readlines()
-
-            if len(existing) and existing[-1] != '\n':  # add newline
-                incoming.insert(0, '\n')
 
             for line in incoming:
                 if not(len(line)) or line.startswith('#'):

@@ -55,11 +55,15 @@ file and expect minor versions to introduce breaking changes.
 ## Documentation
 
   * [Quickstart for humans](docs/quickstart.md)
-  * Full configuration example
+  * [Configurtion best practices](docs/config.md)
   * [Boiler features](docs/features.md)
   * [Testing: helpers and environment](docs/testing.md)
   * Working with collections
   * Working with forms: entity validation and recaptcha
+  * [Changelog](docs/changelog.md)
+
+### Troubleshooting
+  
   * [MacOS: signing python interpreter](docs/sign_python.md)
 
 

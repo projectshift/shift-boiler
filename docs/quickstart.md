@@ -30,23 +30,22 @@ Initialiser will detect if there are files in target directory that will be over
 This will create a basic project structure that looks like this:
 
 ```
-config
-    app.py
-    config.py
-    config.dist.py    
-project
+backend
     templates
-        home.j2
+        index
+            home.j2
         layout.j2
     app.py
+    config.py
     urls.py
     views.py
-    README.md
 var
     data
     logs
 cli
+.env
 .gitignore
+dist.env
 requirements.txt
 nose.ini
 uwsgi.ini
@@ -66,10 +65,10 @@ This is your application configuration directory and it has two files:
   * `config.py` is your main config. It is a standard flask class-based configuration file, that has three environments for development, testing and production. You can of course create more, for example a staging one. This should be ignored from git and be environment-specific. This file usually extends from your `project/config.py` that usually holds environment-independent settings.
 
 
-### project
-This is where your project files should go. The name of the module is merely a suggestion so you can rename it so it makes more sense. On initial install our project will contain one a app layout.
+### backend
+This is where your project files should go. The name of the module is merely a suggestion so you can rename it so it makes more sense. 
 
-Its a simple single view app with one route and a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as enable features. Boiler provides several common features such as routing, orm, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
+Its a simple single view app with one route, a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as [enable features](features.md). Boiler provides several common features such as routing, orm, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
 
 
 Boiler takes an unusual approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup times and reload times when running dev server. You define urls in `urls.py` file like this:
@@ -88,9 +87,14 @@ The `views.py` file will contain your views. Initially it is prety straightforwa
 
 Vars dierctory is used for generated data. The idea here is for this directory to be totally disposable. Your application will put temporary files in here as well as logs, test artifacts and other generated stuff.
 
+### .env and dist.env
+
+These files define environment variables for your environment. These variables are then used in your configuration files. The idea here is not to have config files for most settings, but not to commit sensitive data to git repository. The `.env` file will hold your local credentials and is never comitted to source control. Howevere the dist.env is, to give other developers an ide of what they should configure loclally to run the project. Please see [Configuration section](config.md) for more details.
+
+
 ### nose.ini
 
-We also provide a testing facility for your code and this is a demo configuration. You can run your tests with `./cli test` command.
+We also provide a testing facility for your code and this is a demo configuration. You can run your tests with `./cli test` command. See [the section on testing](testing.md) for an overview of what's available.
 
 ### uwsgi
 

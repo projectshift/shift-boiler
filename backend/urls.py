@@ -7,7 +7,7 @@ slash. If it's missing - Flask will just add it.
 """
 
 urls = dict()
-urls['/'] = route('project.views.home', 'home')
+urls['/'] = route('backend.views.home', 'home')
 
 
 

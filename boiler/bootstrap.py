@@ -1,12 +1,57 @@
+import os
 from os import path
 from importlib import import_module
-
+from dotenv import load_dotenv as dotenvs
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
+from werkzeug.utils import import_string
 
-from boiler.config.default_config import DefaultConfig
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
+from boiler import exceptions as x
+
+
+def load_dotenvs():
+    """
+    Load dotenvs
+    Loads .env and .flaskenv files from project root directory.
+    :return:
+    """
+    if not os.getenv('DOTENVS_LOADED'):
+        envs = ['.env', '.flaskenv']
+        for env in envs:
+            path = os.path.join(os.getcwd(), env)
+            if os.path.isfile(path):
+                dotenvs(path)
+        os.environ['DOTENVS_LOADED'] = 'yes'
+
+
+def get_config():
+    """
+    Imports config based on environment.
+    :return:
+    """
+    load_dotenvs()
+
+    app_module = os.getenv('APP_MODULE')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_MODULE is not defined'
+        raise x.BootstrapException(err)
+
+    app_config = os.getenv('APP_CONFIG')
+    if not app_module:
+        err = 'Unable to bootstrap application APP_CONFIG is not defined'
+        raise x.BootstrapException(err)
+
+    try:
+        config_class = import_string(app_config)
+    except ImportError:
+        err = 'Failed imported config file [{}]'
+        raise x.BootstrapException(err.format(app_config))
+
+    # and return
+    config = config_class()
+    return config
 
 
 def init(module_name, config):
@@ -35,24 +80,27 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
+    from boiler.config import DefaultConfig
+    if config is None:
+        config = DefaultConfig()
 
     # get flask parameters
     options = dict(import_name=name)
     if flask_params is not None:
         options.update(flask_params)
-    if config.FLASK_STATIC_URL is not None:
-        options['static_url_path'] = config.FLASK_STATIC_URL
-    if config.FLASK_STATIC_PATH is not None:
-        options['static_folder'] = config.FLASK_STATIC_PATH
+    if config.get('FLASK_STATIC_URL') is not None:
+        options['static_url_path'] = config.get('FLASK_STATIC_URL')
+    if config.get('FLASK_STATIC_PATH') is not None:
+        options['static_folder'] = config.get('FLASK_STATIC_PATH')
 
     # create an app
     app = Flask(**options)
 
     # configure app
-    if config is None:
-        config = DefaultConfig()
     if config.__class__ is type:
         raise Exception('Config must be an object, got class instead.')
+
+    app.config.from_object(DefaultConfig())
     app.config.from_object(config)
 
     # register error handler
@@ -66,7 +114,7 @@ def create_app(name, config=None, flask_params=None):
 
     # time restarts?
     if app.config.get('TIME_RESTARTS'):
-        restart_timer.time_restarts(app.config.get('DATA')['data'])
+        restart_timer.time_restarts(os.path.join(os.getcwd(), 'var', 'data'))
 
     return app
 

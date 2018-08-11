@@ -26,6 +26,7 @@ def create_app(*args, **kwargs):
 
     # and bootstrap
     app = bootstrap.create_app(__name__, *args, **kwargs)
+
     bootstrap.add_orm(app)
     bootstrap.add_mail(app)
     bootstrap.add_users(app)

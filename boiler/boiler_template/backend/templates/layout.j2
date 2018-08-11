@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="fragment" content="!" />
+
+        <title>Welcome to flask</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+
+        {# icons #}
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicons/favicon.png') }}">
+
+        {# styles #}
+        {% block stylesheets %}{% endblock %}
+
+    </head>
+    <body>
+
+    {# body content #}
+    {% block body %}{% endblock %}
+
+    {# scripts #}
+    {% block javascripts %}{%- endblock -%}
+
+</body>
+</html>
+
