@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.6.1
+
+**Simplified app bootsrap**
+
+In this release we improved our bootstrap process. Now it is more straightforward and resembles traditional flask app configuration more. In addition it provides globally accessible instance of your app available from your project's `app` module. 
+
+Some changes might be required to your existing project's `app.py` file if you are upgrading:
+
+Previous version:
+
+```python
+from boiler import bootstrap
+def create_app(*args, **kwargs):
+	''' Create application '''
+	app = bootstrap.create_app(__name__, *args, **kwargs)
+	
+	# enable features
+	bootstrapp.add_routing(app)
+
+```
+
+New version:
+
+```python
+from boiler import bootstrap
+
+# create app
+app = bootstrap.create_app(__name__, config=bootstrap.get_config())
+
+# enable features
+bootstrap.add_routing(app)
+
+```
+
+As you can see everything is now at module level and your app will be initialized upon importing, which makes it globally accessible.
+
+
 ## 0.6.0
 
 **Configuration system updates**
