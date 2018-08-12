@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2
+
+Minor bugfix release with changes to database CLI. Prefer this version over `v0.6.1`
+
 ## 0.6.1
 
 **Simplified app bootsrap**

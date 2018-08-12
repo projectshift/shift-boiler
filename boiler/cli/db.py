@@ -3,8 +3,8 @@ from alembic import command as alembic_command
 from alembic.util import CommandError
 from boiler.cli.colors import *
 
-from config.config import DefaultConfig
 from boiler.feature.orm import db
+from boiler import bootstrap
 
 
 def get_config():
@@ -17,11 +17,11 @@ def get_config():
     @todo: think about it
     """
     from boiler.migrations.config import MigrationsConfig
-    config = DefaultConfig()
 
+    app = bootstrap.get_app()
     params = dict()
-    params['path'] = config.get('MIGRATIONS_PATH', 'migrations')
-    params['db_url'] = config.get('SQLALCHEMY_DATABASE_URI')
+    params['path'] = app.config.get('MIGRATIONS_PATH', 'migrations')
+    params['db_url'] = app.config.get('SQLALCHEMY_DATABASE_URI')
     params['metadata'] = db.metadata
 
     config = MigrationsConfig(**params)
