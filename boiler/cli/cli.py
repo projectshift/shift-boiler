@@ -1,6 +1,6 @@
 import click, os
 from boiler.cli.colors import *
-
+from boiler import bootstrap
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -25,13 +25,8 @@ def cli():
 def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     """ Run development server """
     from werkzeug.serving import run_simple
-    from boiler.bootstrap import init, get_config
 
-    # create app
-    config = get_config()
-    app_module = os.getenv('APP_MODULE')
-    app = init(app_module, config)
-
+    app = bootstrap.get_app()
     return run_simple(
         hostname=host,
         port=port,
@@ -44,12 +39,7 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
 @cli.command(name='shell')
 def shell():
     """ Start application-aware shell """
-    from boiler.bootstrap import init, get_config
-
-    # create app
-    config = get_config()
-    app_module = os.getenv('APP_MODULE')
-    app = init(app_module, config)
+    app = bootstrap.get_app()
     context = dict(app=app)
 
     # and push app context
@@ -74,10 +64,6 @@ def shell():
 def test(nose_argsuments):
     """ Run application tests """
     from nose import run
-    from boiler import bootstrap
-
-    # load dotenvs first
-    bootstrap.load_dotenvs()
 
     params = ['__main__', '-c', 'nose.ini']
     params.extend(nose_argsuments)

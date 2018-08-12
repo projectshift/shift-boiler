@@ -1,7 +1,6 @@
 import os
 from os import path
 from importlib import import_module
-from dotenv import load_dotenv as dotenvs
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import import_string
@@ -11,28 +10,11 @@ from boiler.errors import register_error_handler
 from boiler import exceptions as x
 
 
-def load_dotenvs():
-    """
-    Load dotenvs
-    Loads .env and .flaskenv files from project root directory.
-    :return:
-    """
-    if not os.getenv('DOTENVS_LOADED'):
-        envs = ['.env', '.flaskenv']
-        for env in envs:
-            path = os.path.join(os.getcwd(), env)
-            if os.path.isfile(path):
-                dotenvs(path)
-        os.environ['DOTENVS_LOADED'] = 'yes'
-
-
 def get_config():
     """
     Imports config based on environment.
     :return:
     """
-    load_dotenvs()
-
     app_module = os.getenv('APP_MODULE')
     if not app_module:
         err = 'Unable to bootstrap application APP_MODULE is not defined'
@@ -54,19 +36,16 @@ def get_config():
     return config
 
 
-def init(module_name, config):
+def get_app():
     """
-    Initialize
-    Reads your config/app.py to understand where your app is, then imports it
-    and instantiates it with config you defined. After that will call
-    create_app() method on your app to apply app-specific configurations.
-
-    :param module_name: string
-    :param config: config object
+    Get app
+    Inspects app module name coming from dotenv and tries to import flask
+    app from this namespace. May subsequently result in app creation if not
+    previously imported.
     :return: flask.Flask
     """
-    module = import_module(module_name + '.app')
-    app = module.create_app(config=config)
+    app_module = os.getenv('APP_MODULE')
+    app = import_string(app_module + '.app.app')
     return app
 
 

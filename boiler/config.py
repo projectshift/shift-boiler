@@ -60,8 +60,8 @@ class DefaultConfig(Config):
     MAX_CONTENT_LENGTH = 1024 * 1024 * 16 # megabytes
 
     # database
-    # 'mysql://user:password@server/db?charset=utf8'
-    # 'mysql+pymysql://user:password@server/db?charset=utf8'
+    # 'mysql://user:password@server/db?charset=utf8mb'
+    # 'mysql+pymysql://user:password@server/db?charset=utf8mb'
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MIGRATIONS_PATH = os.path.join(os.getcwd(), 'migrations')
