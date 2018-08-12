@@ -1,18 +1,18 @@
 # Configuration
 
-Since version 0.6.0 we are moving away from environment-specific config files and introducing environment variables-enhanced configuration system via `.env` files (see below). For that reason you will notice that the entire root `/config` directory is now gone.
+This section will explain how to configure an app that uses boiler app template.
 
 
 ## Default config
 
-[Default config](https://github.com/projectshift/shift-boiler/blob/master/boiler/config.py#L33) is now always applied to your app first before any other config to give you a set of sensible defaults that you can override by running your app with a minimal focused config.
+[Default config](https://github.com/projectshift/shift-boiler/blob/master/boiler/config.py#L33) is always applied to your app first before any other config to give you a set of sensible defaults that you can override by running your app with a minimal focused config.
 
-This is a great improvement that allows us to significantly simplify config inheritance, since now your configs do not have to extend from default base config and after eliminating root `/config` we do not have to use multiple inheritance which always caused issues that where tricky to debug (what config is this setting coming from?). Everything is much more straightforward now:
+This is a great improvement that allows us to significantly simplify config inheritance. A typical workflow to configure an is as follows:
 
   * First we apply default config
-  * Then you custom config is applied on top of that
+  * Then your custom config is applied on top of that
 
-In addition every config now follows a clear inheritance from the base configs provided by boiler. Here is an example of minimal application config:
+In addition every config follows a clear inheritance from the base configs provided by boiler. Here is an example of minimal application config:
 
 ```python
 class ProductionConfig(config.ProductionConfig):
@@ -36,7 +36,7 @@ class TestingConfig(config.TestingConfig):
     pass
 ```
 
-As you can see each config clearly inherits from the corresponding base config with minimal changes - development and testing configs don't even add anything to the defaults.
+As you can see each config clearly inherits from the corresponding base config with minimal changes - development and testing configs don't even add anything or change the defaults.
 
 
 
@@ -56,6 +56,8 @@ class ProductionConfig(config.ProductionConfig):
 ```
 
 You will then set these environment variables in the `.env` file in the root of your project. They will be loaded in as part of the app bootstrap process and made available to all your code. Just remember to **never commit `/env` file to repository**. By default boiler will add these files to `.gitignore`
+
+Read more on [environment-based configs](https://12factor.net/config)
 
 ### Default `.env`
 

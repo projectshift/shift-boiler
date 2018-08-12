@@ -57,21 +57,13 @@ uwsgi.py
 This is your main project cli with some pre-installed commands. You can pick what commands you need or extend it with your own commands.
 
 
-### config
-This is your application configuration directory and it has two files:
-
-  * `app.py` is were you define the app you run. This is so that `./cli run` command knows how to run your application and wsgi entrypoint knows what config to use.
-
-  * `config.py` is your main config. It is a standard flask class-based configuration file, that has three environments for development, testing and production. You can of course create more, for example a staging one. This should be ignored from git and be environment-specific. This file usually extends from your `project/config.py` that usually holds environment-independent settings.
-
-
 ### backend
 This is where your project files should go. The name of the module is merely a suggestion so you can rename it so it makes more sense. 
 
 Its a simple single view app with one route, a template. The app itself is created and configured in `app.py`. This is where you can customize your flask application settings, as well as [enable features](features.md). Boiler provides several common features such as routing, orm, logging etc. For now we will only have routing enabled. See [Application features](features.md) on how to enable and use all the features that boiler provides.
 
 
-Boiler takes an unusual approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup times and reload times when running dev server. You define urls in `urls.py` file like this:
+Boiler takes an approach to defining routes, called [Lazy Views](http://flask.pocoo.org/docs/0.11/patterns/lazyloading/), which means that views are imported on-demand, as soon as certain url gets hit. This has a benefit of not having to load all your views and their dependencies upfront on application startup, which significantly improves startup times and reload times when running dev server. You define urls in `urls.py` file like this:
 
 ```
 urls = dict()
@@ -121,12 +113,12 @@ Run the CLI:
 
 
 
-## Run
+## Run app
 
 In order to run the app we will need to install Flask first:
 
 ```
-pip install flask
+boiler dependencies flask
 ```
 
 And then we can run:

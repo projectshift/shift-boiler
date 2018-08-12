@@ -6,16 +6,13 @@ Boiler uses a notion of features to talk about certain integrations that you can
 # app.py
 from boiler import bootstrap
 
-def create_app(*args, **kwargs):
-	''' Create application '''
-	app = bootstrap.create_app(__name__, *args, **kwargs)
+# create app
+app = bootstrap.create_app(__name__, config=bootstrap.get_config())
 	
-	# enable features
-	bootstrapp.add_logging(app)
-	bootstrapp.add_routing(app)
-	
-	
-	return app
+# enable features
+bootstrapp.add_logging(app)
+bootstrapp.add_routing(app)
+
 ```
 
 Please note, that although the integration is in place, you will still need to install certain software when enabling a feature, for example you will need SQLAlchemy to enable ORM feature. For convenience we provide a set of dependency files that will be installed when you `boiler init` and a wrapper cli command for pip that will install certain set of dependencies. 
