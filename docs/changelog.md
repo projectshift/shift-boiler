@@ -2,7 +2,7 @@
 
 ## 0.6.3
 
-Minor bugfix release that adds `python-dotenv` to the list of boiler dependencies.
+Minor maintenance release that adds `python-dotenv` to the list of boiler dependencies.
 It will now be installed automatically regardless of whether you use flask or not.
 
 ## 0.6.2
@@ -21,6 +21,7 @@ Previous version:
 
 ```python
 from boiler import bootstrap
+
 def create_app(*args, **kwargs):
 	''' Create application '''
 	app = bootstrap.create_app(__name__, *args, **kwargs)
