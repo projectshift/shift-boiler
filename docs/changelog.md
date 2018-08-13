@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.3
+
+Minor bugfix release that adds `python-dotenv` to the list of boiler dependencies.
+It will now be installed automatically regardless of whether you use flask or not.
+
 ## 0.6.2
 
 Minor bugfix release with changes to database CLI. Prefer this version over `v0.6.1`
