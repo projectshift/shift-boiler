@@ -18,11 +18,23 @@ def get_config():
     """
     from boiler.migrations.config import MigrationsConfig
 
+    # used for errors
+    map = dict(
+        path='MIGRATIONS_PATH',
+        db_url='SQLALCHEMY_DATABASE_URI',
+        metadata='SQLAlchemy metadata'
+    )
+
     app = bootstrap.get_app()
     params = dict()
-    params['path'] = app.config.get('MIGRATIONS_PATH', 'migrations')
-    params['db_url'] = app.config.get('SQLALCHEMY_DATABASE_URI')
+    params['path'] = app.config.get(map['path'], 'migrations')
+    params['db_url'] = app.config.get(map['db_url'])
     params['metadata'] = db.metadata
+
+    for param, value in params.items():
+        if not value:
+            msg = 'Configuration error: [{}] is undefined'
+            raise Exception(msg.format(map[param]))
 
     config = MigrationsConfig(**params)
     return config
