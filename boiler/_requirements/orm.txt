@@ -1,6 +1,6 @@
 shiftboiler
-SQLAlchemy==1.2.7
-Flask-SQLAlchemy==2.2
+SQLAlchemy==1.2.12
+Flask-SQLAlchemy==2.3.2
 alembic==0.9.9
 
 # PyMySQL==0.7.11
