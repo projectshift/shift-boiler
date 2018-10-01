@@ -62,6 +62,7 @@ class DefaultConfig(Config):
     # database
     # 'mysql://user:password@server/db?charset=utf8mb4'
     # 'mysql+pymysql://user:password@server/db?charset=utf8mb4'
+    # 'mysql+mysqlconnector://user:password@host:3306/database?charset=utf8mb4'
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MIGRATIONS_PATH = os.path.join(os.getcwd(), 'migrations')
