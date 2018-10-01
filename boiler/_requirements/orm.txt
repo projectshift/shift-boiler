@@ -5,3 +5,4 @@ alembic==0.9.9
 
 # PyMySQL==0.7.11
 # mysqlclient==1.3.13
+# mysql-connector-python==8.0.12
