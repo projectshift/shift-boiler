@@ -5,7 +5,6 @@ def get_app():
     for the commands below. Why? basically because all the extensions used,
     like ORM or logging or others a tied to an app and require one to run.
     """
-    from config.app import app as app_init
-    from boiler.bootstrap import init
-    app = init(app_init['module'], app_init['config'])
-    return app
+    from boiler.bootstrap import get_app
+    return get_app()
+
