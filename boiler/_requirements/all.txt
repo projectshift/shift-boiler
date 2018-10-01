@@ -29,7 +29,7 @@ Flask-Mail==0.9.1
 Flask-Navigation==0.2.0
 
 # orm
-SQLAlchemy==1.2.7
+SQLAlchemy==1.2.12
 Flask-SQLAlchemy==2.3.2
 alembic==0.9.9
 
