@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.4
+
+Minor bugfix release. Fixes error in user CLI commands and boiler CLI app getter. Minor documentation improvements and dependencies updates.
+
 ## 0.6.3
 
 Minor maintenance release that adds `python-dotenv` to the list of boiler dependencies.
