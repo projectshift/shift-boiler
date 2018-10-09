@@ -249,6 +249,8 @@ class FacebookHandle(BaseHandle):
         me = me.data
         email = me.get('email')
         id = me.get('id')
+        if not id:
+            raise x.UserException('Facebook must return a user id')
 
         data = dict(
             provider=self.provider,
@@ -289,8 +291,10 @@ class VkontakteHandle(BaseHandle):
         else:
             expires = datetime.utcnow() + timedelta(seconds=expires)
 
-        session[self.session_key] = (token, expires)
+        if not id:
+            raise x.UserException('VK must return a user id')
 
+        session[self.session_key] = (token, expires)
         res = oauth.vkontakte.get('users.get', data=dict(user_id=id))
         me = res.data['response'][0]
 
@@ -333,12 +337,16 @@ class GoogleHandle(BaseHandle):
         res = oauth.google.get('plus/v1/people/me/')
         me = res.data
         email = me.get('emails')
+        id = me.get('id')
         if email: email = email[0]['value'] # may be absent
+
+        if not id:
+            raise x.UserException('Google must return a user id')
 
         data = dict(
             provider=self.provider,
             email=email,
-            id=me.get('id'),
+            id=id,
             token=token,
             expires=expires,
             refresh_token=refresh_token
@@ -367,6 +375,10 @@ class TwitterHandle(BaseHandle):
     def get_profile_data(self, auth_response):
         """ Retrieve profile data from provider """
         res = auth_response
+
+        if not res.get('user_id'):
+            raise x.UserException('Twitter must return a user id')
+
         data = dict(
             provider=self.provider,
             id=res.get('user_id'),
@@ -397,6 +409,10 @@ class InstagramHandle(BaseHandle):
         res = auth_response
         token = res.get('access_token')
         me = res.get('user')
+
+        if not me.get('id'):
+            raise x.UserException('Instagram must return a user id')
+
         data = dict(
             provider=self.provider,
             email=None,
