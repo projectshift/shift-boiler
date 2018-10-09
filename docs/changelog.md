@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5
+
+Minor security release. Catches an issue described in [#84](https://github.com/projectshift/shift-boiler/issues/84) when social provider is misconfigured and does not return user id.
+
 ## 0.6.4
 
 Minor bugfix release. Fixes error in user CLI commands and boiler CLI app getter. Minor documentation improvements and dependencies updates.
