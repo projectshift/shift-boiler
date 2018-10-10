@@ -132,27 +132,11 @@ class User(db.Model):
     # token
     _token = db.Column('token', db.Text())
 
-    # facebook
+    # social ids
     facebook_id = db.Column(db.String(50), unique=True, index=True)
-    facebook_token = db.Column(db.String(250), unique=True)
-    facebook_expires = db.Column(db.DateTime)
-
-    # google
     google_id = db.Column(db.String(50), unique=True, index=True)
-    google_token = db.Column(db.String(250), unique=True)
-    google_expires = db.Column(db.DateTime)
-    google_refresh_token = db.Column(db.String(250), unique=True)
-
-    # vkontakte
     vkontakte_id = db.Column(db.String(50), unique=True, index=True)
-    vkontakte_token = db.Column(db.String(250), unique=True)
-    vkontakte_expires = db.Column(db.DateTime)
-
-    # instagram
     instagram_id = db.Column(db.String(50), unique=True, index=True)
-    instagram_handle = db.Column(db.String(250), unique=True)
-    instagram_token = db.Column(db.String(250), unique=True)
-    instagram_expires = db.Column(db.DateTime)
 
     # roles
     __roles = db.relationship('Role', secondary=UserRoles, lazy='select')
@@ -376,11 +360,9 @@ class User(db.Model):
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)
 
-        fields = ['id', 'token', 'expires', 'refresh_token', 'token_secret']
-        for field in fields:
-            field_name = network + '_' + field
-            if hasattr(self, field_name):
-                setattr(self, field_name, None)
+        field_name = '{}_id'.format(network)
+        if hasattr(self, field_name):
+            setattr(self, field_name, None)
 
     def add_social_credentials(self, network, **credentials):
         """ Add social credentials to profile"""
@@ -389,14 +371,9 @@ class User(db.Model):
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)
 
-        fields = ['id', 'token', 'expires', 'refresh_token', 'token_secret']
-        for field in credentials:
-            if field not in fields:
-                continue
-
-            field_name = '{social}_{field}'.format(social=network, field=field)
-            if hasattr(self, field_name) and credentials.get(field):
-                setattr(self, field_name, credentials.get(field))
+        field_name = '{}_id'.format(network)
+        if hasattr(self, field_name):
+            setattr(self, field_name, credentials.get('id'))
 
     # -------------------------------------------------------------------------
     # Roles
