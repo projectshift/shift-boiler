@@ -42,10 +42,6 @@ class ResendEmailConfirmationForm(Form):
     ])
 
 
-class FinalizeSocial(Form):
-    email = StringField('email', validators=[])
-
-
 class ChangeEmailForm(Form):
 
     email = StringField('email', validators=[

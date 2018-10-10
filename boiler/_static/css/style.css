@@ -146,41 +146,6 @@ body {
   font-size: 22px;
 }
 
-.form-box .social-finalize-already-registered {
-  position: relative;
-  margin-bottom: 30px;
-  padding: 20px;
-  border: 4px solid #ff0066;
-  text-align: left;
-}
-
-.form-box .social-finalize-already-registered .icon {
-  display: block;
-  width: 40px; height: 40px;
-  position: absolute;
-  top: 15px; left: 20px; z-index: 2;
-}
-
-.form-box .social-finalize-already-registered .icon .fa {
-  font-size: 30px;
-  color: #ff0066;
-}
-
-
-.form-box .social-finalize-already-registered .message {
-  position: relative;
-  margin-left: 30px;
-}
-
-.form-box .social-finalize-already-registered .message a {
-  text-decoration: underline;
-  color: #ff0066;
-}
-
-.form-box .social-finalize-already-registered ul {
-  margin: 10px 0 0 0;
-  padding: 0 15px;
-}
 
 
 

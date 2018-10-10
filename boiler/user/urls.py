@@ -45,7 +45,6 @@ user_urls['/login/social/google/auth/'] = route('boiler.user.views_social.Google
 user_urls['/login/social/google/'] = route('boiler.user.views_social.GoogleHandle', 'social.google.handle')
 user_urls['/login/social/instagram/auth'] = route('boiler.user.views_social.InstagramAuthorize', 'social.instagram.auth')
 user_urls['/login/social/instagram/'] = route('boiler.user.views_social.InstagramHandle', 'social.instagram.handle')
-user_urls['/login/social/finalize/'] = route('boiler.user.views_social.FinalizeSocial', 'social.finalize', ['GET', 'POST'])
 
 # profile
 user_urls['/me/'] = route('boiler.user.views_profile.Me', 'user.me')

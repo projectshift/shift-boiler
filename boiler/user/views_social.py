@@ -6,8 +6,8 @@ from flask_login import current_user
 
 from boiler.user import exceptions as x
 from boiler.user.models import RegisterSchema
-from boiler.user.forms import FinalizeSocial as FinalizeSocialForm
 from boiler.user.services import oauth, user_service
+from pprint import pprint as pp
 
 """
 Social authentication views
@@ -90,6 +90,9 @@ class BaseAuthorize(BaseSocial):
 
 class BaseHandle(BaseSocial):
     """ Base reusable handler view """
+    ok_endpoint = 'user.register.success'
+    ok_params = {}
+    force_login_redirect = '/'
 
     def get_profile_data(self, auth_response):
         """
@@ -132,91 +135,46 @@ class BaseHandle(BaseSocial):
             if self.flash: flash(msg, 'danger')
             url = url_for(self.lock_redirect, **self.lock_redirect_params)
             return redirect(url)
-        except x.EmailNotConfirmed as not_confirmed:
+        except x.EmailNotConfirmed:
             return redirect(url_for(self.unconfirmed_email_endpoint))
 
-        # finalize
-        session['social_data'] = data
-        return redirect(url_for('social.finalize', next=self.next))
-
-
-class FinalizeSocial(View):
-    template = 'user/social/finalize.j2'
-    schema = RegisterSchema
-    form = FinalizeSocialForm
-    invalid_message = 'Please correct errors'
-    ok_endpoint = 'user.register.success'
-    ok_params = {}
-    force_login_redirect = '/'
-    force_login_message = 'Logged in'
-
-    def dispatch_request(self):
-        """ Register socially  """
-        if current_user.is_authenticated:
-            return redirect('/')
-
-        # prepare data
-        new_data = dict()
-        data = session.get('social_data')
-        if not data:
-            abort(500)
-
+        # get data
         email = data.get('email')
         provider = data.get('provider')
-        valid = ['id', 'token', 'token_secret', 'expires', 'refresh_token', 'handle']
+        id = data.get('id')
+        id_column = '{}_id'.format(provider)
 
-        for key in data:
-            if key in valid:
-                new_key = provider + '_' + key
-                new_data[new_key] = data.get(key)
+        # user exists: add social id to profile
+        user = user_service.first(email=email)
+        if user:
+            setattr(user, id_column, id)
+            user_service.save(user)
 
-        data = new_data
+        # no user: register
+        if not user:
+            cfg = current_app.config
+            send_welcome = cfg.get('USER_SEND_WELCOME_MESSAGE')
+            base_confirm_url = cfg.get('USER_BASE_EMAIL_CONFIRM_URL')
+            if not base_confirm_url:
+                endpoint = 'user.confirm.email.request'
+                base_confirm_url = url_for(endpoint, _external=True)
 
-        already_registered = False
-        if email and user_service.first(email=email):
-            already_registered = True
-
-        form = self.form(schema=self.schema())
-        if not form.is_submitted():
-            form.email.data = email
-
-        # get config
-        cfg = current_app.config
-        send_welcome = cfg.get('USER_SEND_WELCOME_MESSAGE')
-        base_confirm_url = cfg.get('USER_BASE_EMAIL_CONFIRM_URL')
-        if not base_confirm_url:
-            base_confirm_url = url_for(
-                'user.confirm.email.request',
-                _external=True
-            )
-
-        # register and add social tokens
-        if form.validate_on_submit():
-            data.update(email=form.email.data)
+            data = dict(email=email)
+            data[id_column] = id
             user = user_service.register(
                 user_data=data,
                 send_welcome=send_welcome,
                 base_confirm_url=base_confirm_url
             )
 
-            session.pop('social_data')  # cleanup
-            if user_service.require_confirmation:
-                return redirect(url_for(self.ok_endpoint, **self.ok_params))
+        # email confirmed?
+        if user_service.require_confirmation and not user.email_confirmed:
+            return redirect(url_for(self.ok_endpoint, **self.ok_params))
 
-            # if confirmation not required - login
-            if not user_service.require_confirmation:
-                user_service.force_login(user)
-                if self.flash: flash(self.force_login_message, 'success')
-                return redirect(self.force_login_redirect)
+        # otherwise just login
+        user_service.force_login(user)
+        return redirect(self.force_login_redirect)
 
-        elif form.is_submitted():
-            if self.flash: flash(self.invalid_message, 'danger')
-
-        return render_template(
-            self.template,
-            form=form,
-            already_registered=already_registered
-        )
 
 # -----------------------------------------------------------------------------
 # Facebook
