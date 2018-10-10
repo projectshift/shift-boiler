@@ -1,7 +1,5 @@
-import os
 from boiler.testing.testcase import FlaskTestCase, ViewTestCase
-from boiler import bootstrap
-from boiler.config import TestingConfig
+from tests.boiler_test_app.app import app
 
 
 class BoilerTestCase(FlaskTestCase):
@@ -11,9 +9,6 @@ class BoilerTestCase(FlaskTestCase):
     boiler-specific test app
     """
     def setUp(self):
-        app_module = 'tests.boiler_test_app'
-        config = TestingConfig()
-        app = bootstrap.init(module_name=app_module, config=config)
         super().setUp(app)
 
 
@@ -22,9 +17,6 @@ class BoilerViewTestCase(ViewTestCase):
     Boiler-specific tests for views
     """
     def setUp(self):
-        app_module = 'tests.boiler_test_app.app'
-        config = TestingConfig()
-        app = bootstrap.init(module_name=app_module, config=config)
         super().setUp(app)
 
 
