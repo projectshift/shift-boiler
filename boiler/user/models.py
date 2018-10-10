@@ -353,28 +353,6 @@ class User(db.Model):
         """ Check if user has social credentials """
         return bool(getattr(self, network.lower() + '_id'))
 
-    def remove_social_credentials(self, network):
-        """ Removes social credentials from account """
-        known = ['facebook', 'google', 'vkontakte', 'instagram']
-        if network not in known:
-            err = 'Unknown social network [{}]'.format(network)
-            raise x.UnknownSocialProvider(err)
-
-        field_name = '{}_id'.format(network)
-        if hasattr(self, field_name):
-            setattr(self, field_name, None)
-
-    def add_social_credentials(self, network, **credentials):
-        """ Add social credentials to profile"""
-        known = ['facebook', 'google', 'vkontakte', 'instagram']
-        if network not in known:
-            err = 'Unknown social network [{}]'.format(network)
-            raise x.UnknownSocialProvider(err)
-
-        field_name = '{}_id'.format(network)
-        if hasattr(self, field_name):
-            setattr(self, field_name, credentials.get('id'))
-
     # -------------------------------------------------------------------------
     # Roles
     # -------------------------------------------------------------------------

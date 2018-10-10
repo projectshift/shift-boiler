@@ -238,7 +238,8 @@ class ProfileSocial(Profile):
             if not user.has_social(provider):
                 return self.authorize(provider)
             else:
-                user.remove_social_credentials(provider)
+                field = '{}_id'.format(provider)
+                setattr(user, field, None)
                 ok = user_service.save(user)
                 if ok:
                     if self.flash: flash(self.disabled_message, 'success')
@@ -280,9 +281,10 @@ class ConnectorMixin:
             if self.flash: flash(self.data_failed_msg, 'danger')
             return redirect(back)
 
-        # add social credentials
+        # add social id
         user = current_user._get_current_object()
-        user.add_social_credentials(self.provider, **data)
+        field = '{}_id'.format(self.provider)
+        setattr(user, field, data.get('id'))
         user_service.save(user)
         if self.flash: flash(self.ok_message, 'success')
         return redirect(back)

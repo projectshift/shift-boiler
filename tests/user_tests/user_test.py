@@ -297,40 +297,12 @@ class UserTests(BoilerTestCase):
     # Social
     # -------------------------------------------------------------------------
 
-    def test_check_id_has_provider_credentials(self):
+    def test_check_if_has_provider_credentials(self):
         """ Can check if user has social provide credentials """
         user = User(**self.data)
         user.facebook_id = 123
         self.assertTrue(user.has_social('facebook'))
         self.assertFalse(user.has_social('google'))
-
-    def test_remove_credentials_raises_on_unknown_provider(self):
-        """ Removing credentials of unsupported provider raises an exception """
-        user = User(**self.data)
-        with self.assertRaises(x.UnknownSocialProvider):
-            user.remove_social_credentials('unknown')
-
-    def test_remove_credentials(self):
-        """ Removing social provider credentials from user """
-        user = User(**self.data)
-        user.facebook_id = 123
-        user.remove_social_credentials('facebook')
-        self.assertIsNone(user.facebook_id)
-
-    def test_add_credentials_raises_on_unknown_provider(self):
-        """ Adding credentials of unsupported provider raises an exception """
-        user = User(**self.data)
-        credentials = dict(id=123, token=123, expires=datetime.utcnow())
-        with self.assertRaises(x.UnknownSocialProvider):
-            user.add_social_credentials('unknown', **credentials)
-
-    def test_add_credentials_possible(self):
-        """ Adding social credentials possible """
-        user = User(**self.data)
-        now = datetime.utcnow()
-        credentials = dict(id=123)
-        user.add_social_credentials('facebook', **credentials)
-        self.assertEqual(123, user.facebook_id)
 
     # -------------------------------------------------------------------------
     # Roles
