@@ -31,7 +31,7 @@ def users_feature(app):
     # init login manager
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'
-    login_manager.login_message = 'Please login'
+    login_manager.login_message = None
 
     @login_manager.user_loader
     def load_user(id):
