@@ -37,7 +37,7 @@ class BaseSocial(View):
     logged_in_redirect_params = {}
     auth_failed_msg = 'Authorization failed'
     data_failed_msg = 'Failed getting profile data'
-    flash = True # flash messages
+    flash = False # flash messages
 
     @property
     def app(self):

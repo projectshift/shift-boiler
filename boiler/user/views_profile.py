@@ -70,7 +70,7 @@ class Me(View):
 class Profile(View):
     """ Generic profile view """
     decorators = [only_owner]
-    flash = True # flash messages
+    flash = False # flash messages
 
     def dispatch_request(self):
         raise NotImplementedError()
@@ -130,7 +130,7 @@ class ProfileEmailChange(Profile):
     ok_message = 'Email update confirmation sent. Please check inbox.'
     navigation_callback = Profile.init_navigation
     cancel_message = 'Request to change email was cancelled'
-    flash = True
+    flash = False
 
     def dispatch_request(self, id=None):
         self.navigation_callback(id=id)
@@ -186,7 +186,7 @@ class ProfilePasswordChange(Profile):
     ok_redirect= 'user.login'
     exception_message = 'Password change failed.'
     navigation_callback = Profile.init_navigation
-    flash = True
+    flash = False
 
     def dispatch_request(self, id=None):
         user = user_service.get_or_404(id)
@@ -218,7 +218,7 @@ class ProfileSocial(Profile):
     disabled_message = 'Disabled social network'
     handle_endpoint = 'user.social.connect.{}'
     handle_endpoint_params = {}
-    flash = True
+    flash = False
 
     def authorize(self, provider):
         params = dict()
@@ -261,7 +261,7 @@ class ConnectorMixin:
     profile_social_endpoint = 'user.profile.social'
     profile_social_params = {}
     decorators = [login_required]
-    flash = True # flash messages
+    flash = False # flash messages
 
     def dispatch_request(self):
         # back to profile socials url

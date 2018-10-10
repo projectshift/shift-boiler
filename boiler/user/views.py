@@ -47,7 +47,7 @@ class Logout(View):
     """ Performs user logout """
     logout_message = 'Your have been logged out'
     redirect = '/'
-    flash = True
+    flash = False
 
     def dispatch_request(self):
         user_service.logout()
@@ -65,7 +65,7 @@ class Login(View):
     redirect = '/'
     template = 'user/login.j2'
     params = {}
-    flash = True
+    flash = False
 
     def dispatch_request(self):
         if current_user.is_authenticated:
@@ -132,7 +132,7 @@ class Register(View):
     params = {}
     force_login_redirect = '/'
     force_login_message = 'Logged in'
-    flash = True
+    flash = False
 
     def dispatch_request(self):
         if current_user.is_authenticated:
@@ -211,7 +211,7 @@ class ConfirmEmailRequest(View):
     confirm_params = dict()
     ok_endpoint = 'user.confirm.email.resend.ok'
     ok_params = dict()
-    flash = True
+    flash = False
 
     def dispatch_request(self):
 
@@ -284,7 +284,7 @@ class ConfirmEmail(View):
     confirmed_message = 'Email confirmed, logged in.'
     expired_endpoint = 'user.confirm.email.expired'
     redirect = '/'
-    flash = True
+    flash = False
 
     def dispatch_request(self, id=None, link=None):
         try:
@@ -315,7 +315,7 @@ class RecoverPasswordRequest(View):
     confirm_endpoint = 'user.recover.password.request'
     confirm_endpoint_params = dict()
     params = {}
-    flash = True
+    flash = False
 
     def dispatch_request(self):
         form = self.form()
@@ -371,7 +371,7 @@ class RecoverPassword(View):
     confirm_endpoint = 'user.recover.password.link'
     confirm_endpoint_params = dict()
     params = {}
-    flash = True
+    flash = False
 
     def dispatch_request(self, link=None):
         user = user_service.first(password_link=link)
