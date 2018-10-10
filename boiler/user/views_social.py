@@ -356,40 +356,6 @@ class GoogleHandle(BaseHandle):
 
 
 # -----------------------------------------------------------------------------
-# Twitter
-# Note: register callback at twitter website
-# Note: twitter does not give access to email
-# Note: twitter does not expire tokens
-# Note: twitter uses OAuth 1.0
-# Note: you will need both the oauth_token and oauth_token_secret
-# -----------------------------------------------------------------------------
-
-class TwitterAuthorize(BaseAuthorize):
-    """ Redirect to twitter and request access """
-    provider = 'twitter'
-
-
-class TwitterHandle(BaseHandle):
-    provider = 'twitter'
-
-    def get_profile_data(self, auth_response):
-        """ Retrieve profile data from provider """
-        res = auth_response
-
-        if not res.get('user_id'):
-            raise x.UserException('Twitter must return a user id')
-
-        data = dict(
-            provider=self.provider,
-            id=res.get('user_id'),
-            email=None,
-            token=res.get('oauth_token'),
-            token_secret=res.get('oauth_token_secret'), # required!
-        )
-        return data
-
-
-# -----------------------------------------------------------------------------
 # Instagram
 # Note: instagram tokens do not expire (for now)
 # Note: instagram does not give you email

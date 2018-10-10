@@ -143,11 +143,6 @@ class User(db.Model):
     google_expires = db.Column(db.DateTime)
     google_refresh_token = db.Column(db.String(250), unique=True)
 
-    # twitter
-    twitter_id=db.Column(db.String(50), unique=True, index=True)
-    twitter_token=db.Column(db.String(250), unique=True)
-    twitter_token_secret=db.Column(db.String(250), unique=True)
-
     # vkontakte
     vkontakte_id = db.Column(db.String(50), unique=True, index=True)
     vkontakte_token = db.Column(db.String(250), unique=True)
@@ -376,7 +371,7 @@ class User(db.Model):
 
     def remove_social_credentials(self, network):
         """ Removes social credentials from account """
-        known = ['facebook', 'google', 'twitter', 'vkontakte', 'instagram']
+        known = ['facebook', 'google', 'vkontakte', 'instagram']
         if network not in known:
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)
@@ -389,7 +384,7 @@ class User(db.Model):
 
     def add_social_credentials(self, network, **credentials):
         """ Add social credentials to profile"""
-        known = ['facebook', 'google', 'twitter', 'vkontakte', 'instagram']
+        known = ['facebook', 'google', 'vkontakte', 'instagram']
         if network not in known:
             err = 'Unknown social network [{}]'.format(network)
             raise x.UnknownSocialProvider(err)

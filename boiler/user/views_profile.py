@@ -291,8 +291,6 @@ class ProfileSocialConnectFacebook(ConnectorMixin, social.FacebookHandle):
     pass
 class ProfileSocialConnectGoogle(ConnectorMixin, social.GoogleHandle):
     pass
-class ProfileSocialConnectTwitter(ConnectorMixin, social.TwitterHandle):
-    pass
 class ProfileSocialConnectVkontakte(ConnectorMixin, social.VkontakteHandle):
     pass
 class ProfileSocialConnectInstagram(ConnectorMixin, social.InstagramHandle):

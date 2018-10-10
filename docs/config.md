@@ -168,10 +168,6 @@ OAUTH = {
         'scope': 'email',
         'offline': True
     },
-    'twitter': {
-        'id': 'app-id',
-        'secret': 'app-secret',
-    },
     'google': {
         'id': 'app-id',
         'secret': 'app-secret',

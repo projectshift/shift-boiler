@@ -76,18 +76,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="network network-twitter"><i class="fa fa-twitter"></i>Twitter</td>
-                                    <td class="tumbler">
-                                        <a href="{{ url_for('user.profile.social', id=user.id, toggle='twitter') }}">
-                                            {% if user.has_social('twitter') %}
-                                                <div class="switch switch-on" title="Turn off"><span></span></div>
-                                            {% else %}
-                                                <div class="switch switch-off" title="Turn on"><span></span></div>
-                                            {% endif %}
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td class="network network-vkontakte "><i class="fa fa-vk"></i>VKontakte</td>
                                     <td class="tumbler">
                                         <a href="{{ url_for('user.profile.social', id=user.id, toggle='vkontakte') }}">

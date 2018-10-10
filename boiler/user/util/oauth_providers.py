@@ -101,20 +101,8 @@ class OauthProviders:
         )
         return config
 
-    def twitter_config(self, id, secret, **_):
-        """ Get config dictionary for twitter oauth """
-        config = dict(
-            request_token_url='https://api.twitter.com/oauth/request_token',
-            access_token_url='https://api.twitter.com/oauth/access_token',
-            authorize_url='https://api.twitter.com/oauth/authenticate',
-            base_url='https://api.twitter.com/1/',
-            consumer_key=id,
-            consumer_secret=secret,
-        )
-        return config
-
     def google_config(self, id, secret, scope=None, offline=False, **_):
-        """ Get config dictionary for twitter oauth """
+        """ Get config dictionary for google oauth """
         if scope is None: scope = 'email'
         token_params = dict(scope=scope)
         if offline:
