@@ -314,12 +314,8 @@ class UserTests(BoilerTestCase):
         """ Removing social provider credentials from user """
         user = User(**self.data)
         user.facebook_id = 123
-        user.facebook_token = 123
-        user.facebook_expires = datetime.utcnow()
         user.remove_social_credentials('facebook')
         self.assertIsNone(user.facebook_id)
-        self.assertIsNone(user.facebook_token)
-        self.assertIsNone(user.facebook_expires)
 
     def test_add_credentials_raises_on_unknown_provider(self):
         """ Adding credentials of unsupported provider raises an exception """
@@ -332,11 +328,9 @@ class UserTests(BoilerTestCase):
         """ Adding social credentials possible """
         user = User(**self.data)
         now = datetime.utcnow()
-        credentials = dict(id=123, token=123, expires=now)
+        credentials = dict(id=123)
         user.add_social_credentials('facebook', **credentials)
         self.assertEqual(123, user.facebook_id)
-        self.assertEqual(123, user.facebook_token)
-        self.assertEqual(now, user.facebook_expires)
 
     # -------------------------------------------------------------------------
     # Roles

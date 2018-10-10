@@ -389,13 +389,13 @@ class UserServiceTests(BoilerTestCase):
             user_service.register(user_data=user_data)
         self.assertEquals(1, len(out))
 
-
     def test_account_confirmation_message_send(self):
         """ Account confirmation message can be sent """
         user = User(email='test@test.com', password='123')
         with mail.record_messages() as out:
             with self.app.test_request_context():
                 url = 'http://my.confirm.url/'
+                user_service.require_confirmation = True
                 user_service.send_welcome_message(user, url)
 
             msg = out[0]
@@ -409,6 +409,7 @@ class UserServiceTests(BoilerTestCase):
         user_data = dict(email='tester@test.com', password='123456')
         with events.events.disconnect_receivers():
             with self.app.test_request_context():
+                user_service.require_confirmation = True
                 u = user_service.register(
                     user_data=user_data,
                     send_welcome=False
@@ -810,6 +811,9 @@ class UserServiceTests(BoilerTestCase):
                 algorithms=[user_service.jwt_algo]
             )
 
+        # cleanup
+        user_service.jwt_lifetime = 86400
+
     def test_default_token_user_loader_fails_if_tampered_with(self):
         """ Default token user loader fails if tampered with """
         with user_events.disconnect_receivers():
@@ -831,6 +835,7 @@ class UserServiceTests(BoilerTestCase):
     def test_default_token_user_loader_fails_if_no_user(self):
         """ Default token user loader fails if user not found """
         with user_events.disconnect_receivers():
+            user_service.jwt_lifetime = 86400
             user = self.create_user(confirm_email=True)
             token = user_service.default_token_implementation(user.id)
             user_service.delete(user)
@@ -876,6 +881,7 @@ class UserServiceTests(BoilerTestCase):
         """ Fall back to default token implementation if no custom """
         with user_events.disconnect_receivers():
             user = self.create_user()
+
         token = user_service.get_token(user.id)
         decoded = user_service.decode_token(token)
         self.assertEquals(user.id, decoded['user_id'])
@@ -885,6 +891,7 @@ class UserServiceTests(BoilerTestCase):
 
     def test_fall_back_to_default_token_loader_if_no_custom(self):
         """ Fall back to default token user loader if no custom"""
+        user_service.jwt_loader_implementation = None
         with user_events.disconnect_receivers():
             user = self.create_user()
             token = user_service.get_token(user.id)
