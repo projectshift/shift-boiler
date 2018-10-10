@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0
+Introduces some breaking changes to users functionality: 
+
+  * Twitter OAuth authentication was removed ([#83](https://github.com/projectshift/shift-boiler/issues/83)). 
+  * Finalize social login step was removed ([#85](https://github.com/projectshift/shift-boiler/issues/85)). We now skip this step and register/add new keys to profile directly which is a better user experience flow.
+  * Social provider tokens/expirations are no longer stored in user profile ([#54](https://github.com/projectshift/shift-boiler/issues/54)). For that reason some assistance methods have been removed from user model as well.
+  * Flash messages are now disabled by default throughout user flow as they do interfere with async-driven auth flows
+  * An issue has been discovered with bootstrapping tests. This has been resolved is well.
+
 ## 0.6.5
 
 Minor security release. Catches an issue described in [#84](https://github.com/projectshift/shift-boiler/issues/84) when social provider is misconfigured and does not return user id.
