@@ -85,6 +85,10 @@ class DefaultConfig(Config):
     ADMINS = ['you@domain']
     LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS = False
 
+    # sentry
+    SENTRY_PUBLIC_KEY = os.getenv('APP_SENTRY_PUBLIC_KEY')
+    SENTRY_PROJECT_ID = os.getenv('APP_SENTRY_PROJECT_ID')
+
     # localization (babel)
     DEFAULT_LOCALE = 'en_GB'
     DEFAULT_TIMEZONE = 'UTC'

@@ -134,6 +134,12 @@ def add_navigation(app):
     navigation_feature(app)
 
 
+def add_sentry(app):
+    """ Add sentry integration """
+    from boiler.feature.sentry import sentry_feature
+    sentry_feature(app)
+
+
 def add_logging(app):
     """ Add logging functionality """
     from boiler.feature.logging import logging_feature

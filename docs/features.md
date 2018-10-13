@@ -37,8 +37,9 @@ Please specify a feature to install.
 6. mail
 8. navigation
 9. orm
-10. testing
-11. users
+10. sentry
+11. testing
+12. users
 ```
 
 You can then install dependencies for a feature like this:
@@ -171,7 +172,28 @@ from boiler.cli import user
 cli.add_command(user.cli, name='user')
 ```
 
+## Sentry
 
+This featur will set up integration with [Sentry](https://sentry.io/) to provide error collection and reporting.
+
+Enable the feature:
+
+```python
+bootstrap.add_sentry(app)
+```
+
+Install this feature's dependencies:
+
+```
+boiler dependencies sentry
+```
+
+The configure Sentry credentials in your `.env` file:
+
+```
+APP_SENTRY_PUBLIC_KEY='XXXX'
+APP_SENTRY_PROJECT_ID='XXXX'
+```
 
 
 ## Localization
