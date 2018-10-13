@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.1
+Introduces integration with [Sentry](https://sentry.io/) via a feature switch.
+
 ## 0.7.0
 Introduces some breaking changes to users functionality: 
 
