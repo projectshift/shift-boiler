@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.2
+Minor improvements to sentry integration feature.
+
 ## 0.7.1
 Introduces integration with [Sentry](https://sentry.io/) via a feature switch.
 
