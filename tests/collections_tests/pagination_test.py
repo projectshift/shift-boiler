@@ -15,10 +15,10 @@ class PaginationTest(BoilerTestCase):
     def test_pagination_returns_a_dict(self):
         """ Pagination returns a dictionary """
         pagination = paginate(
-            page=9,
-            total_items=1000,
+            page=2,
+            total_items=100,
             total_pages=100,
-            slice_size=100
+            slice_size=12
         )
 
         pp(pagination)

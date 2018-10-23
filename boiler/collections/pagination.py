@@ -52,7 +52,6 @@ def paginate(page, total_items, total_pages, slice_size=10):
 
     # slice pages
     delta = math.ceil(slice_size / 2)
-
     if page - delta > total_pages - slice_size:
         left_bound = total_pages - slice_size + 1
         right_bound = total_pages
@@ -65,7 +64,7 @@ def paginate(page, total_items, total_pages, slice_size=10):
         right_bound = offset + slice_size
 
     # append page range
-    links['pages'] = list(range(left_bound, right_bound))
+    links['pages'] = list(range(left_bound, right_bound + 1))
 
     # and return
     pagination = dict(
