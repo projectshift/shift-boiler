@@ -11,13 +11,36 @@ class PaginationTest(BoilerTestCase):
     Pagination test
     """
 
+    @attr('zzz')
     def test_pagination_returns_a_dict(self):
         """ Pagination returns a dictionary """
         pagination = paginate(
-            page=1,
+            page=9,
             total_items=1000,
             total_pages=100,
-            page_range=10
+            slice_size=100
         )
 
+        pp(pagination)
+
         self.assertTrue(type(pagination) is dict)
+
+    def test_last_doesnt_go_below_zero(self):
+        """ Last page doesn't go below zero"""
+        self.fail('Implement me!')
+
+    def test_previous_doesnt_go_below_zero(self):
+        """ Previous pge doesn't go below zero """
+        self.fail('Implement me!')
+
+    def test_previous_slice_doesnt_go_below_zero(self):
+        """ Test that previous slice doesn't go below zero"""
+        self.fail('Implement me!')
+
+    def test_next_slice_doesnt_go_above_total_pages(self):
+        """ Text that next slice doesn't go above total pages"""
+        self.fail('Implement me!')
+
+    def test_building_page_range(self):
+        """ Building page range """
+        self.fail('Implement me!')
