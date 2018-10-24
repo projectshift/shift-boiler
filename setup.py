@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
+from setuptools import find_packages
 
 # ----------------------------------------------------------------------------
 # Building
@@ -38,9 +39,13 @@ dev_status = '4 - Beta'
 repo = 'https://github.com/projectshift/shift-boiler'
 license_type = 'MIT License'
 
+description = 'Boilerplate setup for webapps, apis and cli applications with flask'
+
 # readme description
-with open('READMY-PyPi.md') as f:
-    long_description = f.read()
+long_description = description
+if os.path.isfile('README-PyPi.md'):
+    with open('README-PyPi.md') as f:
+        long_description = f.read()
 
 # run setup
 setup(**dict(
@@ -54,7 +59,7 @@ setup(**dict(
     version=version,
     url=repo,
     download_url=repo + '/archive/v' + version + '.tar.gz',
-    description='Boilerplate setup for webapps, apis and cli applications with flask',
+    description=description,
     long_description=long_description,
     long_description_content_type='text/markdown',  # This is important!
     keywords=[

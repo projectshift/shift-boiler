@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.4
+
+Hotfix release to fix installation issues in `setup.py`
+
 ## 0.7.3
   * Adds a pagination generation feature to navigation between pages, as per [#36](https://github.com/projectshift/shift-boiler/issues/36)
   * Fixes minor issue with IPython import in CLI when it doesn't exist which caused an exception to appear in stack traces.

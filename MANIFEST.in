@@ -2,3 +2,5 @@ recursive-include boiler/boiler_template *
 recursive-include boiler/migrations *
 recursive-include boiler/templates *
 recursive-include boiler/_requirements *
+
+global-exclude *.py[co]
