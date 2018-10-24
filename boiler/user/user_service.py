@@ -1,11 +1,17 @@
-from flask import current_app, render_template, has_request_context
-from flask_mail import Message
-
-import datetime, jwt
+import datetime
+import jwt
 from werkzeug.utils import import_string
+from flask import current_app
+from flask import render_template
+from flask import has_request_context
+from flask import current_app
+from flask_mail import Message
+from flask_principal import identity_changed
+from flask_principal import Identity
+from flask_principal import AnonymousIdentity
+
 from boiler.feature.orm import db
 from boiler.feature.mail import mail
-
 from boiler.abstract.abstract_service import AbstractService
 from boiler.user.models import User, RegisterSchema, UpdateSchema
 from boiler.user import events, exceptions as x
@@ -118,6 +124,12 @@ class UserService(AbstractService):
         user.reset_login_counter()
         self.save(user)
         events.login_event.send(user)
+
+        # notify principal
+        app = current_app._get_current_object()
+        identity_changed.send(app, identity=Identity(user.id))
+
+        # and return
         return True
 
     def force_login(self, user):
@@ -133,18 +145,32 @@ class UserService(AbstractService):
         if is_new and not user.email_confirmed and self.require_confirmation:
             raise x.EmailNotConfirmed(email=user.email_secure)
 
+        # login
         login_user(user=user, remember=True)
         user.reset_login_counter()
         self.save(user)
+
+        # notify principal
+        app = current_app._get_current_object()
+        identity_changed.send(app, identity=Identity(user.id))
+
+        # and return
         return True
 
     def logout(self):
         """ Logout user and emit event."""
         from flask_login import logout_user, current_user
-        if current_user.is_authenticated:
-            user = current_user
-            events.logout_event.send(user)
-            logout_user()
+        if not current_user.is_authenticated:
+            return True
+
+        # logout otherwise
+        user = current_user
+        events.logout_event.send(user)
+        logout_user()
+
+        # notify principal
+        app = current_app._get_current_object()
+        identity_changed.send(app, identity=AnonymousIdentity())
 
         return True
 
