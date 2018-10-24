@@ -1,8 +1,32 @@
 import math
 
 
-def paginate(page, total_items, total_pages, slice_size=10):
+def paginate(page, total_items, total_pages, slice_size=5):
+    """
+    Paginate
+    Does some maths to generate ranged pagination. Returns a dictionary
+    of page numbers to be used in url builders that allows to go to first
+    page, previous page, next page, last page and one of the pages in
+    range around current page with possibility to jump in slices. The
+    result will look like this:
 
+        {
+            page: 2,
+            total_pages: 100,
+            total_items: 1000,
+            pagination: {
+                first: 1
+                previous: 1,
+                previous_slice: 1
+                pages: [1, 2, 3, 4, 5, 6, 7 ... etc]
+                next_slice: 14
+                next: 3,
+                last: 100
+            }
+
+        }
+    :return: boiler.collections.paginated_collection.PaginatedCollection
+    """
     if slice_size > total_pages:
         slice_size = total_items
 
@@ -71,7 +95,7 @@ def paginate(page, total_items, total_pages, slice_size=10):
         page=page,
         total_pages=total_pages,
         total_items=total_items,
-        paginate=links
+        pagination=links
     )
 
     return pagination

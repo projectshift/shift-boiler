@@ -7,6 +7,7 @@ from boiler.user.services import user_service
 from boiler.collections import PaginatedCollection
 from boiler.user.models import User
 from boiler.user.events import events as user_events
+from pprint import pprint as pp
 
 
 @attr('kernel', 'collections', 'paginated_collection')
@@ -144,5 +145,6 @@ class PaginatedCollectionTests(BoilerTestCase):
 
         got_previous = collection.previous_page()
         self.assertFalse(got_previous)
+
 
 

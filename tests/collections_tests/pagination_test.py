@@ -7,40 +7,89 @@ from pprint import pprint as pp
 
 @attr('kernel', 'collections', 'pagination')
 class PaginationTest(BoilerTestCase):
-    """
-    Pagination test
-    """
 
-    @attr('zzz')
-    def test_pagination_returns_a_dict(self):
-        """ Pagination returns a dictionary """
+    def test_first_doesnt_go_below_zero(self):
+        """ First page doesn't go below zero"""
         pagination = paginate(
-            page=2,
-            total_items=100,
+            page=1,
             total_pages=100,
-            slice_size=12
-        )
+            total_items=1000,
+            slice_size=5
+        )['pagination']
 
-        pp(pagination)
-
-        self.assertTrue(type(pagination) is dict)
-
-    def test_last_doesnt_go_below_zero(self):
-        """ Last page doesn't go below zero"""
-        self.fail('Implement me!')
+        self.assertIsNone(pagination['first'])
 
     def test_previous_doesnt_go_below_zero(self):
-        """ Previous pge doesn't go below zero """
-        self.fail('Implement me!')
+        """ Previous page doesn't go below zero """
+        pagination = paginate(
+            page=1,
+            total_pages=100,
+            total_items=1000,
+            slice_size=5
+        )['pagination']
+
+        self.assertIsNone(pagination['previous'])
 
     def test_previous_slice_doesnt_go_below_zero(self):
         """ Test that previous slice doesn't go below zero"""
-        self.fail('Implement me!')
+        pagination = paginate(
+            page=1,
+            total_pages=100,
+            total_items=1000,
+            slice_size=5
+        )['pagination']
+
+        self.assertIsNone(pagination['previous_slice'])
 
     def test_next_slice_doesnt_go_above_total_pages(self):
-        """ Text that next slice doesn't go above total pages"""
-        self.fail('Implement me!')
+        """ Next slice doesn't go above total pages"""
+        pagination = paginate(
+            page=100,
+            total_pages=100,
+            total_items=1000,
+            slice_size=5
+        )['pagination']
+        self.assertIsNone(pagination['next_slice'])
+
+    def test_next_doesnt_go_above_total_pages(self):
+        """ Next doesn't go above total pages"""
+        pagination = paginate(
+            page=100,
+            total_pages=100,
+            total_items=1000,
+            slice_size=5
+        )['pagination']
+        self.assertIsNone(pagination['next'])
+
+    def test_last_slice_doesnt_go_above_total_pages(self):
+        """ Last doesn't go above total pages"""
+        pagination = paginate(
+            page=100,
+            total_pages=100,
+            total_items=1000,
+            slice_size=5
+        )['pagination']
+        self.assertIsNone(pagination['last'])
 
     def test_building_page_range(self):
         """ Building page range """
-        self.fail('Implement me!')
+
+        # left boundary
+        pagination = paginate(page=2, total_pages=100, total_items=1000)
+        pagination = pagination['pagination']
+        self.assertEqual(1, pagination['pages'][0])
+
+        # right boundary
+        pagination = paginate(page=99, total_pages=100, total_items=1000)
+        pagination = pagination['pagination']
+        self.assertEquals(100, pagination['pages'][-1])
+
+        # move range window right
+        pagination = paginate(page=4, total_pages=100, total_items=1000)
+        pagination = pagination['pagination']
+        self.assertEqual(2, pagination['pages'][0])
+
+        # move range window left
+        pagination = paginate(page=97, total_pages=100, total_items=1000)
+        pagination = pagination['pagination']
+        self.assertEquals(99, pagination['pages'][-1])
