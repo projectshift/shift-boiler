@@ -107,3 +107,22 @@ class PaginationTest(BoilerTestCase):
             pagination['total_pages'],
             len(pagination['pagination']['pages'])
         )
+
+    def test_disable_slices_if_only_one_slice(self):
+        """ Don't do slices if only one slice """
+        pagination = paginate(
+            page=3,
+            total_pages=3,
+            total_items=15,
+            slice_size=5
+        )['pagination']
+        self.assertIsNone(pagination['previous_slice'])
+
+        pagination = paginate(
+            page=1,
+            total_pages=3,
+            total_items=15,
+            slice_size=5
+        )['pagination']
+        self.assertIsNone(pagination['next_slice'])
+

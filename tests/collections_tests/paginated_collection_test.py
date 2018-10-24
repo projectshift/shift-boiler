@@ -153,8 +153,9 @@ class PaginatedCollectionTests(BoilerTestCase):
         pagination = collection.pagination
         self.assertIsNone(pagination['last'])
         self.assertIsNone(pagination['next'])
+        self.assertIsNone(pagination['previous_slice'])
+        self.assertIsNone(pagination['next_slice'])
         self.assertEquals(2, pagination['previous'])
-        self.assertEquals(1, pagination['previous_slice'])
         self.assertEquals(3, len(pagination['pages']))
 
         # as dict

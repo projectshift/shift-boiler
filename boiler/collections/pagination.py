@@ -65,14 +65,16 @@ def paginate(page, total_items, total_pages, slice_size=5):
     if page - slice_size <= 0:
         links['previous_slice'] = None
         if page != 1:
-            links['previous_slice'] = first
+            if slice_size != total_pages:
+                links['previous_slice'] = first
 
     # next slice
     links['next_slice'] = next_slice
     if page + slice_size > total_pages:
         links['next_slice'] = None
         if page != total_pages and total_pages != 0:
-            links['next_slice'] = last
+            if slice_size != total_pages:
+                links['next_slice'] = last
 
     # slice pages
     delta = math.ceil(slice_size / 2)

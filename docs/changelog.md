@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.5
+
+Bugfix release: fixing minor pagination issues on collections module and doing some extra regression tests.
+
 ## 0.7.4
 
 Hotfix release to fix installation issues in `setup.py`
