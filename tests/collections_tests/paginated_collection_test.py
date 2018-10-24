@@ -149,4 +149,7 @@ class PaginatedCollectionTests(BoilerTestCase):
     @attr('zzz')
     def test_generate_pagination_on_instantiation(self):
         """ generate pagination controls for collection """
-        self.fail('Implement me!')
+        self.create_fake_data(15)
+        collection = PaginatedCollection(User.query, per_page=5, page=3, pagination_range=4)
+
+        pp(collection.pagination)

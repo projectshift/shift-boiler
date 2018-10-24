@@ -32,10 +32,10 @@ class PaginatedCollection:
 
         # paginate
         self.pagination = paginate(
-            page=page,
-            total_pages=self.total_pages,
-            total_items=self.total_items,
-            slice_size=pagination_range
+            page=3,
+            total_pages=3,
+            total_items=15,
+            slice_size=4
         )
 
         # fetch items
