@@ -1,6 +1,7 @@
 import click, os
 from boiler.cli.colors import *
 from boiler import bootstrap
+import importlib
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -46,11 +47,14 @@ def shell():
     app_context = app.app_context()
     app_context.push()
 
-    # and run
-    try:
+    # got ipython?
+    ipython = importlib.util.find_spec("IPython")
+
+    # run now
+    if ipython:
         from IPython import embed
         embed(user_ns=context)
-    except ImportError:
+    else:
         import code
         code.interact(local=context)
 
