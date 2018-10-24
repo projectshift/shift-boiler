@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.6
+
+Further iterations of pagination improvements.
+
 ## 0.7.5
 
 Bugfix release: fixing minor pagination issues on collections module and doing some extra regression tests.
