@@ -28,7 +28,7 @@ def paginate(page, total_items, total_pages, slice_size=5):
     :return: boiler.collections.paginated_collection.PaginatedCollection
     """
     if slice_size > total_pages:
-        slice_size = total_items
+        slice_size = total_pages
 
     # paginate (can be out of bounds for now)
     first = 1

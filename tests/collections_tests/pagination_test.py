@@ -94,10 +94,8 @@ class PaginationTest(BoilerTestCase):
         pagination = pagination['pagination']
         self.assertEquals(99, pagination['pages'][-1])
 
-
-    @attr('wow')
-    def test_regression_why_do_we_get_negative_pages(self):
-        """ REGRESSION: Getting negative pages with these settings"""
+    def test_decrease_slice_range_if_greater_than_total_pages(self):
+        """ Decrease slice size if greater than total pages"""
         pagination = paginate(
             page=3,
             total_pages=3,
@@ -105,4 +103,7 @@ class PaginationTest(BoilerTestCase):
             slice_size=4
         )
 
-        pp(pagination)
+        self.assertEquals(
+            pagination['total_pages'],
+            len(pagination['pagination']['pages'])
+        )
