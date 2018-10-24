@@ -36,7 +36,7 @@ class PaginatedCollection:
             total_pages=3,
             total_items=15,
             slice_size=4
-        )
+        )['pagination']
 
         # fetch items
         self.items = self.fetch_items()
@@ -79,6 +79,7 @@ class PaginatedCollection:
             per_page=self.per_page,
             total_items=self.total_items,
             total_pages=self.total_pages,
+            pagination=self.pagination,
             items=list(self.items)
         )
         return collection

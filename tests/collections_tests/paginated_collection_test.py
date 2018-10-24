@@ -146,10 +146,16 @@ class PaginatedCollectionTests(BoilerTestCase):
         got_previous = collection.previous_page()
         self.assertFalse(got_previous)
 
-    @attr('zzz')
     def test_generate_pagination_on_instantiation(self):
-        """ generate pagination controls for collection """
+        """ Generate pagination controls for collection """
         self.create_fake_data(15)
-        collection = PaginatedCollection(User.query, per_page=5, page=3, pagination_range=4)
+        collection = PaginatedCollection(User.query, per_page=5, page=3)
+        pagination = collection.pagination
+        self.assertIsNone(pagination['last'])
+        self.assertIsNone(pagination['next'])
+        self.assertEquals(2, pagination['previous'])
+        self.assertEquals(1, pagination['previous_slice'])
+        self.assertEquals(3, len(pagination['pages']))
 
-        pp(collection.pagination)
+        # as dict
+        self.assertIn('pagination', collection.dict())
