@@ -1,5 +1,6 @@
 from math import ceil
 from boiler.collections.pagination import paginate
+from pprint import pprint as pp
 
 
 class PaginatedCollection:
@@ -32,10 +33,10 @@ class PaginatedCollection:
 
         # paginate
         self.pagination = paginate(
-            page=3,
-            total_pages=3,
-            total_items=15,
-            slice_size=4
+            page=page,
+            total_pages=self.total_pages,
+            total_items=self.total_items,
+            slice_size=pagination_range
         )['pagination']
 
         # fetch items
