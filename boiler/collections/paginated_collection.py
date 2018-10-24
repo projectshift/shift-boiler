@@ -1,4 +1,5 @@
 from math import ceil
+from boiler.collections.pagination import paginate
 
 
 class PaginatedCollection:
@@ -9,17 +10,35 @@ class PaginatedCollection:
     paginated manner: iterate over items in current page then call next_page()
     to fetch next slice of data.
     """
-    def __init__(self, query, *_, page=1, per_page=10):
+    def __init__(self, query, *_, page=1, per_page=10, pagination_range=5):
         """
         Initialise collection
         Creates an instance of collection. Requires an query object to
-        iterate through.
+        iterate through. Will issue 2 queries: one to count total items and
+        second to fetch actual items. Optionally generates a page range
+        to print range-like paginations of a given slice size.
+
+        :param query:
+        :param _: args, ignored
+        :param page: int, page to fetch
+        :param per_page: int, items per page
+        :param pagination_range: int, number of pages in pagination
         """
         self._query = query
         self.page = page
         self.per_page = per_page
         self.total_items = self._query.count()
         self.total_pages = ceil(self.total_items / per_page)
+
+        # paginate
+        self.pagination = paginate(
+            page=3,
+            total_pages=3,
+            total_items=15,
+            slice_size=4
+        )['pagination']
+
+        # fetch items
         self.items = self.fetch_items()
 
     def __repr__(self):
@@ -60,6 +79,7 @@ class PaginatedCollection:
             per_page=self.per_page,
             total_items=self.total_items,
             total_pages=self.total_pages,
+            pagination=self.pagination,
             items=list(self.items)
         )
         return collection

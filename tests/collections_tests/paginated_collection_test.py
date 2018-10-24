@@ -7,6 +7,7 @@ from boiler.user.services import user_service
 from boiler.collections import PaginatedCollection
 from boiler.user.models import User
 from boiler.user.events import events as user_events
+from pprint import pprint as pp
 
 
 @attr('kernel', 'collections', 'paginated_collection')
@@ -145,4 +146,16 @@ class PaginatedCollectionTests(BoilerTestCase):
         got_previous = collection.previous_page()
         self.assertFalse(got_previous)
 
+    def test_generate_pagination_on_instantiation(self):
+        """ Generate pagination controls for collection """
+        self.create_fake_data(15)
+        collection = PaginatedCollection(User.query, per_page=5, page=3)
+        pagination = collection.pagination
+        self.assertIsNone(pagination['last'])
+        self.assertIsNone(pagination['next'])
+        self.assertEquals(2, pagination['previous'])
+        self.assertEquals(1, pagination['previous_slice'])
+        self.assertEquals(3, len(pagination['pages']))
 
+        # as dict
+        self.assertIn('pagination', collection.dict())
