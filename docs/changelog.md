@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.3
+  * Adds a pagination generation feature to navigation between pages, as per [#36](https://github.com/projectshift/shift-boiler/issues/36)
+  * Fixes minor issue with IPython import in CLI when it doesn't exist which caused an exception to appear in stack traces.
+  * User service now notifies Principal when user logs in or out.
+
 ## 0.7.2
 Minor improvements to sentry integration feature.
 
