@@ -146,5 +146,7 @@ class PaginatedCollectionTests(BoilerTestCase):
         got_previous = collection.previous_page()
         self.assertFalse(got_previous)
 
-
-
+    @attr('zzz')
+    def test_generate_pagination_on_instantiation(self):
+        """ generate pagination controls for collection """
+        self.fail('Implement me!')
