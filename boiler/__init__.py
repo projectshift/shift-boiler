@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv as dotenvs
 
 
 def load_dotenvs():
@@ -18,4 +17,12 @@ def load_dotenvs():
 
 
 # run immediately
-load_dotenvs()
+dotenvs = True
+try:
+    from dotenv import load_dotenv as dotenvs
+    load_dotenvs()
+except ImportError:
+    pass
+
+
+

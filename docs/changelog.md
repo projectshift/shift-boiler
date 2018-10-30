@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.7
+
+Minor bugfix release that fixes issues with `setup.py` where a `python-dotenv` dependency is being used before it is acually available via `install_requires`, as described in [88](https://github.com/projectshift/shift-boiler/issues/88)
+
 ## 0.7.6
 
 Further iterations of pagination improvements.
