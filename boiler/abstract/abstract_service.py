@@ -123,7 +123,9 @@ class AbstractService:
         return self.__model__.query.get_or_404(id)
 
     def get_multiple(self, ids):
-        pass
+        m = self.__model__
+        query = m.query.filter(m.id.in_(ids))
+        return query.all()
 
     def find(self, **kwargs):
         return self.__model__.query.filter_by(**kwargs).all()
