@@ -7,7 +7,7 @@ Boiler provides as set of flask-specific helpers to ease testing view and databa
 This is done with boiler `dependencies` command:
 
 ```
-./boiler dependencies testing
+boiler dependencies testing
 ```
 
 This will get you the following packages:
