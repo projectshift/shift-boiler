@@ -25,7 +25,7 @@ When initialized, boiler created a `nose.ini` file in the root of your project. 
 As mentioned earlier nose is integrated into your project CLI out of the bix, so simple run `./cli test` to runn your tests. The command proxies all command-line arguments to nose executable, so all usual nose args work with boiler CLI, for example to run only the tests tagget with certain `@attr('some-tag-name')` decorator, pass attr name to CLI:
 
 ```
-./cli run -a some-tag-name
+./cli test -a some-tag-name
 ```
 
 It is important to mention that nose will discover tests in your project. However please remember that:
