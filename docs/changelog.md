@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.8
+Minor bugfix release. Updated `User` model to change `flask_login` integration methods (`is_authenticated`, `is_active` and `is_anonymous`) from being methods to being properties to conform with [user mixins interfaces](https://flask-login.readthedocs.io/en/latest/_modules/flask_login/mixins.html#UserMixin). 
+
+
 ## 0.7.7
 
 Minor bugfix release that fixes issues with `setup.py` where a `python-dotenv` dependency is being used before it is acually available via `install_requires`, as described in [88](https://github.com/projectshift/shift-boiler/issues/88)

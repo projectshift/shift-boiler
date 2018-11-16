@@ -178,12 +178,15 @@ class User(db.Model):
     # Flask login
     # -------------------------------------------------------------------------
 
+    @property
     def is_authenticated(self):
         return True
 
+    @property
     def is_active(self):
-        return not self.check_lock()
+        return not self.is_locked()
 
+    @property
     def is_anonymous(self):
         return False
 
