@@ -11,7 +11,7 @@ def file_logger(app, level=None):
     :param level:       log this level
     :return:            RotatingFileHandler
     """
-    path = os.path.join(app.config['DATA']['logs'], 'app.log')
+    path = os.path.join(os.getcwd(), 'var', 'logs',  'app.log')
 
     max_bytes = 1024 * 1024 * 2
     file_handler = RotatingFileHandler(
