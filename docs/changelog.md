@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.9
+Minor bug fix release to fix issues with logging feature, as described in [#90](https://github.com/projectshift/shift-boiler/issues/90)
+
 ## 0.7.8
 Minor bugfix release. Updated `User` model to change `flask_login` integration methods (`is_authenticated`, `is_active` and `is_anonymous`) from being methods to being properties to conform with [user mixins interfaces](https://flask-login.readthedocs.io/en/latest/_modules/flask_login/mixins.html#UserMixin). 
 
