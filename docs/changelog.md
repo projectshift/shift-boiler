@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.10
+Minor patch release that moves browsersync detection functionality fom custom 
+`dev_proxy()` jinja function to application bootstrap and makes it globally 
+available as `g.dev_proxy`. The original jinja function still works and now uses
+this new functionality.
+
 ## 0.7.9
 Minor bug fix release to fix issues with logging feature, as described in [#90](https://github.com/projectshift/shift-boiler/issues/90)
 

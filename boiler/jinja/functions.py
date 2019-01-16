@@ -1,6 +1,9 @@
-from flask import current_app as app, has_request_context, request
+from flask import current_app as app
+from flask import has_request_context
+from flask import g
 
-def asset(url = None):
+
+def asset(url=None):
     """
     Asset helper
     Generates path to a static asset based on configuration base path and
@@ -33,6 +36,7 @@ def asset(url = None):
     pattern = '{url}{sign}v{version}'
     return pattern.format(url=url, sign=sign, version=version)
 
+
 def dev_proxy():
     """
     Is dev proxy?
@@ -44,8 +48,4 @@ def dev_proxy():
     if not has_request_context():
         return False
 
-    header = app.config.get('DEV_PROXY_HEADER')
-    if not header:
-        return False
-
-    return bool(request.headers.get(header))
+    return g.dev_proxy

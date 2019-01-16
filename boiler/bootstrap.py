@@ -1,7 +1,8 @@
 import os
 from os import path
-from importlib import import_module
 from flask import Flask
+from flask import g
+from flask import request
 from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import import_string
 
@@ -94,6 +95,14 @@ def create_app(name, config=None, flask_params=None):
     # time restarts?
     if app.config.get('TIME_RESTARTS'):
         restart_timer.time_restarts(os.path.join(os.getcwd(), 'var', 'data'))
+
+    # detect browsersync proxy
+    @app.before_request
+    def detect_browsersync():
+        g.dev_proxy = False
+        proxy_header = app.config.get('DEV_PROXY_HEADER')
+        if proxy_header:
+            g.dev_proxy = bool(request.headers.get(proxy_header))
 
     return app
 
