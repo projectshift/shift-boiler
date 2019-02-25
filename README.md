@@ -65,6 +65,9 @@ file and expect minor versions to introduce breaking changes.
 ### Troubleshooting
   
   * [MacOS: signing python interpreter](docs/sign_python.md)
+  
+  
+[![Analytics](https://ga-beacon.appspot.com/UA-3714466-12/boiler-home?pixel)](https://github.com/igrigorik/ga-beacon)  
 
 
 
