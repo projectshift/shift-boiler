@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.11
+This is a minor release that mostly deals with keeping dependencies up to date.
+
 ## 0.7.10
 Minor patch release that moves browsersync detection functionality fom custom 
 `dev_proxy()` jinja function to application bootstrap and makes it globally 
