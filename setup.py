@@ -109,9 +109,9 @@ setup(**dict(
 
     # project dependencies
     install_requires=[
-        'click==6.7',
-        'shiftschema>=0.2.0,<0.3.0',
-        'python-dotenv==0.9.1'
+        'click>=7.0.0,<8.0.0',
+        'shiftschema>=0.2.5,<0.3.0',
+        'python-dotenv>=0.10.1,<1.0.0'
     ],
 
     # entry points
