@@ -4,4 +4,4 @@ Flask==1.0.2
 Flask-WTF==0.14.2
 Flask-DebugToolbar==0.10.1
 Flask-Navigation==0.2.0
-python-dotenv==0.9.1
+python-dotenv>=0.10.1,<1.0.0
