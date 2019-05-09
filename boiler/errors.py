@@ -51,7 +51,7 @@ def default_error_handler(exception):
 def json_error_handler(exception):
     """
     Json error handler
-    Returns a json message for th excepion with appripriate response code and
+    Returns a json message for the exception with appropriate response code and
     application/json content type.
     :param exception:
     :return:
