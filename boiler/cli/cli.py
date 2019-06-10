@@ -1,7 +1,5 @@
 import click, os
 from boiler.cli.colors import *
-from boiler import bootstrap
-import importlib
 
 # -----------------------------------------------------------------------------
 # Group setup
@@ -26,6 +24,7 @@ def cli():
 def run(host='0.0.0.0', port=5000, reload=True, debug=True):
     """ Run development server """
     from werkzeug.serving import run_simple
+    from boiler import bootstrap
 
     app = bootstrap.get_app()
     return run_simple(
@@ -40,6 +39,9 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
 @cli.command(name='shell')
 def shell():
     """ Start application-aware shell """
+    import importlib
+    from boiler import bootstrap
+
     app = bootstrap.get_app()
     context = dict(app=app)
 
