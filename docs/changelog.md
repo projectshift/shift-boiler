@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.12
+This is another bugfix release that addresses some of the issues: 
+
+  * You can now use boiler without installing flask in cases when you just want to use the CLI functionality ([#92](https://github.com/projectshift/shift-boiler/issues/92))
+  * More meaninful error messages when a user forgot to create a `.env` file to hold sensitive secrets ([#93](https://github.com/projectshift/shift-boiler/issues/93))
+  * Introduction of BaseConfig in project skeleton to hold cong settings shared between environments ([#94](https://github.com/projectshift/shift-boiler/issues/94))
+
+
+
 ## 0.7.11
 This is a minor release that mostly deals with keeping dependencies up to date.
 
