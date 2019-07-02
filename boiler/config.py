@@ -17,15 +17,6 @@ class Config:
         return default
 
 
-class ProductionConfig(Config):
-    """
-    Production config
-    Extend this config from your concrete app config. It should set only
-    the stuff you want to override from default config below.
-    """
-    pass
-
-
 class DefaultConfig(Config):
     """
     Default project configuration
@@ -148,6 +139,15 @@ class DefaultConfig(Config):
         'email_change': 'Please confirm your new email.',
         'password_change': 'Change your password here.',
     }
+
+
+class ProductionConfig(Config):
+    """
+    Production config
+    Extend this config from your concrete app config. It should set only
+    the stuff you want to override from default config below.
+    """
+    pass
 
 
 class DevConfig(Config):
