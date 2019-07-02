@@ -46,6 +46,10 @@ def get_app():
     :return: flask.Flask
     """
     app_module = os.getenv('APP_MODULE')
+    if not app_module:
+        err = 'Main app module undefined. Have you created a .env file?'
+        raise x.BootstrapException(err)
+
     app = import_string(app_module + '.app.app')
     return app
 
