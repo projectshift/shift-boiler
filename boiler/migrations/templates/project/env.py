@@ -11,7 +11,7 @@ from logging.config import fileConfig
 # etc...
 
 # using boiler users?
-# from boiler.user import models
+# from shiftuser import models
 
 # ------------------------------------------------------------------------
 
