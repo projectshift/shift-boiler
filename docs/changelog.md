@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0
+
+This is a major release that introduces some breaking changes and some new features. Here is what's changed:
+
+  * The main one is that the users feature is now gone. The functionality was extracted into a separate [`shiftuser`](https://github.com/projectshift/shift-user) package.
+  * In development mode restart timer is now desabled by default. Set `TIME_RESTARTS=True` is you want to measure your bootstrap time
+  * In development mode you can now pass SSL context to `./cli run` command that can be set either to `adhoc` or `cert_path,pk_path` to run dev server wit hhttps
+  * Signing your python interpreter functionality was removed from both the CLI and documentation. It stopped working for Mac users some time ago with new OSX releases
+
+
+
 ## 0.7.12
 This is another bugfix release that addresses some of the issues: 
 
