@@ -153,7 +153,7 @@ class ProductionConfig(Config):
 class DevConfig(Config):
     """ Default development config """
     ENV = 'development'
-    TIME_RESTARTS = True
+    TIME_RESTARTS = False
     DEBUG = True
     DEBUG_TB_ENABLED=True
     DEBUG_TB_PROFILER_ENABLED = True

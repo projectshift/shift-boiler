@@ -21,10 +21,20 @@ def cli():
 @click.option('--port', '-p', default=5000, help='Listen on port')
 @click.option('--reload/--no-reload', default=True, help='Reload on change?')
 @click.option('--debug/--no-debug', default=True, help='Use debugger?')
-def run(host='0.0.0.0', port=5000, reload=True, debug=True):
+@click.option('--ssl', default=None, help='SSL context')
+def run(host='0.0.0.0', port=5000, reload=True, debug=True, ssl=None):
     """ Run development server """
     from werkzeug.serving import run_simple
     from boiler import bootstrap
+
+    # run with ssl context?
+    ssl = ssl.lower()
+    ssl_context = None
+    if ssl == 'adhoc':
+        ssl_context = ssl
+    elif ssl.find(','):
+        ssl = ssl.split(',')
+        ssl_context = (ssl[0], ssl[1])
 
     app = bootstrap.get_app()
     return run_simple(
@@ -33,6 +43,7 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True):
         application=app,
         use_reloader=reload,
         use_debugger=debug,
+        ssl_context=ssl_context
     )
 
 

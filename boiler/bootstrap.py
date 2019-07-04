@@ -159,12 +159,6 @@ def add_logging(app):
     logging_feature(app)
 
 
-def add_users(app):
-    """ Add user management functionality """
-    from boiler.feature.users import users_feature
-    users_feature(app)
-
-
 def add_localization(app):
     """ Enable support for localization and translations"""
     from boiler.feature.localization import localization_feature

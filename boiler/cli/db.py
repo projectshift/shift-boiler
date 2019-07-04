@@ -60,7 +60,6 @@ def init():
     """ Initialize new migrations directory """
     try:
         config = get_config()
-        print(config.dir)
         alembic_command.init(config, config.dir, 'project')
     except CommandError as e:
         click.echo(red(str(e)))

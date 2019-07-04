@@ -44,5 +44,6 @@ www.esproj
 /dist.env
 /boil
 
-
+# temporary ignores for extracting users into separate package
+/shiftuser
 

@@ -15,8 +15,6 @@ Here are some main features all of which are pluggable and optional:
   * Entity/model validation framework with [shift-schema](https://github.com/projectshift/shift-schema)
   * Localization and translations with [Babel](https://pythonhosted.org/Flask-Babel/)
   * Web forms with [WTForms](https://wtforms.readthedocs.io/en/latest/)
-  * User registration and [authentication](https://flask-login.readthedocs.io/en/latest/) including [OAuth](https://pythonhosted.org/Flask-OAuth/) support for facebook, google and vk
-  * RBAC and access control with [Principal](http://pythonhosted.org/Flask-Principal/)
   * Routing with lazy-views and on-demand view import
   * Set of useful Jinja additions and filters including support for versioned static assets.
   * All of the features are pluggable and optional. Use whatever you need.
@@ -62,9 +60,6 @@ file and expect minor versions to introduce breaking changes.
   * Working with forms: entity validation and recaptcha
   * [Changelog](docs/changelog.md)
 
-### Troubleshooting
-  
-  * [MacOS: signing python interpreter](docs/sign_python.md)
   
   
 [![Analytics](https://ga-beacon.appspot.com/UA-3714466-12/boiler-home?pixel)](https://github.com/igrigorik/ga-beacon)  

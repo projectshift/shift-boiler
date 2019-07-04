@@ -39,7 +39,6 @@ Please specify a feature to install.
 9. orm
 10. sentry
 11. testing
-12. users
 ```
 
 You can then install dependencies for a feature like this:
@@ -138,39 +137,6 @@ from boiler.cli import db
 cli.add_command(db.cli, name='db')
 ```
 
-
-
-
-
-## Users
-
-There is a lot to users feature - it provides facilities to create and manage user profiles, authenticate with username, passwords and oauth, manage user profiles, reset passwords, confirm and activate accounts and a handy set of console commands for your cli to perform admin tasks.
-
-
-Enable feature with:
-
-```python
-bootstrap.add_users(app)
-```
-
-Install this feature dependencies:
-
-```
-boiler dependencies users
-```
-
-This feature uses several other features, so make sure to enable these as well:
-
-  * Mail
-  * Jinja Extensions
-
-To connect user commands to your project CLI edit `cli` file in your project root and mount the commands:
-
-```python
-# add user cli
-from boiler.cli import user
-cli.add_command(user.cli, name='user')
-```
 
 ## Sentry
 

@@ -33,5 +33,4 @@ app = bootstrap.create_app(
 
 bootstrap.add_orm(app)
 bootstrap.add_mail(app)
-bootstrap.add_users(app)
 bootstrap.add_routing(app)
