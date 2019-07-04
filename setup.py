@@ -70,7 +70,6 @@ setup(**dict(
         'sqlalchemy',
         'webapp',
         'api',
-        'oauth',
         'babel',
     ],
 
