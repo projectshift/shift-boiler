@@ -1,6 +1,12 @@
 # Changelog
 
+## 0.8.1
+
+This is an immediate bugfix release that fixes an issue with `./cli run` command when SSL context is not provided (the default). please upgrade directly to this version.
+
 ## 0.8.0
+
+**Note:** this version contains an issue with `./cli run` command. Please upgrade directly to version `0.8.1` that addresses this issue.
 
 This is a major release that introduces some breaking changes and some new features. Here is what's changed:
 

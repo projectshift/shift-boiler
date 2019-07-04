@@ -28,11 +28,11 @@ def run(host='0.0.0.0', port=5000, reload=True, debug=True, ssl=None):
     from boiler import bootstrap
 
     # run with ssl context?
-    ssl = ssl.lower()
+    ssl = ssl.lower() if ssl else None
     ssl_context = None
     if ssl == 'adhoc':
         ssl_context = ssl
-    elif ssl.find(','):
+    elif ssl and ssl.find(','):
         ssl = ssl.split(',')
         ssl_context = (ssl[0], ssl[1])
 
