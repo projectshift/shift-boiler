@@ -3,10 +3,9 @@ from nose.plugins.attrib import attr
 from tests.base_testcase import BoilerTestCase
 
 from faker import Factory
-from boiler.user.services import user_service
 from boiler.collections import ApiCollection
-from boiler.user.models import User
-from boiler.user.events import events as user_events
+from boiler.feature.orm import db
+from tests.boiler_test_app.models import User
 
 
 @attr('kernel', 'collections', 'api_collection')
@@ -24,15 +23,15 @@ class ApiCollectionTests(BoilerTestCase):
     def create_fake_data(self, how_many=1):
         """ Create a fake data set to test our collection """
         fake = Factory.create()
-        with user_events.disconnect_receivers():
-            items = []
-            for i in range(how_many):
-                user = User(
-                    email=fake.email(),
-                    password=fake.password()
-                )
-                user_service.save(user)
-                items.append(user)
+        items = []
+        for i in range(how_many):
+            user = User(
+                email=fake.email(),
+                password=fake.password()
+            )
+            db.session.add(user)
+            db.session.commit()
+            items.append(user)
 
         return items
 
