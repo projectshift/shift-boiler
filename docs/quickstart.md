@@ -130,9 +130,3 @@ And then we can run:
 This will start a development server that you can access on [localhost:5000](http://localhost:5000).
 
 The development server will watch your code for changes and auto-reload and give you some usefull reload statistics.
-
-## Sign your python
-
-**Note to mac users** There is a known issue common across python applications that run under virtual environments on MacOS - each time your app is restarted, system firewall will annoyingly ask wether you want to allow incoming connections to your app.
-
-The solution for this is to sign your python interpreter with a certificate. To save you from googling, we provide a convenience command to do it, but you will still need to create a certificate in Keychain Access utility. Refer to [MacOS: signing python interpreter](sign_python.md) for instruction on how to create one.
