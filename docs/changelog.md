@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.8.1
 
-This is an immediate bugfix release that fixes an issue with `./cli run` command when SSL context is not provided (the default). please upgrade directly to this version.
+
+## 0.8.2
+
+This is a maintenance release that removes residual users functionality that now has been fully extracted into its own [shiftuser](https://pypi.org/project/shiftuser/1.0.0/) library.
 
 ## 0.8.0
 
