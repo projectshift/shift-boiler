@@ -10,9 +10,6 @@ from logging.config import fileConfig
 # from project.app2 import models
 # etc...
 
-# using boiler users?
-# from shiftuser import models
-
 # ------------------------------------------------------------------------
 
 
