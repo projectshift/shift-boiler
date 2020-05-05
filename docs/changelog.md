@@ -1,6 +1,8 @@
 # Changelog
 
+## 0.8.3
 
+This is a maintenance release to temporarily pin [Werkzeug 0.16.1](https://pypi.org/project/Werkzeug/) since all the later versions introduce breaking changes. This is for the time being and will be removed in future releases after other projectshift libraries refactor. (See [shift-user#1](https://github.com/projectshift/shift-user/issues/1) and [werkzeug#1714](https://github.com/pallets/werkzeug/issues/1714))
 
 ## 0.8.2
 
