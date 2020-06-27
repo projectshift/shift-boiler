@@ -1,7 +1,8 @@
 from boiler import bootstrap
 
 # create app
-app = bootstrap.create_app(__name__, config=bootstrap.get_config())
+app_name = os.environ.get('APP_MODULE')
+app = bootstrap.create_app(name=app_name, config=bootstrap.get_config())
 
 # enable features
 bootstrap.add_routing(app)
