@@ -52,7 +52,7 @@ import unittest
 class FirstTestEver(unittest.TestCase):
     def test_can_do_testing(self):
         """ Short test description to appear at runtime """
-        self.asssertTrue(True)
+        self.assertTrue(True)
 
 ```
 
