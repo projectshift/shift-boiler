@@ -1,6 +1,5 @@
 import os, unittest, json
 from contextlib import contextmanager
-from pprint import PrettyPrinter
 from flask import current_app
 from werkzeug.utils import parse_cookie
 
@@ -32,7 +31,6 @@ class FlaskTestCase(unittest.TestCase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.pprinter = PrettyPrinter(indent=2)
 
     def setUp(self, app=None):
         """
@@ -105,10 +103,6 @@ class FlaskTestCase(unittest.TestCase):
             yield None
         finally:
             current_app.config = original_config
-
-    def pp(self, what):
-        """ Pretty-print stuff"""
-        self.pprinter.pprint(what)
 
 
 class ViewTestCase(FlaskTestCase):
