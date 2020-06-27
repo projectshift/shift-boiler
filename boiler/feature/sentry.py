@@ -11,7 +11,7 @@ def sentry_feature(app):
     # get keys
     sentry_key = app.config.get('SENTRY_KEY')
     sentry_project_id = app.config.get('SENTRY_PROJECT_ID')
-    sentry_ingest_url = 'SENTRY_INGEST_URL'
+    sentry_ingest_url = app.config.get('SENTRY_INGEST_URL')
     if not sentry_key or not sentry_project_id or not sentry_ingest_url:
         return
 

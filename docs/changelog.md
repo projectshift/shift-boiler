@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1
+
+Hotfix release to fix a regression in Sentry feature introduced in `0.9.0`
+
 ## 0.9.0
 
 Minor release that introduces some breaking changes around Sentry feature integration.
