@@ -1,6 +1,5 @@
-from raven.contrib.flask import Sentry
-
-sentry = Sentry()
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 
 def sentry_feature(app):
@@ -12,12 +11,19 @@ def sentry_feature(app):
     # get keys
     sentry_public_key = app.config.get('SENTRY_PUBLIC_KEY')
     sentry_project_id = app.config.get('SENTRY_PROJECT_ID')
-    if not sentry_public_key or not sentry_project_id:
+    sentry_ingest_url = 'o96810.ingest.sentry.io'
+    if not sentry_public_key or not sentry_project_id or not sentry_ingest_url:
         return
 
     # prepare dsn
-    dsn = 'https://{key}@sentry.io/{project_id}'
-    dsn = dsn.format(key=sentry_public_key, project_id=sentry_project_id)
+    dsn = 'https://{key}@{ingest_url}/{project_id}'.format(
+        key=sentry_public_key,
+        ingest_url=sentry_ingest_url,
+        project_id=sentry_project_id
+    )
 
     # init sentry
-    sentry.init_app(app=app, dsn=dsn)
+    sentry_sdk.init(
+        dsn=dsn,
+        integrations=[FlaskIntegration()]
+    )

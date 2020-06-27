@@ -77,8 +77,9 @@ class DefaultConfig(Config):
     LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS = False
 
     # sentry
-    SENTRY_PUBLIC_KEY = os.getenv('APP_SENTRY_PUBLIC_KEY')
+    SENTRY_KEY = os.getenv('APP_SENTRY_KEY')
     SENTRY_PROJECT_ID = os.getenv('APP_SENTRY_PROJECT_ID')
+    SENTRY_INGEST_URL = os.getenv('APP_SENTRY_INGEST_URL')
 
     # localization (babel)
     DEFAULT_LOCALE = 'en_GB'
