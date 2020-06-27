@@ -75,10 +75,9 @@ from backend.config import TestingConfig
 
 class BaseTest(testing.ViewTestCase):
     def setUp(self):
-        """ Set up app for the base test case """
-        app_module = os.environ['APP_MODULE']
-        config = TestingConfig()
-        app = bootstrap.create_app(name=app_module, config=config)
+        """ Set up flask app """
+        os.environ['APP_CONFIG'] = 'backend.config.TestingConfig'
+        from backend.app import app
         super().setUp(app=app)
 ```
 
