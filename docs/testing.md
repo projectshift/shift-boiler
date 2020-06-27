@@ -84,8 +84,8 @@ class BaseTest(testing.ViewTestCase):
 
 That's it you can now extend your test cases from this base test case. Here we created an app (because, you know, you can have more than one) and chosen to use our testing config. We also extended our base test case from one of base boiler test cases, [of whch there are two](https://github.com/projectshift/shift-boiler/blob/master/boiler/testing/testcase.py):
 
-  * **FlaskTestCase** provites tools to test backend services and integrates with ORM
-  * **ViewTestCase** builds on top of that to rovide set of convenience methods and assertions to help with testing views and API responses
+  * **FlaskTestCase** provides tools to test backend services and integrates with ORM
+  * **ViewTestCase** builds on top of that to provide set of convenience methods and assertions to help with testing views and API responses
 
 
 ## FlaskTestCase
