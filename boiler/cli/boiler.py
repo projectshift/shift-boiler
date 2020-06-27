@@ -188,10 +188,13 @@ def install_dependencies(feature=None):
 
     req_path = os.path.realpath(os.path.dirname(__file__) + '/../_requirements')
 
+    # list features
+    features = sorted(os.listdir(req_path))
+
     # list all features if no feature name
     if not feature:
         echo(yellow('Please specify a feature to install. \n'))
-        for index, item in enumerate(os.listdir(req_path)):
+        for index, item in enumerate(features):
             item = item.replace('.txt', '')
             echo(green('{}. {}'.format(index + 1, item)))
 
