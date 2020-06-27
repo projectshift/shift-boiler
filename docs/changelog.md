@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+
+Minor release that introduces some breaking changes around Sentry feature integration.
+This update implements this integration to use PythonSDK rather than `raven` library per Sentry recommendations.
+Additionally all flask-related dependencies have been updated to their latest versions. Includes minor documentation improvements.
+
 ## 0.8.3
 
 This is a maintenance release to temporarily pin [Werkzeug 0.16.1](https://pypi.org/project/Werkzeug/) since all the later versions introduce breaking changes. This is for the time being and will be removed in future releases after other projectshift libraries refactor. (See [shift-user#1](https://github.com/projectshift/shift-user/issues/1) and [werkzeug#1714](https://github.com/pallets/werkzeug/issues/1714))
