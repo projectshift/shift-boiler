@@ -156,9 +156,11 @@ boiler dependencies sentry
 
 The configure Sentry credentials in your `.env` file:
 
+
 ```
-APP_SENTRY_PUBLIC_KEY='XXXX'
-APP_SENTRY_PROJECT_ID='XXXX'
+SENTRY_KEY='XXXX'
+SENTRY_PROJECT_ID='XXXX'
+SENTRY_INGEST_URL='XXXX.ingest.sentry.io'
 ```
 
 
