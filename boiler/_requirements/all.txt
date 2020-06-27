@@ -36,12 +36,14 @@ alembic>=1.4.2,<2.0.0
 # mysqlclient>=1.4.6,<1.5.0
 # mysql-connector-python>=8.0.20,<9.0.0
 
-
 # api
 Flask-RESTful>=0.3.8,<1.0.0
 
 # localize and translate
 Flask-Babel>=1.0.0,<2.0.0
+
+# sentry
+sentry-sdk[flask]>=0.15.1,<1.0.0
 
 
 
