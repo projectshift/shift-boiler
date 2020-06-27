@@ -74,7 +74,7 @@ from backend.config import TestingConfig
 
 
 class BaseTest(testing.ViewTestCase):
-    def setUp():
+    def setUp(self):
         """ Set up app for the base test case """
         app_module = os.environ['APP_MODULE']
         config = TestingConfig()
