@@ -70,7 +70,7 @@ You start off by creating a base test case for your project and extending your t
 import os
 from boiler import testing
 from boiler import bootstrap
-from config.config import TestingConfig
+from backend.config import TestingConfig
 
 
 class BaseTest(testing.ViewTestCase):
