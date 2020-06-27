@@ -9,15 +9,15 @@ def sentry_feature(app):
     """
 
     # get keys
-    sentry_public_key = app.config.get('SENTRY_PUBLIC_KEY')
+    sentry_key = app.config.get('SENTRY_KEY')
     sentry_project_id = app.config.get('SENTRY_PROJECT_ID')
-    sentry_ingest_url = 'o96810.ingest.sentry.io'
-    if not sentry_public_key or not sentry_project_id or not sentry_ingest_url:
+    sentry_ingest_url = 'SENTRY_INGEST_URL'
+    if not sentry_key or not sentry_project_id or not sentry_ingest_url:
         return
 
     # prepare dsn
     dsn = 'https://{key}@{ingest_url}/{project_id}'.format(
-        key=sentry_public_key,
+        key=sentry_key,
         ingest_url=sentry_ingest_url,
         project_id=sentry_project_id
     )
