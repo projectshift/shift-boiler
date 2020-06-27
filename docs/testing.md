@@ -78,7 +78,7 @@ class BaseTest(testing.ViewTestCase):
         """ Set up app for the base test case """
         app_module = os.environ['APP_MODULE']
         config = TestingConfig()
-        app = bootstrap.init(module_name=app=os.environ['APP_MODULE'], config=config)
+        app = bootstrap.create_app(name=app_module, config=config)
         super().setUp(app=app)
 ```
 
