@@ -59,7 +59,7 @@ class DefaultConfig(Config):
     MIGRATIONS_PATH = os.path.join(os.getcwd(), 'migrations')
     SQLALCHEMY_DATABASE_URI = os.getenv('APP_DATABASE_URI')
     TEST_DB_PATH = os.path.join(
-        os.getcwd(), 'var', 'data' 'test-db', 'sqlite.db'
+        os.getcwd(), 'var', 'data', 'test-db', 'sqlite.db'
     )
 
     # mail server settings
