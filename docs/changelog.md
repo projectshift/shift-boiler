@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.2
+Minor maintenance release improving documentation and testing.
+
 ## 0.9.1
 
 Hotfix release to fix a regression in Sentry feature introduced in `0.9.0`
