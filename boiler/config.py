@@ -92,13 +92,19 @@ class DefaultConfig(Config):
     RECAPTCHA_PUBLIC_KEY = os.getenv('APP_RECAPTCHA_PUBLIC_KEY')
     RECAPTCHA_PRIVATE_KEY = os.getenv('APP_RECAPTCHA_PRIVATE_KEY')
 
+    
 class ProductionConfig(Config):
     """
     Production config
     Extend this config from your concrete app config. It should set only
     the stuff you want to override from default config below.
     """
-    pass
+    
+    # make cookies secure
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_SECURE = True
+    REMEMBER_COOKIE_HTTPONLY = True
 
 
 class DevConfig(Config):
