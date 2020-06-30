@@ -1,28 +1,29 @@
 # Changelog
 
+## 0.9.3
+This release contains improvements around application security. For instance session cookies
+and FlaskLogin's remember me cookies are now set to be secure and http-only by default in production environments.
+
+Additionally flask applications are now CSRF-protected out of the box so you don;t have to remember to enable this feature.
+
 ## 0.9.2
 Minor maintenance release improving documentation and testing.
 
 ## 0.9.1
-
 Hotfix release to fix a regression in Sentry feature introduced in `0.9.0`
 
 ## 0.9.0
-
 Minor release that introduces some breaking changes around Sentry feature integration.
 This update implements this integration to use PythonSDK rather than `raven` library per Sentry recommendations.
 Additionally all flask-related dependencies have been updated to their latest versions. Includes minor documentation improvements.
 
 ## 0.8.3
-
 This is a maintenance release to temporarily pin [Werkzeug 0.16.1](https://pypi.org/project/Werkzeug/) since all the later versions introduce breaking changes. This is for the time being and will be removed in future releases after other projectshift libraries refactor. (See [shift-user#1](https://github.com/projectshift/shift-user/issues/1) and [werkzeug#1714](https://github.com/pallets/werkzeug/issues/1714))
 
 ## 0.8.2
-
 This is a maintenance release that removes residual users functionality that now has been fully extracted into its own [shiftuser](https://pypi.org/project/shiftuser/1.0.0/) library.
 
 ## 0.8.0
-
 **Note:** this version contains an issue with `./cli run` command. Please upgrade directly to version `0.8.1` that addresses this issue.
 
 This is a major release that introduces some breaking changes and some new features. Here is what's changed:
