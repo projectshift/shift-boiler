@@ -5,6 +5,7 @@ from flask import g
 from flask import request
 from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import import_string
+from flask_wtf import CSRFProtect
 
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
@@ -80,6 +81,9 @@ def create_app(name, config=None, flask_params=None):
     # create an app
     app = Flask(**options)
 
+    # enable csrf protection
+    CSRFProtect(app)
+
     # configure app
     if config.__class__ is type:
         raise Exception('Config must be an object, got class instead.')
@@ -100,9 +104,9 @@ def create_app(name, config=None, flask_params=None):
     if app.config.get('TIME_RESTARTS'):
         restart_timer.time_restarts(os.path.join(os.getcwd(), 'var', 'data'))
 
-    # detect browsersync proxy
+    # detect dev proxy
     @app.before_request
-    def detect_browsersync():
+    def detect_dev_proxy():
         g.dev_proxy = False
         proxy_header = app.config.get('DEV_PROXY_HEADER')
         if proxy_header:
