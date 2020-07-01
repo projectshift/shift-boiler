@@ -82,15 +82,15 @@ def create_app(name, config=None, flask_params=None):
     app = Flask(**options)
     app.config.from_object(DefaultConfig())
 
-    # configure app
-    if config:
-        if config.__class__ is type:
-            raise Exception('Config must be an object, got class instead.')
-
-        # apply supplied config on top of default config
-        app.config.from_object(config)
-    else:
+    # check custom config
+    if not config:
         print('No configuration provided. Running with DefaultConfig.')
+    elif config.__class__ is type:
+        raise Exception('Config must be an object, got class instead.')
+
+    # apply custom config
+    if config:
+        app.config.from_object(config)
 
     # enable csrf protection
     CSRFProtect(app)
