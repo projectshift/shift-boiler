@@ -20,16 +20,16 @@ def get_config():
     Imports config based on environment.
     :return:
     """
-    app_config = os.getenv('APP_CONFIG')
-    if not app_config:
-        err = 'Unable to bootstrap application APP_CONFIG is not defined'
+    flask_config = os.getenv('FLASK_CONFIG')
+    if not flask_config:
+        err = 'Unable to bootstrap application FLASK_CONFIG is not defined'
         raise x.BootstrapException(err)
 
     try:
-        config_class = import_string(app_config)
+        config_class = import_string(flask_config)
     except ImportError:
         err = 'Failed importing config file [{}]'
-        raise x.BootstrapException(err.format(app_config))
+        raise x.BootstrapException(err.format(flask_config))
 
     # and return
     config = config_class()
@@ -45,21 +45,17 @@ def get_app():
     of the app.
     :return: flask.Flask
     """
-    app_module = os.getenv('APP_MODULE')
-    if not app_module:
-        err = 'Main app module undefined. Have you created a .env file?'
+    flask_app = os.getenv('FLASK_APP')
+    if not flask_app:
+        err = 'FLASK_APP undefined. Have you created a .env file?'
         raise x.BootstrapException(err)
 
-    # check if importable and report
-    test_import_name(app_module)
+    # check if importable (gives us good errors if not)
+    test_import_name(flask_app)
 
-    return None
-
-
-    #
-    # # import
-    # app = import_string(app_module + '.app')
-    # return app
+    # import
+    app = import_string(flask_app + '.app')
+    return app
 
 
 def test_import_name(name):
@@ -73,24 +69,23 @@ def test_import_name(name):
     :param name: name of module containing flask app
     :return: bool
     """
-
-    # check APP_MODULE is importable
+    # check FLASK_APP is importable
     imported = None
     try:
-        imported = __import__(name)
-    except ModuleNotFoundError:
+        imported = import_string(name)
+    except ImportStringError or ModuleNotFoundError:
         pass
 
     # report if not
     if not imported:
-        err = 'Unable to import APP_MODULE called "{}". '
-        err += 'Please verify this module exists.'
+        err = 'Unable to import FLASK_APP defined as "{}". '
+        err += 'Please verify this package exists.'
         raise x.BootstrapException(err.format(name))
 
     # check if imported module is a namespace
     is_namespace = not imported.__file__ and type(imported.__path__) is not list
     if is_namespace:
-        err = '\n\nProvided APP_MODULE "{}" is a namespace package.\n'
+        err = '\n\nProvided FLASK_APP "{}" is a namespace package.\n'
         err += 'Please verify that you are importing the app from a regular '
         err += 'package and not a namespace.\n\n'
         err += 'For more info see:\n'
@@ -113,24 +108,26 @@ def create_app(name, config=None, flask_params=None):
     # check import name
     test_import_name(name)
 
-    # get flask parameters
-    options = dict(import_name=name)
-    if flask_params is not None:
-        options.update(flask_params)
+    # check config
+    if not config:
+        config = DefaultConfig()
+    if config.__class__ is type:
+        err = 'Config must be an object, got class instead.'
+        raise x.BootstrapException(err)
+
+    # check flask params
+    flask_params = flask_params or dict()
+    flask_params['import_name'] = name
+
+    # configure static assets
     if config.get('FLASK_STATIC_URL') is not None:
-        options['static_url_path'] = config.get('FLASK_STATIC_URL')
+        flask_params['static_url_path'] = config.get('FLASK_STATIC_URL')
     if config.get('FLASK_STATIC_PATH') is not None:
-        options['static_folder'] = config.get('FLASK_STATIC_PATH')
+        flask_params['static_folder'] = config.get('FLASK_STATIC_PATH')
 
     # create an app with default config
-    app = Flask(**options)
+    app = Flask(**flask_params)
     app.config.from_object(DefaultConfig())
-
-    # check custom config
-    if not config:
-        print('No configuration provided. Running with DefaultConfig.')
-    elif config.__class__ is type:
-        raise Exception('Config must be an object, got class instead.')
 
     # apply custom config
     if config:
