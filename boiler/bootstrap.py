@@ -30,7 +30,7 @@ def get_config():
     try:
         config_class = import_string(app_config)
     except ImportError:
-        err = 'Failed imported config file [{}]'
+        err = 'Failed importing config file [{}]'
         raise x.BootstrapException(err.format(app_config))
 
     # and return
