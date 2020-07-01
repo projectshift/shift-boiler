@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.4
+
+Minor release to fix a regression in default bootstrap process.
+
 ## 0.9.3
 This release contains improvements around application security. For instance session cookies
 and FlaskLogin's remember me cookies are now set to be secure and http-only by default in production environments.
