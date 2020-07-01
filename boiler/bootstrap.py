@@ -18,13 +18,8 @@ def get_config():
     Imports config based on environment.
     :return:
     """
-    app_module = os.getenv('APP_MODULE')
-    if not app_module:
-        err = 'Unable to bootstrap application APP_MODULE is not defined'
-        raise x.BootstrapException(err)
-
     app_config = os.getenv('APP_CONFIG')
-    if not app_module:
+    if not app_config:
         err = 'Unable to bootstrap application APP_CONFIG is not defined'
         raise x.BootstrapException(err)
 
