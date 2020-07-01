@@ -109,6 +109,10 @@ def create_app(name, config=None, flask_params=None):
 
     return app
 
+# ------------------------------------------------------------------------------
+# Feature toggles
+# ------------------------------------------------------------------------------
+
 
 def add_debug_toolbar(app):
     """ Add debug toolbar capability """
