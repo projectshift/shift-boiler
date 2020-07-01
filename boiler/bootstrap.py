@@ -7,6 +7,7 @@ from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import import_string
 from flask_wtf import CSRFProtect
 
+from boiler.config import DefaultConfig
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
 from boiler import exceptions as x
@@ -68,10 +69,6 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
-    from boiler.config import DefaultConfig
-    if config is None:
-        config = DefaultConfig()
-
     # get flask parameters
     options = dict(import_name=name)
     if flask_params is not None:
@@ -81,18 +78,22 @@ def create_app(name, config=None, flask_params=None):
     if config.get('FLASK_STATIC_PATH') is not None:
         options['static_folder'] = config.get('FLASK_STATIC_PATH')
 
-    # create an app
+    # create an app with default config
     app = Flask(**options)
+    app.config.from_object(DefaultConfig())
+
+    # configure app
+    if config:
+        if config.__class__ is type:
+            raise Exception('Config must be an object, got class instead.')
+
+        # apply supplied config on top of default config
+        app.config.from_object(config)
+    else:
+        print('No configuration provided. Running with DefaultConfig.')
 
     # enable csrf protection
     CSRFProtect(app)
-
-    # configure app
-    if config.__class__ is type:
-        raise Exception('Config must be an object, got class instead.')
-
-    app.config.from_object(DefaultConfig())
-    app.config.from_object(config)
 
     # register error handler
     register_error_handler(app)
