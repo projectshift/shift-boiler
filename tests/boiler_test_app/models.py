@@ -1,4 +1,3 @@
-import datetime, jwt
 from hashlib import md5
 from sqlalchemy.ext.hybrid import hybrid_property
 from boiler.feature.orm import db
