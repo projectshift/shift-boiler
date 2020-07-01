@@ -64,8 +64,8 @@ Read more on [environment-based configs](https://12factor.net/config)
 When initializing the project with `./boiler init` the project skeleton will contain the following `.env` file:
 
 ```
-APP_MODULE=backend
-APP_CONFIG=backend.config.DevConfig
+FLASK_APP=backend.app
+FLASK_CONFIG=backend.config.DevConfig
 
 # secrets
 APP_SECRET_KEY='e3b43288-8bff-11e8-a482-38c9863edaea'
