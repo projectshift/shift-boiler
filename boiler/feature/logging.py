@@ -23,9 +23,6 @@ def logging_feature(app):
         file_handler = file_logger(app)
         app.logger.addHandler(file_handler)
 
-    # datadog
-    #app.logger.addHandler(datadog_logger(app))
-
 
     # test logging
     # app.logger.info("testing info.")
