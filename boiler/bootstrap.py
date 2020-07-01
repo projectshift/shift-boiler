@@ -41,9 +41,12 @@ def get_config():
 def get_app():
     """
     Get app
-    Inspects app module name coming from dotenv and tries to import flask
+    Inspects app module name coming from .env and tries to import flask
     app from this namespace. May subsequently result in app creation if not
     previously imported.
+
+    When run, it returns flask app that was already created, or creates one
+    if required thus avoiding recreating the app every time.
     :return: flask.Flask
     """
     app_module = os.getenv('APP_MODULE')
