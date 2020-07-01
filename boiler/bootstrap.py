@@ -1,10 +1,12 @@
 import os
 from os import path
+from importlib import __import__
 from flask import Flask
 from flask import g
 from flask import request
-from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import import_string
+from werkzeug.utils import ImportStringError
+from jinja2 import ChoiceLoader, FileSystemLoader
 from flask_wtf import CSRFProtect
 
 from boiler.config import DefaultConfig
@@ -39,6 +41,8 @@ def get_app():
     Get app
     When run, it returns flask app that was previously created in userspace,
     or creates one if required thus avoiding recreating the app every time.
+    Used in CLI commands, tests or other places requiring an instance
+    of the app.
     :return: flask.Flask
     """
     app_module = os.getenv('APP_MODULE')
@@ -46,8 +50,54 @@ def get_app():
         err = 'Main app module undefined. Have you created a .env file?'
         raise x.BootstrapException(err)
 
-    app = import_string(app_module + '.app.app')
-    return app
+    # check if importable and report
+    test_import_name(app_module)
+
+    return None
+
+
+    #
+    # # import
+    # app = import_string(app_module + '.app')
+    # return app
+
+
+def test_import_name(name):
+    """
+    Test import name
+    Checks the name of the module containing a flask app to detect whether it's
+    a regular module or a namspace in which case flask won't be able to
+    bootsrap and will give us a rather cryptic exception. This instead will
+    provide a better explanation why the app cannot start.
+
+    :param name: name of module containing flask app
+    :return: bool
+    """
+
+    # check APP_MODULE is importable
+    imported = None
+    try:
+        imported = __import__(name)
+    except ModuleNotFoundError:
+        pass
+
+    # report if not
+    if not imported:
+        err = 'Unable to import APP_MODULE called "{}". '
+        err += 'Please verify this module exists.'
+        raise x.BootstrapException(err.format(name))
+
+    # check if imported module is a namespace
+    is_namespace = not imported.__file__ and type(imported.__path__) is not list
+    if is_namespace:
+        err = '\n\nProvided APP_MODULE "{}" is a namespace package.\n'
+        err += 'Please verify that you are importing the app from a regular '
+        err += 'package and not a namespace.\n\n'
+        err += 'For more info see:\n'
+        err += 'Related ticket: https://bit.ly/package-vs-namespace:\n'
+        err += 'Packages and namespaces in Python docs: '
+        err += 'https://docs.python.org/3/reference/import.html#packages\n'
+        raise x.BootstrapException(err.format(name))
 
 
 def create_app(name, config=None, flask_params=None):
@@ -60,6 +110,9 @@ def create_app(name, config=None, flask_params=None):
     Note: application name should be its fully qualified __name__, something
     like project.api.app. This is how we fetch routing settings.
     """
+    # check import name
+    test_import_name(name)
+
     # get flask parameters
     options = dict(import_name=name)
     if flask_params is not None:
