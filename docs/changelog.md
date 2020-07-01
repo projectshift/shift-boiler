@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0
+
+This release contains some refactoring and improvements around bootstrap process.
+Specifically it now gracefully handles app module imports and detects when an attempt
+has been made to load app from a namespace rather than regular module and give back
+descriptive message with possible resolutions. The app now will bootstrap properly
+regardless of whether there's an `__init__.py` file in the root of your application, 
+which we think should be entirely up to you.
+
+In addition, we changed the environment variables `APP_MODULE` and `APP_CONFIG` to 
+`FLASK_APP` and `FLASK_CONFG` respectively to act inline with default Flask behavior.
+You will need to change these when upgrading an existing app.
+
+This release also includes some other minor changes to code structure and 
+documentation improvements.
+
 ## 0.9.4
 
 Minor release to fix a regression in default bootstrap process.
