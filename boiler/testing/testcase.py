@@ -202,6 +202,9 @@ class ViewTestCase(FlaskTestCase):
 
     def assertOk(self, response):
         return self.assertStatusCode(response, 200)
+    
+    def assertNoContent(self, response):
+        return self.assertStatusCode(response, 204)    
 
     def assertBadRequest(self, response):
         return self.assertStatusCode(response, 400)
