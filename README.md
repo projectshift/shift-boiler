@@ -61,11 +61,6 @@ file and expect minor versions to introduce breaking changes.
   * [Changelog](docs/changelog.md)
 
   
-  
-[![Analytics](https://ga-beacon.appspot.com/UA-3714466-12/boiler-home?pixel)](https://github.com/igrigorik/ga-beacon)  
-
-
-
 
 
 
