@@ -1,10 +1,13 @@
 # Changelog
 
+## 0.10.1
+This is a minor maintenance release to update outdated dependencies.
+
 ## 0.10.0
 
 This release contains some refactoring and improvements around bootstrap process.
 Specifically it now gracefully handles app module imports and detects when an attempt
-has been made to load app from a namespace rather than regular module and give back
+has been made to load app from a namespace rather than a regular module and give back
 descriptive message with possible resolutions. The app now will bootstrap properly
 regardless of whether there's an `__init__.py` file in the root of your application, 
 which we think should be entirely up to you.
@@ -24,7 +27,7 @@ Minor release to fix a regression in default bootstrap process.
 This release contains improvements around application security. For instance session cookies
 and FlaskLogin's remember me cookies are now set to be secure and http-only by default in production environments.
 
-Additionally flask applications are now CSRF-protected out of the box so you don;t have to remember to enable this feature.
+Additionally, flask applications are now CSRF-protected out of the box so you don;t have to remember to enable this feature.
 
 ## 0.9.2
 Minor maintenance release improving documentation and testing.
@@ -151,7 +154,7 @@ def create_app(*args, **kwargs):
 	app = bootstrap.create_app(__name__, *args, **kwargs)
 	
 	# enable features
-	bootstrapp.add_routing(app)
+	bootstrap.add_routing(app)
 
 ```
 
