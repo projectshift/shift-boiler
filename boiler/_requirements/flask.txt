@@ -6,4 +6,4 @@ Flask-WTF>=0.14.3,<0.15.0
 Flask-DebugToolbar>=0.11.0,<0.12.0
 Flask-Navigation==0.2.0
 python-dotenv>=0.13.0,<1.0.0
-pyOpenSSL>=19.1.0,<=20.0.0
+pyOpenSSL>=20.0.1,<21.0.0
