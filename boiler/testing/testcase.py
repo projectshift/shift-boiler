@@ -1,7 +1,7 @@
 import os, unittest, json
 from contextlib import contextmanager
 from flask import current_app
-from werkzeug.utils import parse_cookie
+from werkzeug.http import parse_cookie
 
 
 def patch_config(self):

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.2
+This is a minor maintenance that finally addresses unpinning outdated version of Werkzeug now we've worked throug updateing our dependencies.
+
 ## 0.10.1
 This is a minor maintenance release to update outdated dependencies.
 
