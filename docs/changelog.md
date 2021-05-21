@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.11.0
+
+This release brings along a few updates: 
+
+  * Firs of all we are updating to flask 2.0 along with it dependencies (Werkzeug, Click).
+  * Then we are getting rid of Flask-DebugToolbar feature. You can still install and enable it in your applications manually. 
+  * We are also dropping out-of-the-box support for Flask-Navigation, if you are using it, you will need to manually install and enable it from now on.
+  * Jinja extensions feature has been merged into boostrap and drops support for Humanize and MomentJs filters.
+  * Sentry feature is also being removed: the underlying library updates to often for us to track and maintain compatibility. This is better be implemented in userland code.
+
 ## 0.10.2
 This is a minor maintenance that finally addresses unpinning outdated version of Werkzeug now we've worked throug updateing our dependencies.
 

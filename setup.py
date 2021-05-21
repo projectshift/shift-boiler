@@ -108,7 +108,7 @@ setup(**dict(
 
     # project dependencies
     install_requires=[
-        'click>=7.1.2,<8.0.0',
+        'click>=8.0.0,<9.0.0',
         'shiftschema>=0.2.8,<0.3.0',
     ],
 
