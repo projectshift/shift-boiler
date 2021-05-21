@@ -32,7 +32,6 @@ Please specify a feature to install.
 1. all
 2. api
 3. flask
-4. jinja_extensions
 5. localization
 6. mail
 8. navigation
@@ -92,24 +91,6 @@ Install this feature dependencies:
 
 ```
 boiler dependencies mail
-```
-
-
-
-## Jinja Extensions
-
-Jinja extensions feature is a set of usefull fiters and functions for jinja templating engine. It provides filters for localization, date formatting and others.
-
-Enable feature with:
-
-```python
-bootstrap.add_jinja_extensions(app)
-```
-
-Install this feature dependencies:
-
-```
-boiler dependencies jinja_extensions
 ```
 
 

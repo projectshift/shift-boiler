@@ -1,6 +1,5 @@
 import os
 from os import path
-from importlib import __import__
 from flask import Flask
 from flask import g
 from flask import request
@@ -12,6 +11,7 @@ from flask_wtf import CSRFProtect
 from boiler.config import DefaultConfig
 from boiler.timer import restart_timer
 from boiler.errors import register_error_handler
+from boiler.jinja import functions as jinja_functions
 from boiler import exceptions as x
 
 
@@ -145,6 +145,12 @@ def create_app(name, config=None, flask_params=None):
     custom_loader = ChoiceLoader([app.jinja_loader, fallback_loader])
     app.jinja_loader = custom_loader
 
+    # register custom jinja functions
+    app.jinja_env.globals.update(dict(
+        asset=jinja_functions.asset,
+        dev_proxy=jinja_functions.dev_proxy
+    ))
+
     # time restarts?
     if app.config.get('TIME_RESTARTS'):
         restart_timer.time_restarts(os.path.join(os.getcwd(), 'var', 'data'))
@@ -164,22 +170,10 @@ def create_app(name, config=None, flask_params=None):
 # ------------------------------------------------------------------------------
 
 
-def add_debug_toolbar(app):
-    """ Add debug toolbar capability """
-    from boiler.feature.debug_toolbar import debug_toolbar_feature
-    debug_toolbar_feature(app)
-
-
 def add_routing(app):
     """ Add routing and lazy-views feature """
     from boiler.feature.routing import routing_feature
     routing_feature(app)
-
-
-def add_jinja_extensions(app):
-    """ Activate custom jinja extensions """
-    from boiler.feature.jinja_extensions import jinja_extensions_feature
-    jinja_extensions_feature(app)
 
 
 def add_mail(app):
@@ -192,18 +186,6 @@ def add_orm(app):
     """ Add SQLAlchemy ORM integration """
     from boiler.feature.orm import orm_feature
     orm_feature(app)
-
-
-def add_navigation(app):
-    """ Add navigation to app """
-    from boiler.feature.navigation import navigation_feature
-    navigation_feature(app)
-
-
-def add_sentry(app):
-    """ Add sentry integration """
-    from boiler.feature.sentry import sentry_feature
-    sentry_feature(app)
 
 
 def add_logging(app):
