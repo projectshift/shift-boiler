@@ -48,7 +48,7 @@ class DefaultConfig(Config):
     ERROR_404_HELP = False
 
     # uploads
-    MAX_CONTENT_LENGTH = 1024 * 1024 * 16 # megabytes
+    MAX_CONTENT_LENGTH = 1024 * 1024 * 16  # megabytes
 
     # database
     # 'mysql://user:password@server/db?charset=utf8mb4'
@@ -75,11 +75,6 @@ class DefaultConfig(Config):
     # logging
     ADMINS = ['you@domain']
     LOGGING_EMAIL_EXCEPTIONS_TO_ADMINS = False
-
-    # sentry
-    SENTRY_KEY = os.getenv('APP_SENTRY_KEY')
-    SENTRY_PROJECT_ID = os.getenv('APP_SENTRY_PROJECT_ID')
-    SENTRY_INGEST_URL = os.getenv('APP_SENTRY_INGEST_URL')
 
     # localization (babel)
     DEFAULT_LOCALE = 'en_GB'
