@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.1
+
+A minor release containing some further code cleanups. 
+
 ## 0.11.0
 
 This release brings along a few updates: 
