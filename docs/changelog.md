@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.2
+
+A minor release focusing on updating dependencies
+
 ## 0.11.1
 
 A minor release containing some further code cleanups. 
